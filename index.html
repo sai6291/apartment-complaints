@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apartment Complaint Management System</title>
+    <title>Thai Homes Residents Welfare Association</title>
     <style>
         * {
             margin: 0;
@@ -107,6 +107,15 @@
             font-size: 1em;
             transition: border-color 0.3s;
             font-family: inherit;
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            padding: 5px;
         }
 
         input:focus, select:focus, textarea:focus {
@@ -302,6 +311,153 @@
             opacity: 0.5;
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .user-management {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .user-list {
+            margin-top: 20px;
+        }
+
+        .user-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .user-username {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .admin-locked {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .admin-locked svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+            user-select: none;
+        }
+
+        .toggle-password:hover {
+            color: #333;
+        }
+
         .success-message, .error-message, .info-message {
             padding: 15px;
             border-radius: 8px;
@@ -398,15 +554,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏢 Apartment Complaint Management</h1>
-            <p>50 Flats Community Portal - Google Sheets Database</p>
+            <h1>🏢 Thai Homes Residents Welfare Association</h1>
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('register')">📝 Register Complaint</button>
-            <button class="tab" onclick="switchTab('view')">📋 View Complaints</button>
-            <button class="tab" onclick="switchTab('admin')">⚙️ Admin Panel</button>
-            <button class="tab" onclick="switchTab('setup')">🔧 Setup Guide</button>
+            <button class="tab active" onclick="switchTab('register', event)">📝 Register Complaint</button>
+            <button class="tab" onclick="switchTab('view', event)">📋 View Complaints</button>
+            <button class="tab" onclick="switchTab('admin', event)">⚙️ Admin Panel</button>
         </div>
 
         <!-- Register Complaint Tab -->
@@ -540,227 +694,379 @@
 
         <!-- Admin Panel Tab -->
         <div id="admin" class="tab-content">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalComplaints">0</div>
-                    <div class="stat-label">Total Complaints</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="pendingComplaints">0</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="inProgressComplaints">0</div>
-                    <div class="stat-label">In Progress</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="resolvedComplaints">0</div>
-                    <div class="stat-label">Resolved</div>
+            <!-- Login Modal -->
+            <div id="loginModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🔐 Admin Login</h2>
+                        <p>Executive Committee Members Only</p>
+                    </div>
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group password-toggle">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                            <span class="toggle-password" onclick="togglePasswordVisibility('loginPassword')">👁️</span>
+                        </div>
+                        <div class="error-message" id="loginError"></div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
                 </div>
             </div>
 
-            <div style="margin-bottom: 20px;">
-                <button class="btn" onclick="loadComplaints()">🔄 Refresh Data</button>
+            <!-- Admin Content (Hidden until logged in) -->
+            <div id="adminContent" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Welcome, <span id="loggedInUser"></span>!</h3>
+                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+                </div>
+
+                <!-- User Management Section -->
+                <div class="user-management">
+                    <h3 style="margin-bottom: 20px; color: #333;">👥 User Management</h3>
+                    
+                    <form id="addUserForm" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 15px; color: #667eea;">Add New Executive Member</h4>
+                        <div class="form-group">
+                            <label for="newUserName">Full Name *</label>
+                            <input type="text" id="newUserName" placeholder="e.g., John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername">Username *</label>
+                            <input type="text" id="newUsername" placeholder="e.g., john.doe" required>
+                        </div>
+                        <div class="form-group password-toggle">
+                            <label for="newPassword">Password *</label>
+                            <input type="password" id="newPassword" placeholder="Enter password" required>
+                            <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">👁️</span>
+                        </div>
+                        <button type="submit" class="btn">➕ Add User</button>
+                    </form>
+
+                    <h4 style="margin-bottom: 15px; color: #333;">Current Executive Members</h4>
+                    <div class="user-list" id="userList"></div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalComplaints">0</div>
+                        <div class="stat-label">Total Complaints</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingComplaints">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="inProgressComplaints">0</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="resolvedComplaints">0</div>
+                        <div class="stat-label">Resolved</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <button class="btn" onclick="loadComplaints()">🔄 Refresh Data</button>
+                </div>
+
+                <h3 style="margin-bottom: 20px; color: #333;">Manage All Complaints</h3>
+                <div id="adminComplaintsContainer"></div>
             </div>
 
-            <h3 style="margin-bottom: 20px; color: #333;">Manage All Complaints</h3>
-            <div id="adminComplaintsContainer"></div>
+            <!-- Locked State (Shown when not logged in) -->
+            <div id="adminLocked" class="admin-locked">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                <h3>Admin Panel Locked</h3>
+                <p>This section is restricted to Executive Committee members only.</p>
+                <button class="btn" style="margin-top: 20px; max-width: 300px; margin-left: auto; margin-right: auto;" onclick="showLoginModal()">🔐 Admin Login</button>
+            </div>
         </div>
 
-        <!-- Setup Guide Tab -->
-        <div id="setup" class="tab-content">
-            <div class="setup-section">
-                <h3>📋 Step-by-Step Setup Guide</h3>
-                <p style="margin-bottom: 15px;">Follow these steps to connect this system to Google Sheets:</p>
-                
-                <ol>
-                    <li><strong>Create a Google Sheet:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>Go to <a href="https://sheets.google.com" target="_blank">Google Sheets</a></li>
-                            <li>Create a new blank spreadsheet</li>
-                            <li>Name it "Apartment Complaints Database"</li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Set up the Sheet Headers:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>In Row 1, add these column headers (exactly as shown):</li>
-                            <li><code>ID | Block | Flat | Name | Contact | Category | Priority | Description | Status | Date | LastUpdated</code></li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Open Apps Script Editor:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>In your Google Sheet, click <strong>Extensions → Apps Script</strong></li>
-                            <li>Delete any existing code in the editor</li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Paste the Backend Code:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>Copy the code from the "Backend Code" section below</li>
-                            <li>Paste it into the Apps Script editor</li>
-                            <li>Click <strong>Save</strong> (disk icon)</li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Deploy as Web App:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>Click <strong>Deploy → New deployment</strong></li>
-                            <li>Click the gear icon ⚙️ next to "Select type" and choose <strong>Web app</strong></li>
-                            <li>Fill in:
-                                <ul style="margin: 5px 0 5px 20px;">
-                                    <li>Description: "Complaint Management API"</li>
-                                    <li>Execute as: <strong>Me</strong></li>
-                                    <li>Who has access: <strong>Anyone</strong></li>
-                                </ul>
-                            </li>
-                            <li>Click <strong>Deploy</strong></li>
-                            <li>Authorize the app (click "Review Permissions" → Choose your account → "Advanced" → "Go to..." → "Allow")</li>
-                            <li><strong>Copy the Web App URL</strong> - it will look like: <code>https://script.google.com/macros/s/...../exec</code></li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Configure This HTML File:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>Open this HTML file in a text editor (Notepad, VS Code, etc.)</li>
-                            <li>Find the line: <code>const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjdSeypt_TLDup6eEtLFbJyc1yLmrPZAfRoRdlANHtFDkvxN9tfJlabEUahTKHL9CC/exec';</code></li>
-                            <li>Replace <code>YOUR_SCRIPT_URL_HERE</code> with your Web App URL</li>
-                            <li>Save the file</li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Test the System:</strong>
-                        <ul style="margin: 10px 0;">
-                            <li>Open the HTML file in your browser</li>
-                            <li>Try registering a test complaint</li>
-                            <li>Check your Google Sheet - the complaint should appear!</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="setup-section" style="background: #e7f3ff; border-left-color: #0066cc;">
-                <h3 style="color: #003d82;">💻 Backend Code (Google Apps Script)</h3>
-                <p style="margin-bottom: 10px;">Copy and paste this code into your Google Apps Script editor:</p>
-                <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 0.9em; line-height: 1.6;">
-<code>function doPost(e) {
-  try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data = JSON.parse(e.postData.contents);
-    
-    if (data.action === 'submit') {
-      // Add new complaint
-      sheet.appendRow([
-        data.id,
-        data.blockName,
-        data.flatNumber,
-        data.residentName,
-        data.contactNumber,
-        data.category,
-        data.priority,
-        data.description,
-        data.status,
-        data.dateRegistered,
-        data.lastUpdated
-      ]);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        message: 'Complaint registered successfully'
-      })).setMimeType(ContentService.MimeType.JSON);
-      
-    } else if (data.action === 'updateStatus') {
-      // Update complaint status
-      const values = sheet.getDataRange().getValues();
-      for (let i = 1; i < values.length; i++) {
-        if (values[i][0] === data.id) {
-          sheet.getRange(i + 1, 9).setValue(data.status);
-          sheet.getRange(i + 1, 11).setValue(new Date().toISOString());
-          break;
-        }
-      }
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        message: 'Status updated successfully'
-      })).setMimeType(ContentService.MimeType.JSON);
-      
-    } else if (data.action === 'delete') {
-      // Delete complaint
-      const values = sheet.getDataRange().getValues();
-      for (let i = 1; i < values.length; i++) {
-        if (values[i][0] === data.id) {
-          sheet.deleteRow(i + 1);
-          break;
-        }
-      }
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        message: 'Complaint deleted successfully'
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({
-      success: false,
-      message: error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data = sheet.getDataRange().getValues();
-    
-    // Skip header row
-    const complaints = [];
-    for (let i = 1; i < data.length; i++) {
-      complaints.push({
-        id: data[i][0],
-        blockName: data[i][1],
-        flatNumber: data[i][2],
-        residentName: data[i][3],
-        contactNumber: data[i][4],
-        category: data[i][5],
-        priority: data[i][6],
-        description: data[i][7],
-        status: data[i][8],
-        dateRegistered: data[i][9],
-        lastUpdated: data[i][10]
-      });
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({
-      success: true,
-      complaints: complaints
-    })).setMimeType(ContentService.MimeType.JSON);
-    
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({
-      success: false,
-      message: error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
-  }
-}</code></pre>
-            </div>
-
-            <div class="setup-section" style="background: #d1e7dd; border-left-color: #0f5132;">
-                <h3 style="color: #0f5132;">✅ After Setup</h3>
-                <ul style="margin-left: 20px; line-height: 1.8;">
-                    <li>All complaints will be saved to your Google Sheet in real-time</li>
-                    <li>Multiple users can access the system simultaneously</li>
-                    <li>All residents will see the same data</li>
-                    <li>You can view/export data directly from Google Sheets</li>
-                    <li>Data is backed up by Google automatically</li>
-                </ul>
-            </div>
-        </div>
     </div>
 
     <script>
+        // ============================================
+        // TAB NAVIGATION (Must be defined first!)
+        // ============================================
+        
+        // Switch tabs
+        function switchTab(tabName, evt) {
+            console.log('switchTab called with:', tabName);
+            
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            console.log('Found tab contents:', tabContents.length);
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            // Remove active class from all tabs
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            // Show the selected tab content
+            const selectedTab = document.getElementById(tabName);
+            console.log('Selected tab element:', selectedTab);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+                console.log('Added active class to:', tabName);
+            } else {
+                console.error('Tab not found:', tabName);
+            }
+
+            // Add active class to clicked tab button
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
+
+            // Execute tab-specific actions
+            if (tabName === 'view') {
+                console.log('Loading complaints...');
+                if (typeof loadComplaints === 'function') {
+                    loadComplaints();
+                }
+            } else if (tabName === 'admin') {
+                console.log('Checking admin access...');
+                if (typeof checkAdminAccess === 'function') {
+                    checkAdminAccess();
+                }
+            }
+        }
+        
+        // ============================================
+        // AUTHENTICATION & USER MANAGEMENT
+        // ============================================
+        
+        // Initialize default admin user
+        function initializeUsers() {
+            const users = getUsers();
+            if (users.length === 0) {
+                // Add default user
+                const defaultUser = {
+                    name: 'Sainath Premkumar',
+                    username: 'sainath premkumar',
+                    password: 'sai@thai6291',
+                    role: 'admin',
+                    createdDate: new Date().toISOString()
+                };
+                users.push(defaultUser);
+                saveUsers(users);
+            }
+        }
+
+        // Get users from localStorage
+        function getUsers() {
+            const users = localStorage.getItem('thaiHomesAdminUsers');
+            return users ? JSON.parse(users) : [];
+        }
+
+        // Save users to localStorage
+        function saveUsers(users) {
+            localStorage.setItem('thaiHomesAdminUsers', JSON.stringify(users));
+        }
+
+        // Get current session
+        function getCurrentSession() {
+            const session = sessionStorage.getItem('thaiHomesAdminSession');
+            return session ? JSON.parse(session) : null;
+        }
+
+        // Save session
+        function saveSession(username, name) {
+            const session = {
+                username: username,
+                name: name,
+                loginTime: new Date().toISOString()
+            };
+            sessionStorage.setItem('thaiHomesAdminSession', JSON.stringify(session));
+        }
+
+        // Clear session
+        function clearSession() {
+            sessionStorage.removeItem('thaiHomesAdminSession');
+        }
+
+        // Check if user is logged in
+        function isLoggedIn() {
+            return getCurrentSession() !== null;
+        }
+
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+            document.getElementById('loginUsername').focus();
+        }
+
+        // Hide login modal
+        function hideLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+
+        // Login form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    const users = getUsers();
+                    const user = users.find(u => u.username.toLowerCase() === username && u.password === password);
+                    
+                    if (user) {
+                        saveSession(user.username, user.name);
+                        hideLoginModal();
+                        showAdminContent();
+                        displayUserList();
+                    } else {
+                        const errorMsg = document.getElementById('loginError');
+                        errorMsg.textContent = '❌ Invalid username or password';
+                        errorMsg.style.display = 'block';
+                    }
+                });
+            }
+        });
+
+        // Show admin content
+        function showAdminContent() {
+            const session = getCurrentSession();
+            if (session) {
+                document.getElementById('adminLocked').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loggedInUser').textContent = session.name;
+                loadComplaints();
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearSession();
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('adminLocked').style.display = 'block';
+            }
+        }
+
+        // Add new user form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const addUserForm = document.getElementById('addUserForm');
+            if (addUserForm) {
+                addUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('newUserName').value.trim();
+                    const username = document.getElementById('newUsername').value.trim();
+                    const password = document.getElementById('newPassword').value;
+                    
+                    // Check if username already exists
+                    const users = getUsers();
+                    if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                        alert('❌ Username already exists. Please choose a different username.');
+                        return;
+                    }
+                    
+                    // Add new user
+                    const newUser = {
+                        name: name,
+                        username: username,
+                        password: password,
+                        role: 'admin',
+                        createdDate: new Date().toISOString()
+                    };
+                    
+                    users.push(newUser);
+                    saveUsers(users);
+                    
+                    // Clear form
+                    this.reset();
+                    
+                    // Refresh user list
+                    displayUserList();
+                    
+                    alert('✅ New executive member added successfully!');
+                });
+            }
+        });
+
+        // Display user list
+        function displayUserList() {
+            const users = getUsers();
+            const container = document.getElementById('userList');
+            const currentSession = getCurrentSession();
+            
+            if (users.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d;">No users found</p>';
+                return;
+            }
+            
+            container.innerHTML = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="user-name">${user.name}${user.username === currentSession?.username ? ' (You)' : ''}</div>
+                        <div class="user-username">Username: ${user.username}</div>
+                    </div>
+                    ${user.username !== 'sainath premkumar' ? `
+                        <button class="btn-small" onclick="deleteUser('${user.username}')" style="background: #dc3545; color: white; border-color: #dc3545;">
+                            🗑️ Remove
+                        </button>
+                    ` : '<span style="color: #667eea; font-weight: 600;">Default Admin</span>'}
+                </div>
+            `).join('');
+        }
+
+        // Delete user
+        function deleteUser(username) {
+            if (username === 'sainath premkumar') {
+                alert('❌ Cannot delete the default admin user.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to remove this user?\n\nUsername: ${username}`)) {
+                let users = getUsers();
+                users = users.filter(u => u.username !== username);
+                saveUsers(users);
+                displayUserList();
+                alert('✅ User removed successfully!');
+            }
+        }
+
+        // Check admin access when switching to admin tab
+        function checkAdminAccess() {
+            if (isLoggedIn()) {
+                showAdminContent();
+                displayUserList();
+            } else {
+                document.getElementById('adminLocked').style.display = 'block';
+                document.getElementById('adminContent').style.display = 'none';
+            }
+        }
+
+        // Initialize users on page load
+        initializeUsers();
+
         // ============================================
         // IMPORTANT: CONFIGURE YOUR GOOGLE SCRIPT URL HERE
         // ============================================
@@ -840,7 +1146,7 @@ function doGet(e) {
         // Load complaints from Google Sheets
         async function loadComplaints() {
             if (!isConfigured()) {
-                showMessage('viewInfoMessage', '⚠️ Please configure the Google Script URL first. Check the Setup Guide tab.', 0);
+                showMessage('viewInfoMessage', '⚠️ Please configure the Google Script URL in the HTML file.', 0);
                 return;
             }
 
@@ -868,7 +1174,7 @@ function doGet(e) {
             e.preventDefault();
 
             if (!isConfigured()) {
-                showMessage('errorMessage', '⚠️ Please configure the Google Script URL first. Check the Setup Guide tab.');
+                showMessage('errorMessage', '⚠️ Please configure the Google Script URL in the HTML file.');
                 return;
             }
 
@@ -919,23 +1225,6 @@ function doGet(e) {
             }
         });
 
-        // Switch tabs
-        function switchTab(tabName) {
-            const tabs = document.querySelectorAll('.tab');
-            const contents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => tab.classList.remove('active'));
-            contents.forEach(content => content.classList.remove('active'));
-
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-
-            if (tabName === 'view') {
-                loadComplaints();
-            } else if (tabName === 'admin') {
-                loadComplaints();
-            }
-        }
 
         // Display complaints in view tab
         function displayComplaints() {
@@ -1025,6 +1314,8 @@ function doGet(e) {
         function displayAdminComplaints() {
             const container = document.getElementById('adminComplaintsContainer');
             const complaints = [...allComplaints];
+            const users = getUsers();
+            const userOptions = users.map(u => `<option value="${u.name}">${u.name}</option>`).join('');
 
             if (complaints.length === 0) {
                 container.innerHTML = `
@@ -1042,7 +1333,11 @@ function doGet(e) {
             // Sort by date (newest first)
             complaints.sort((a, b) => new Date(b.dateRegistered) - new Date(a.dateRegistered));
 
-            container.innerHTML = complaints.map(complaint => `
+            container.innerHTML = complaints.map(complaint => {
+                const isResolved = complaint.status === 'Resolved';
+                const hasResolutionData = complaint.issueResolvedDate || complaint.resolvedBy || complaint.supervisor;
+                
+                return `
                 <div class="complaint-card">
                     <div class="complaint-header">
                         <span class="complaint-id">${complaint.id}</span>
@@ -1082,19 +1377,132 @@ function doGet(e) {
                         <strong>Description:</strong><br>
                         ${complaint.description}
                     </div>
+                    
+                    ${hasResolutionData ? `
+                        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #0066cc;">
+                            <strong style="color: #003d82;">📋 Resolution Details:</strong>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                                ${complaint.issueResolvedDate ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved Date:</span><br>
+                                        <strong>${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</strong>
+                                    </div>
+                                ` : ''}
+                                ${complaint.resolvedBy ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved By:</span><br>
+                                        <strong>${complaint.resolvedBy}</strong>
+                                    </div>
+                                ` : ''}
+                                ${complaint.supervisor ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Supervisor:</span><br>
+                                        <strong>${complaint.supervisor}</strong>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
                     <div class="action-buttons">
-                        <button class="btn-small" onclick="updateStatus('${complaint.id}', 'In Progress')">Mark In Progress</button>
-                        <button class="btn-small" onclick="updateStatus('${complaint.id}', 'Resolved')">Mark Resolved</button>
+                        ${!isResolved ? `
+                            <button class="btn-small" onclick="updateStatus('${complaint.id}', 'In Progress')">Mark In Progress</button>
+                            <button class="btn-small" onclick="showResolutionForm('${complaint.id}')">✅ Mark as Resolved</button>
+                        ` : `
+                            <button class="btn-small" onclick="updateStatus('${complaint.id}', 'In Progress')">Reopen</button>
+                            <button class="btn-small" onclick="showResolutionForm('${complaint.id}')">Edit Resolution</button>
+                        `}
                         <button class="btn-small" onclick="deleteComplaint('${complaint.id}')">Delete</button>
                     </div>
+
+                    <!-- Resolution Form (Hidden by default) -->
+                    <div id="resolutionForm_${complaint.id}" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                        <h4 style="margin-bottom: 15px; color: #667eea;">Resolution Details</h4>
+                        <form onsubmit="submitResolution(event, '${complaint.id}')">
+                            <div class="form-group">
+                                <label for="resolvedDate_${complaint.id}">Issue Resolved Date *</label>
+                                <input type="date" id="resolvedDate_${complaint.id}" value="${complaint.issueResolvedDate || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="resolvedBy_${complaint.id}">Resolved By *</label>
+                                <input type="text" id="resolvedBy_${complaint.id}" placeholder="Enter person/team name" value="${complaint.resolvedBy || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor_${complaint.id}">Supervisor *</label>
+                                <select id="supervisor_${complaint.id}" required>
+                                    <option value="">Select Supervisor</option>
+                                    ${users.map(u => `<option value="${u.name}" ${complaint.supervisor === u.name ? 'selected' : ''}>${u.name}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn" style="flex: 1;">💾 Save Resolution</button>
+                                <button type="button" class="btn-small" onclick="hideResolutionForm('${complaint.id}')" style="background: #6c757d; color: white; border-color: #6c757d;">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
+        }
+
+        // Show resolution form
+        function showResolutionForm(complaintId) {
+            const form = document.getElementById(`resolutionForm_${complaintId}`);
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Hide resolution form
+        function hideResolutionForm(complaintId) {
+            document.getElementById(`resolutionForm_${complaintId}`).style.display = 'none';
+        }
+
+        // Submit resolution
+        async function submitResolution(event, complaintId) {
+            event.preventDefault();
+            
+            if (!isConfigured()) {
+                alert('Please configure the Google Script URL in the HTML file.');
+                return;
+            }
+
+            const resolvedDate = document.getElementById(`resolvedDate_${complaintId}`).value;
+            const resolvedBy = document.getElementById(`resolvedBy_${complaintId}`).value;
+            const supervisor = document.getElementById(`supervisor_${complaintId}`).value;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'updateResolution',
+                        id: complaintId,
+                        status: 'Resolved',
+                        issueResolvedDate: resolvedDate,
+                        resolvedBy: resolvedBy,
+                        supervisor: supervisor
+                    })
+                });
+
+                // Hide the form
+                hideResolutionForm(complaintId);
+                
+                // Reload complaints after update
+                setTimeout(() => loadComplaints(), 1000);
+                
+                alert('✅ Complaint marked as resolved successfully!');
+                
+            } catch (error) {
+                alert('Error updating resolution: ' + error.message);
+            }
         }
 
         // Update complaint status
         async function updateStatus(complaintId, newStatus) {
             if (!isConfigured()) {
-                alert('Please configure the Google Script URL first. Check the Setup Guide tab.');
+                alert('Please configure the Google Script URL in the HTML file.');
                 return;
             }
 
@@ -1127,7 +1535,7 @@ function doGet(e) {
             }
 
             if (!isConfigured()) {
-                alert('Please configure the Google Script URL first. Check the Setup Guide tab.');
+                alert('Please configure the Google Script URL in the HTML file.');
                 return;
             }
 
@@ -1175,7 +1583,7 @@ function doGet(e) {
             
             // Check if configured
             if (!isConfigured()) {
-                showMessage('viewInfoMessage', '⚠️ System not configured yet. Please follow the Setup Guide to connect to Google Sheets.', 0);
+                showMessage('viewInfoMessage', '⚠️ System not configured yet. Please configure the Google Script URL in the HTML file.', 0);
             }
         });
     </script>
