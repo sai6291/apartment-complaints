@@ -525,6 +525,145 @@
             color: #d63384;
         }
 
+        /* Custom Multi-Select Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-header {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.3s;
+            min-height: 48px;
+        }
+
+        .dropdown-header:hover,
+        .dropdown-header.active {
+            border-color: #667eea;
+        }
+
+        .dropdown-header-text {
+            flex: 1;
+            color: #333;
+        }
+
+        .dropdown-header-text.placeholder {
+            color: #6c757d;
+        }
+
+        .dropdown-arrow {
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-header.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-list.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item.selected {
+            background: #e7f3ff;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .dropdown-item-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dropdown-item.selected .dropdown-item-checkbox {
+            background: #667eea;
+        }
+
+        .dropdown-item.selected .dropdown-item-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .selected-tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .selected-tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            line-height: 1;
+        }
+
+        .selected-tag-remove:hover {
+            color: #ffcccc;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.5em;
@@ -578,6 +717,7 @@
                         <option value="">Auto-selected based on flat</option>
                         <option value="Block A">Block A</option>
                         <option value="Block B">Block B</option>
+                        <option value="THRWA">THRWA</option>
                     </select>
                 </div>
 
@@ -599,20 +739,116 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Complaint Category *</label>
-                    <select id="category" required>
-                        <option value="">Select category</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Lift">Lift/Elevator</option>
-                        <option value="Water Supply">Water Supply</option>
-                        <option value="Cleaning">Cleaning/Housekeeping</option>
-                        <option value="Security">Security</option>
-                        <option value="Parking">Parking</option>
-                        <option value="Common Area">Common Area</option>
-                        <option value="Noise">Noise Complaint</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <label for="category">
+                        Complaint Category * 
+                        <span id="categoryError" style="color: #dc3545; font-weight: bold; margin-left: 10px; display: none;">please choose a valid option</span>
+                    </label>
+                    <div class="custom-dropdown" id="categoryDropdown">
+                        <div class="dropdown-header" onclick="toggleCategoryDropdown()">
+                            <span class="dropdown-header-text placeholder" id="categoryHeaderText">Select category</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="categoryList">
+                            <div class="dropdown-item" data-value="Access Card Reader" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Card Reader</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Access Door" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Door</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Builder" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Builder</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Camera" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Camera</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Monitor" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Monitor</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Cleaning" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Cleaning/Housekeeping</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Common Area" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Common Area</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Drainage" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Drainage</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Electrical" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Electrical</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Gates" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Gates</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Genset" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Genset</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Lift" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Lift/Elevator</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Noise" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Noise Complaint</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Overhead tank" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Overhead tank</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Paints" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Paints</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Parking" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Parking</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Plumbing" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Plumbing</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Seepages" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Seepages</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Security" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Security</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Solar Panels" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Solar Panels</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Structural" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Structural</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Sump" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Sump</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Water Supply" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Water Supply</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Other" onclick="selectCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="category" required>
+                    <div class="selected-tags" id="selectedCategoryTags"></div>
                 </div>
 
                 <div class="form-group">
@@ -654,15 +890,29 @@
                     <label for="filterCategory">Filter by Category</label>
                     <select id="filterCategory" onchange="filterComplaints()">
                         <option value="">All Categories</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Lift">Lift/Elevator</option>
-                        <option value="Water Supply">Water Supply</option>
+                        <option value="Access Card Reader">Access Card Reader</option>
+                        <option value="Access Door">Access Door</option>
+                        <option value="Builder">Builder</option>
+                        <option value="CCTV Camera">CCTV Camera</option>
+                        <option value="CCTV Monitor">CCTV Monitor</option>
                         <option value="Cleaning">Cleaning/Housekeeping</option>
-                        <option value="Security">Security</option>
-                        <option value="Parking">Parking</option>
                         <option value="Common Area">Common Area</option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Gates">Gates</option>
+                        <option value="Genset">Genset</option>
+                        <option value="Lift">Lift/Elevator</option>
                         <option value="Noise">Noise Complaint</option>
+                        <option value="Overhead tank">Overhead tank</option>
+                        <option value="Paints">Paints</option>
+                        <option value="Parking">Parking</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Seepages">Seepages</option>
+                        <option value="Security">Security</option>
+                        <option value="Solar Panels">Solar Panels</option>
+                        <option value="Structural">Structural</option>
+                        <option value="Sump">Sump</option>
+                        <option value="Water Supply">Water Supply</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
@@ -673,6 +923,7 @@
                         <option value="">All Blocks</option>
                         <option value="Block A">Block A</option>
                         <option value="Block B">Block B</option>
+                        <option value="THRWA">THRWA</option>
                     </select>
                 </div>
 
@@ -1082,6 +1333,13 @@
             const flatSelect = document.getElementById('flatNumber');
             const filterFlat = document.getElementById('filterFlat');
             
+            // Add Community Representative option first
+            const commRepOption = document.createElement('option');
+            commRepOption.value = 'Community Representative';
+            commRepOption.textContent = 'Community Representative';
+            flatSelect.appendChild(commRepOption.cloneNode(true));
+            filterFlat.appendChild(commRepOption);
+            
             const floors = [1, 2, 3, 4, 5];
             const units = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
             
@@ -1107,6 +1365,12 @@
                 return;
             }
             
+            // Handle Community Representative - Auto-select THRWA
+            if (flatNumber === 'Community Representative') {
+                blockSelect.value = 'THRWA';
+                return;
+            }
+            
             const unit = flatNumber.slice(-1);
             
             if (['A', 'B', 'C', 'D', 'E', 'F'].includes(unit)) {
@@ -1115,6 +1379,131 @@
                 blockSelect.value = 'Block B';
             }
         }
+
+        // Custom Category Dropdown Functions
+        let selectedCategories = [];
+
+        function toggleCategoryDropdown() {
+            const header = document.querySelector('#categoryDropdown .dropdown-header');
+            const list = document.getElementById('categoryList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+        }
+
+        function selectCategory(element) {
+            const value = element.getAttribute('data-value');
+            const categoryError = document.getElementById('categoryError');
+            const hiddenInput = document.getElementById('category');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Check if already selected
+            if (selectedCategories.includes(value)) {
+                // Deselect
+                selectedCategories = selectedCategories.filter(cat => cat !== value);
+                element.classList.remove('selected');
+            } else {
+                // Check if limit reached
+                if (selectedCategories.length >= 2) {
+                    alert('You can select a maximum of 2 categories only.');
+                    return;
+                }
+                // Select
+                selectedCategories.push(value);
+                element.classList.add('selected');
+            }
+            
+            // Update display
+            updateCategoryDisplay();
+            
+            // Validate and disable/enable submit button
+            if (selectedCategories.length === 2 && !selectedCategories.includes('Builder')) {
+                categoryError.style.display = 'inline';
+                hiddenInput.setCustomValidity('When selecting 2 categories, one must be "Builder"');
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.cursor = 'not-allowed';
+            } else {
+                categoryError.style.display = 'none';
+                hiddenInput.setCustomValidity('');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+            
+            // Update hidden input value
+            hiddenInput.value = selectedCategories.join(', ');
+        }
+
+        function updateCategoryDisplay() {
+            const headerText = document.getElementById('categoryHeaderText');
+            const tagsContainer = document.getElementById('selectedCategoryTags');
+            
+            if (selectedCategories.length === 0) {
+                headerText.textContent = 'Select category';
+                headerText.classList.add('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedCategories.join(', ');
+                headerText.classList.remove('placeholder');
+                
+                // Create tags
+                tagsContainer.innerHTML = selectedCategories.map(cat => `
+                    <div class="selected-tag">
+                        <span>${cat}</span>
+                        <span class="selected-tag-remove" onclick="removeCategoryTag('${cat}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeCategoryTag(value) {
+            selectedCategories = selectedCategories.filter(cat => cat !== value);
+            
+            // Update the dropdown item
+            const items = document.querySelectorAll('#categoryList .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateCategoryDisplay();
+            
+            // Update validation and submit button state
+            const categoryError = document.getElementById('categoryError');
+            const hiddenInput = document.getElementById('category');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (selectedCategories.length === 2 && !selectedCategories.includes('Builder')) {
+                categoryError.style.display = 'inline';
+                hiddenInput.setCustomValidity('When selecting 2 categories, one must be "Builder"');
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.cursor = 'not-allowed';
+            } else {
+                categoryError.style.display = 'none';
+                hiddenInput.setCustomValidity('');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+            
+            hiddenInput.value = selectedCategories.join(', ');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('categoryDropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                const header = dropdown.querySelector('.dropdown-header');
+                const list = dropdown.querySelector('.dropdown-list');
+                if (header && list) {
+                    header.classList.remove('active');
+                    list.classList.remove('active');
+                }
+            }
+        });
 
         // Generate unique complaint ID
         function generateComplaintId() {
@@ -1183,6 +1572,9 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting...';
 
+            // Get selected categories from hidden input
+            const categoryValue = document.getElementById('category').value;
+
             const complaint = {
                 action: 'submit',
                 id: generateComplaintId(),
@@ -1190,7 +1582,7 @@
                 flatNumber: document.getElementById('flatNumber').value,
                 residentName: document.getElementById('residentName').value,
                 contactNumber: document.getElementById('contactNumber').value || 'Not Provided',
-                category: document.getElementById('category').value,
+                category: categoryValue,
                 priority: document.getElementById('priority').value,
                 description: document.getElementById('description').value,
                 status: 'Pending',
@@ -1214,6 +1606,13 @@
                 
                 this.reset();
                 document.getElementById('blockName').value = '';
+                
+                // Reset category dropdown
+                selectedCategories = [];
+                document.querySelectorAll('#categoryList .dropdown-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                updateCategoryDisplay();
                 
                 // Reload complaints after a short delay
                 setTimeout(() => loadComplaints(), 2000);
@@ -1267,7 +1666,10 @@
             // Sort by date (newest first)
             complaints.sort((a, b) => new Date(b.dateRegistered) - new Date(a.dateRegistered));
 
-            container.innerHTML = complaints.map(complaint => `
+            container.innerHTML = complaints.map(complaint => {
+                const hasResolutionData = complaint.issueResolvedDate || complaint.resolvedBy || complaint.supervisor;
+                
+                return `
                 <div class="complaint-card">
                     <div class="complaint-header">
                         <span class="complaint-id">${complaint.id}</span>
@@ -1280,7 +1682,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Flat Number</span>
-                            <span class="info-value">Flat ${complaint.flatNumber}</span>
+                            <span class="info-value">${complaint.flatNumber === 'Community Representative' ? 'Community Representative' : 'Flat ' + complaint.flatNumber}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Resident Name</span>
@@ -1307,8 +1709,35 @@
                         <strong>Description:</strong><br>
                         ${complaint.description}
                     </div>
+                    
+                    ${hasResolutionData ? `
+                        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #0066cc;">
+                            <strong style="color: #003d82;">📋 Resolution Details:</strong>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                                ${complaint.issueResolvedDate ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved Date:</span><br>
+                                        <strong>${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</strong>
+                                    </div>
+                                ` : ''}
+                                ${complaint.resolvedBy ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved By:</span><br>
+                                        <strong>${complaint.resolvedBy}</strong>
+                                    </div>
+                                ` : ''}
+                                ${complaint.supervisor ? `
+                                    <div>
+                                        <span style="font-size: 0.85em; color: #6c757d;">Supervisor:</span><br>
+                                        <strong>${complaint.supervisor}</strong>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Display complaints in admin panel
@@ -1351,7 +1780,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Flat Number</span>
-                            <span class="info-value">Flat ${complaint.flatNumber}</span>
+                            <span class="info-value">${complaint.flatNumber === 'Community Representative' ? 'Community Representative' : 'Flat ' + complaint.flatNumber}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Resident Name</span>
