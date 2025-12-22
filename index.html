@@ -199,6 +199,11 @@
             color: #856404;
         }
 
+        .status-initiated {
+            background: #e7d4ff;
+            color: #5a1e8a;
+        }
+
         .status-in-progress {
             background: #cfe2ff;
             color: #084298;
@@ -881,6 +886,7 @@
                     <select id="filterStatus" onchange="filterComplaints()">
                         <option value="">All Statuses</option>
                         <option value="Pending">Pending</option>
+                        <option value="Initiated">Initiated</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Resolved">Resolved</option>
                     </select>
@@ -888,33 +894,111 @@
 
                 <div class="form-group">
                     <label for="filterCategory">Filter by Category</label>
-                    <select id="filterCategory" onchange="filterComplaints()">
-                        <option value="">All Categories</option>
-                        <option value="Access Card Reader">Access Card Reader</option>
-                        <option value="Access Door">Access Door</option>
-                        <option value="Builder">Builder</option>
-                        <option value="CCTV Camera">CCTV Camera</option>
-                        <option value="CCTV Monitor">CCTV Monitor</option>
-                        <option value="Cleaning">Cleaning/Housekeeping</option>
-                        <option value="Common Area">Common Area</option>
-                        <option value="Drainage">Drainage</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Gates">Gates</option>
-                        <option value="Genset">Genset</option>
-                        <option value="Lift">Lift/Elevator</option>
-                        <option value="Noise">Noise Complaint</option>
-                        <option value="Overhead tank">Overhead tank</option>
-                        <option value="Paints">Paints</option>
-                        <option value="Parking">Parking</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Seepages">Seepages</option>
-                        <option value="Security">Security</option>
-                        <option value="Solar Panels">Solar Panels</option>
-                        <option value="Structural">Structural</option>
-                        <option value="Sump">Sump</option>
-                        <option value="Water Supply">Water Supply</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <div class="custom-dropdown" id="filterCategoryDropdown">
+                        <div class="dropdown-header" onclick="toggleFilterCategoryDropdown()">
+                            <span class="dropdown-header-text" id="filterCategoryHeaderText">All Categories</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="filterCategoryList">
+                            <div class="dropdown-item" data-value="Access Card Reader" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Card Reader</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Access Door" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Door</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Builder" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Builder</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Camera" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Camera</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Monitor" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Monitor</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Cleaning" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Cleaning/Housekeeping</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Common Area" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Common Area</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Drainage" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Drainage</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Electrical" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Electrical</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Gates" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Gates</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Genset" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Genset</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Lift" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Lift/Elevator</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Noise" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Noise Complaint</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Overhead tank" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Overhead tank</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Paints" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Paints</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Parking" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Parking</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Plumbing" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Plumbing</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Seepages" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Seepages</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Security" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Security</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Solar Panels" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Solar Panels</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Structural" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Structural</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Sump" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Sump</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Water Supply" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Water Supply</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Other" onclick="selectFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="filterCategoryTags" style="margin-top: 8px;"></div>
                 </div>
 
                 <div class="form-group">
@@ -1013,6 +1097,10 @@
                         <div class="stat-label">Pending</div>
                     </div>
                     <div class="stat-card">
+                        <div class="stat-number" id="initiatedComplaints">0</div>
+                        <div class="stat-label">Initiated</div>
+                    </div>
+                    <div class="stat-card">
                         <div class="stat-number" id="inProgressComplaints">0</div>
                         <div class="stat-label">In Progress</div>
                     </div>
@@ -1024,6 +1112,146 @@
 
                 <div style="margin-bottom: 20px;">
                     <button class="btn" onclick="loadComplaints()">🔄 Refresh Data</button>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section" style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label for="adminFilterStatus">Filter by Status</label>
+                        <select id="adminFilterStatus" onchange="filterAdminComplaints()">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Initiated">Initiated</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminFilterCategory">Filter by Category</label>
+                        <div class="custom-dropdown" id="adminFilterCategoryDropdown">
+                            <div class="dropdown-header" onclick="toggleAdminFilterCategoryDropdown()">
+                                <span class="dropdown-header-text" id="adminFilterCategoryHeaderText">All Categories</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-list" id="adminFilterCategoryList">
+                                <div class="dropdown-item" data-value="Access Card Reader" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Access Card Reader</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Access Door" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Access Door</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Builder" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Builder</span>
+                                </div>
+                                <div class="dropdown-item" data-value="CCTV Camera" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>CCTV Camera</span>
+                                </div>
+                                <div class="dropdown-item" data-value="CCTV Monitor" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>CCTV Monitor</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Cleaning" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Cleaning/Housekeeping</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Common Area" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Common Area</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Drainage" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Drainage</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Electrical" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Electrical</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Gates" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Gates</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Genset" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Genset</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Lift" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Lift/Elevator</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Noise" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Noise Complaint</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Overhead tank" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Overhead tank</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Paints" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Paints</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Parking" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Parking</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Plumbing" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Plumbing</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Seepages" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Seepages</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Security" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Security</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Solar Panels" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Solar Panels</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Structural" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Structural</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Sump" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Sump</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Water Supply" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Water Supply</span>
+                                </div>
+                                <div class="dropdown-item" data-value="Other" onclick="selectAdminFilterCategory(this)">
+                                    <div class="dropdown-item-checkbox"></div>
+                                    <span>Other</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selected-tags" id="adminFilterCategoryTags" style="margin-top: 8px;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminFilterBlock">Filter by Block</label>
+                        <select id="adminFilterBlock" onchange="filterAdminComplaints()">
+                            <option value="">All Blocks</option>
+                            <option value="Block A">Block A</option>
+                            <option value="Block B">Block B</option>
+                            <option value="THRWA">THRWA</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminFilterFlat">Filter by Flat</label>
+                        <select id="adminFilterFlat" onchange="filterAdminComplaints()">
+                            <option value="">All Flats</option>
+                        </select>
+                    </div>
                 </div>
 
                 <h3 style="margin-bottom: 20px; color: #333;">Manage All Complaints</h3>
@@ -1332,13 +1560,17 @@
         function initializeFlatNumbers() {
             const flatSelect = document.getElementById('flatNumber');
             const filterFlat = document.getElementById('filterFlat');
+            const adminFilterFlat = document.getElementById('adminFilterFlat');
             
             // Add Community Representative option first
             const commRepOption = document.createElement('option');
             commRepOption.value = 'Community Representative';
             commRepOption.textContent = 'Community Representative';
             flatSelect.appendChild(commRepOption.cloneNode(true));
-            filterFlat.appendChild(commRepOption);
+            filterFlat.appendChild(commRepOption.cloneNode(true));
+            if (adminFilterFlat) {
+                adminFilterFlat.appendChild(commRepOption.cloneNode(true));
+            }
             
             const floors = [1, 2, 3, 4, 5];
             const units = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
@@ -1350,7 +1582,10 @@
                     option.value = flatNumber;
                     option.textContent = `Flat ${flatNumber}`;
                     flatSelect.appendChild(option.cloneNode(true));
-                    filterFlat.appendChild(option);
+                    filterFlat.appendChild(option.cloneNode(true));
+                    if (adminFilterFlat) {
+                        adminFilterFlat.appendChild(option.cloneNode(true));
+                    }
                 });
             });
         }
@@ -1503,7 +1738,176 @@
                     list.classList.remove('active');
                 }
             }
+            
+            // Close filter category dropdown when clicking outside
+            const filterDropdown = document.getElementById('filterCategoryDropdown');
+            if (filterDropdown && !filterDropdown.contains(event.target)) {
+                const filterHeader = filterDropdown.querySelector('.dropdown-header');
+                const filterList = filterDropdown.querySelector('.dropdown-list');
+                if (filterHeader && filterList) {
+                    filterHeader.classList.remove('active');
+                    filterList.classList.remove('active');
+                }
+            }
+            
+            // Close admin filter category dropdown when clicking outside
+            const adminFilterDropdown = document.getElementById('adminFilterCategoryDropdown');
+            if (adminFilterDropdown && !adminFilterDropdown.contains(event.target)) {
+                const adminFilterHeader = adminFilterDropdown.querySelector('.dropdown-header');
+                const adminFilterList = adminFilterDropdown.querySelector('.dropdown-list');
+                if (adminFilterHeader && adminFilterList) {
+                    adminFilterHeader.classList.remove('active');
+                    adminFilterList.classList.remove('active');
+                }
+            }
         });
+
+        // Filter Category Multi-Select Functions
+        let selectedFilterCategories = [];
+
+        function toggleFilterCategoryDropdown() {
+            const header = document.querySelector('#filterCategoryDropdown .dropdown-header');
+            const list = document.getElementById('filterCategoryList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+        }
+
+        function selectFilterCategory(element) {
+            const value = element.getAttribute('data-value');
+            
+            // Check if already selected
+            if (selectedFilterCategories.includes(value)) {
+                // Deselect
+                selectedFilterCategories = selectedFilterCategories.filter(cat => cat !== value);
+                element.classList.remove('selected');
+            } else {
+                // Select
+                selectedFilterCategories.push(value);
+                element.classList.add('selected');
+            }
+            
+            // Update display
+            updateFilterCategoryDisplay();
+            
+            // Apply filter
+            filterComplaints();
+        }
+
+        function updateFilterCategoryDisplay() {
+            const headerText = document.getElementById('filterCategoryHeaderText');
+            const tagsContainer = document.getElementById('filterCategoryTags');
+            
+            if (selectedFilterCategories.length === 0) {
+                headerText.textContent = 'All Categories';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedFilterCategories.length === 1 
+                    ? selectedFilterCategories[0] 
+                    : `${selectedFilterCategories.length} categories selected`;
+                headerText.classList.remove('placeholder');
+                
+                // Create tags
+                tagsContainer.innerHTML = selectedFilterCategories.map(cat => `
+                    <div class="selected-tag">
+                        <span>${cat}</span>
+                        <span class="selected-tag-remove" onclick="removeFilterCategoryTag('${cat}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeFilterCategoryTag(value) {
+            selectedFilterCategories = selectedFilterCategories.filter(cat => cat !== value);
+            
+            // Update the dropdown item
+            const items = document.querySelectorAll('#filterCategoryList .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateFilterCategoryDisplay();
+            filterComplaints();
+        }
+
+        // Admin Filter Category Multi-Select Functions
+        let selectedAdminFilterCategories = [];
+
+        function toggleAdminFilterCategoryDropdown() {
+            const header = document.querySelector('#adminFilterCategoryDropdown .dropdown-header');
+            const list = document.getElementById('adminFilterCategoryList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+        }
+
+        function selectAdminFilterCategory(element) {
+            const value = element.getAttribute('data-value');
+            
+            // Check if already selected
+            if (selectedAdminFilterCategories.includes(value)) {
+                // Deselect
+                selectedAdminFilterCategories = selectedAdminFilterCategories.filter(cat => cat !== value);
+                element.classList.remove('selected');
+            } else {
+                // Select
+                selectedAdminFilterCategories.push(value);
+                element.classList.add('selected');
+            }
+            
+            // Update display
+            updateAdminFilterCategoryDisplay();
+            
+            // Apply filter
+            filterAdminComplaints();
+        }
+
+        function updateAdminFilterCategoryDisplay() {
+            const headerText = document.getElementById('adminFilterCategoryHeaderText');
+            const tagsContainer = document.getElementById('adminFilterCategoryTags');
+            
+            if (selectedAdminFilterCategories.length === 0) {
+                headerText.textContent = 'All Categories';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedAdminFilterCategories.length === 1 
+                    ? selectedAdminFilterCategories[0] 
+                    : `${selectedAdminFilterCategories.length} categories selected`;
+                headerText.classList.remove('placeholder');
+                
+                // Create tags
+                tagsContainer.innerHTML = selectedAdminFilterCategories.map(cat => `
+                    <div class="selected-tag">
+                        <span>${cat}</span>
+                        <span class="selected-tag-remove" onclick="removeAdminFilterCategoryTag('${cat}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeAdminFilterCategoryTag(value) {
+            selectedAdminFilterCategories = selectedAdminFilterCategories.filter(cat => cat !== value);
+            
+            // Update the dropdown item
+            const items = document.querySelectorAll('#adminFilterCategoryList .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateAdminFilterCategoryDisplay();
+            filterAdminComplaints();
+        }
+
+        // Filter Admin Complaints
+        function filterAdminComplaints() {
+            displayAdminComplaints();
+        }
 
         // Generate unique complaint ID
         function generateComplaintId() {
@@ -1633,16 +2037,25 @@
 
             // Apply filters
             const statusFilter = document.getElementById('filterStatus').value;
-            const categoryFilter = document.getElementById('filterCategory').value;
             const blockFilter = document.getElementById('filterBlock').value;
             const flatFilter = document.getElementById('filterFlat').value;
 
             if (statusFilter) {
                 complaints = complaints.filter(c => c.status === statusFilter);
             }
-            if (categoryFilter) {
-                complaints = complaints.filter(c => c.category === categoryFilter);
+            
+            // Multi-select category filter
+            if (selectedFilterCategories.length > 0) {
+                complaints = complaints.filter(c => {
+                    // Check if complaint category matches any selected filter category
+                    // Handle both single and multiple categories in complaint
+                    const complaintCategories = c.category.split(',').map(cat => cat.trim());
+                    return selectedFilterCategories.some(filterCat => 
+                        complaintCategories.includes(filterCat)
+                    );
+                });
             }
+            
             if (blockFilter) {
                 complaints = complaints.filter(c => c.blockName === blockFilter);
             }
@@ -1743,9 +2156,37 @@
         // Display complaints in admin panel
         function displayAdminComplaints() {
             const container = document.getElementById('adminComplaintsContainer');
-            const complaints = [...allComplaints];
+            let complaints = [...allComplaints];
             const users = getUsers();
             const userOptions = users.map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+
+            // Apply filters
+            const statusFilter = document.getElementById('adminFilterStatus').value;
+            const blockFilter = document.getElementById('adminFilterBlock').value;
+            const flatFilter = document.getElementById('adminFilterFlat').value;
+
+            if (statusFilter) {
+                complaints = complaints.filter(c => c.status === statusFilter);
+            }
+            
+            // Multi-select category filter
+            if (selectedAdminFilterCategories.length > 0) {
+                complaints = complaints.filter(c => {
+                    // Check if complaint category matches any selected filter category
+                    // Handle both single and multiple categories in complaint
+                    const complaintCategories = c.category.split(',').map(cat => cat.trim());
+                    return selectedAdminFilterCategories.some(filterCat => 
+                        complaintCategories.includes(filterCat)
+                    );
+                });
+            }
+            
+            if (blockFilter) {
+                complaints = complaints.filter(c => c.blockName === blockFilter);
+            }
+            if (flatFilter) {
+                complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
 
             if (complaints.length === 0) {
                 container.innerHTML = `
@@ -1753,8 +2194,8 @@
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        <h3>No complaints registered yet</h3>
-                        <p>Complaints will appear here once residents start registering them</p>
+                        <h3>No complaints found</h3>
+                        <p>No complaints match your filter criteria</p>
                     </div>
                 `;
                 return;
@@ -1836,6 +2277,7 @@
 
                     <div class="action-buttons">
                         ${!isResolved ? `
+                            <button class="btn-small" onclick="updateStatus('${complaint.id}', 'Initiated')">Mark as Initiated</button>
                             <button class="btn-small" onclick="updateStatus('${complaint.id}', 'In Progress')">Mark In Progress</button>
                             <button class="btn-small" onclick="showResolutionForm('${complaint.id}')">✅ Mark as Resolved</button>
                         ` : `
@@ -1996,6 +2438,7 @@
             
             document.getElementById('totalComplaints').textContent = complaints.length;
             document.getElementById('pendingComplaints').textContent = complaints.filter(c => c.status === 'Pending').length;
+            document.getElementById('initiatedComplaints').textContent = complaints.filter(c => c.status === 'Initiated').length;
             document.getElementById('inProgressComplaints').textContent = complaints.filter(c => c.status === 'In Progress').length;
             document.getElementById('resolvedComplaints').textContent = complaints.filter(c => c.status === 'Resolved').length;
             
