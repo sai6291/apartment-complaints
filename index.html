@@ -4,7 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thai Homes Residents Welfare Association</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <style>
+        /* ========================================
+           COLOR SCHEME: Nature-Inspired Earthy Tones
+           ========================================
+           Designed for maximum eye comfort with natural harmony
+           
+           Primary Colors (Natural & Grounding):
+           - Primary Olive: #7a9b76 (Soft olive green - main actions)
+           - Dark Olive: #5d7a5a (Deep olive - text & emphasis)
+           - Accent Tan: #b8956a (Warm tan - variety)
+           - Accent Sage: #a8b5a3 (Soft sage - subtle elements)
+           
+           Status Badge Colors (Muted Natural Tones):
+           - Pending: #f9f4ed bg, #8a7456 text (Soft sand)
+           - Initiated: #edf4f7 bg, #5a7a8f text (Soft sky blue)
+           - In Progress: #f7ede8 bg, #9d7864 text (Soft clay)
+           - Resolved: #edf3ec bg, #5d7a5a text (Soft olive)
+           
+           Background Colors (Warm & Natural):
+           - Form Background: #f7f8f4 (Warm cream)
+           - Card Background: #fcfdfc (Off-white)
+           - Light Background: #f0f2ee (Light sage)
+           - Container: #ffffff (Pure white - minimal)
+           
+           Neutral Colors (Earthy Tones):
+           - Border Light: #eff2f0 (Very light sage)
+           - Border Medium: #dfe3da (Soft sage)
+           - Border Strong: #c4ccc7 (For emphasis)
+           - Text Dark: #3d4a3a (Earthy dark)
+           - Text Medium: #6d7869 (Warm gray)
+           - Text Light: #9ba594 (Light gray)
+           
+           DARK MODE PALETTE:
+           - Background: #1a1f1d (Deep forest)
+           - Card Background: #242928 (Dark sage)
+           - Form Background: #2d3532 (Medium dark sage)
+           - Text: #e8ebe9 (Soft white)
+           - Text Medium: #b8bfbb (Soft gray)
+           - Border: #3a4441 (Dark border)
+           ======================================== */
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,9 +54,790 @@
         } <!-- This is a comment -->
 
 
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2d3e3a 0%, #1f2d28 100%);
+        }
+
+        .dark-mode .container {
+            background: #1a1f1d;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .header {
+            background: linear-gradient(135deg, #3d5249 0%, #2d4239 100%);
+        }
+
+        .dark-mode .tabs {
+            background: #242928;
+            border-bottom: 2px solid #3a4441;
+        }
+
+        .dark-mode .tab {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .tab:hover {
+            background: #2d3532;
+        }
+
+        .dark-mode .tab.active {
+            color: #8fb88a;
+            border-bottom-color: #7a9b76;
+            background: #1a1f1d;
+        }
+
+        .dark-mode .tab-content {
+            background: #1f2521;
+        }
+
+        .dark-mode label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode input,
+        .dark-mode select,
+        .dark-mode textarea {
+            background: #2d3532;
+            border-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode input:focus,
+        .dark-mode select:focus,
+        .dark-mode textarea:focus {
+            border-color: #7a9b76;
+            box-shadow: 0 0 0 3px rgba(122, 155, 118, 0.2);
+        }
+
+        .dark-mode .complaint-card {
+            background: #242928;
+            border-left-color: #b8956a;
+        }
+
+        .dark-mode .complaint-card:hover {
+            background: #2d3532;
+        }
+
+        .dark-mode .complaint-id {
+            color: #8fb88a;
+        }
+
+        .dark-mode .info-label {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .info-value {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .complaint-description {
+            background: #2d3532;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .status-badge {
+            opacity: 1;
+        }
+
+        /* Dark mode status badge colors - darker backgrounds */
+        .dark-mode .status-pending {
+            background: #5d3a1a;
+            color: #ffb74d;
+        }
+
+        .dark-mode .status-initiated {
+            background: #1e3a5f;
+            color: #64b5f6;
+        }
+
+        .dark-mode .status-in-progress {
+            background: #5d4e1a;
+            color: #fff176;
+        }
+
+        .dark-mode .status-resolved {
+            background: #2d4a2d;
+            color: #81c784;
+        }
+
+        .dark-mode .btn-small {
+            background: #2d3532;
+            color: #8fb88a;
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .btn-small:hover {
+            background: #7a9b76;
+            color: white;
+        }
+
+        /* Additional text visibility fixes */
+        .dark-mode h1,
+        .dark-mode h2,
+        .dark-mode h3,
+        .dark-mode h4,
+        .dark-mode h5,
+        .dark-mode h6 {
+            color: #e8ebe9;
+        }
+
+        .dark-mode p,
+        .dark-mode span,
+        .dark-mode div {
+            color: inherit;
+        }
+
+        .dark-mode .info-value {
+            color: #e8ebe9;
+        }
+
+        .dark-mode strong {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .legend-item {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .stat-label {
+            color: white;
+        }
+
+        .dark-mode .stat-number {
+            color: white;
+        }
+
+        .dark-mode .summary-stat-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .dark-mode .summary-stat-number {
+            color: white;
+        }
+
+        .dark-mode select option {
+            background: #2d3532;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .dashboard-table td {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .close {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .close:hover {
+            color: #e8ebe9;
+        }
+
+        /* Comprehensive text visibility fixes for dark mode */
+        .dark-mode .complaint-details {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .complaint-details .info-label {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .complaint-details .info-value {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .complaint-item strong {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .filter-label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .export-btn {
+            background: #7a9b76;
+            color: white;
+        }
+
+        .dark-mode .export-btn:hover {
+            background: #6a8a68;
+        }
+
+        .dark-mode .summary-card {
+            background: #242928;
+        }
+
+        .dark-mode .summary-title {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .category-count {
+            color: #e8ebe9;
+        }
+
+        .dark-mode th {
+            color: white;
+        }
+
+        .dark-mode .btn-secondary {
+            background: #3a4441;
+            color: #e8ebe9;
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .btn-secondary:hover {
+            background: #4d5a54;
+        }
+
+        .dark-mode .btn-danger {
+            background: #7a4444;
+            color: white;
+        }
+
+        .dark-mode .btn-danger:hover {
+            background: #6a3434;
+        }
+
+        .dark-mode code {
+            background: #1a1f1d;
+            color: #8fb88a;
+        }
+
+        .dark-mode pre {
+            background: #1a1f1d;
+            border-color: #3a4441;
+        }
+
+        .dark-mode pre code {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .note {
+            background: #2d3532;
+            border-left-color: #b8956a;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .step-number {
+            background: #7a9b76;
+            color: white;
+        }
+
+        .dark-mode ol li {
+            color: #e8ebe9;
+        }
+
+        .dark-mode ul li {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chart-container {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .axis-label {
+            fill: #b8bfbb;
+        }
+
+        .dark-mode .grid-line {
+            stroke: #3a4441;
+        }
+
+        .dark-mode .complaint-card p {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .complaint-card strong {
+            color: white;
+        }
+
+        .dark-mode .description-text {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .date-text {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .refresh-btn {
+            background: #7a9b76;
+            color: white;
+        }
+
+        .dark-mode .refresh-btn:hover {
+            background: #6a8a68;
+        }
+
+        /* Dashboard and Reports titles in dark mode */
+        .dark-mode .dashboard-title {
+            color: white !important;
+        }
+
+        .dark-mode .reports-title {
+            color: white !important;
+        }
+
+        .dark-mode .dashboard-table-title {
+            color: white !important;
+        }
+
+        /* Chart text visibility in dark mode */
+        .dark-mode .chart-title {
+            color: white !important;
+        }
+
+        .dark-mode .chart-label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chart-value {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .legend-label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .bar-label {
+            fill: #e8ebe9;
+        }
+
+        .dark-mode text {
+            fill: #e8ebe9 !important;
+        }
+
+        .dark-mode tspan {
+            fill: #e8ebe9 !important;
+        }
+
+        /* Dashboard overview section */
+        .dark-mode .dashboard-summary h2 {
+            color: white;
+        }
+
+        .dark-mode .dashboard-summary h3 {
+            color: white;
+        }
+
+        /* Admin Panel text visibility */
+        .dark-mode .admin-section h3 {
+            color: white;
+        }
+
+        .dark-mode .admin-section label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .admin-section p {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .form-row label {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .user-role {
+            color: #b8bfbb;
+        }
+
+        /* Table status badges in dark mode - match View Complaints status badges */
+        .dark-mode .table-status-pending {
+            background: #5d3a1a;
+            color: #ffb74d;
+        }
+
+        .dark-mode .table-status-initiated {
+            background: #1e3a5f;
+            color: #64b5f6;
+        }
+
+        .dark-mode .table-status-in-progress {
+            background: #5d4e1a;
+            color: #fff176;
+        }
+
+        .dark-mode .table-status-resolved {
+            background: #2d4a2d;
+            color: #81c784;
+        }
+
+        /* Admin Panel text styles for light mode */
+        .admin-user-management-title {
+            color: #3d4a3a;
+        }
+
+        .admin-form-title {
+            color: #7a9b76;
+        }
+
+        .admin-section-title {
+            color: #3d4a3a;
+        }
+
+        /* Comprehensive Admin Panel dark mode text visibility */
+        .dark-mode .admin-user-management-title {
+            color: white !important;
+        }
+
+        .dark-mode .admin-form-title {
+            color: #a8c9a8 !important;
+        }
+
+        .dark-mode .admin-section-title {
+            color: white !important;
+        }
+
+        .dark-mode #adminContent h3 {
+            color: white !important;
+        }
+
+        .dark-mode #adminContent h4 {
+            color: white !important;
+        }
+
+        .dark-mode #addUserForm {
+            background: #2d3532 !important;
+        }
+
+        .dark-mode #addUserForm h4 {
+            color: #a8c9a8 !important;
+        }
+
+        .dark-mode .modal-header h2 {
+            color: white;
+        }
+
+        .dark-mode .modal-header p {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .password-toggle .toggle-password {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .logout-btn {
+            background: #7a4444;
+            color: white;
+        }
+
+        .dark-mode .logout-btn:hover {
+            background: #6a3434;
+        }
+
+        .dark-mode #loggedInUser {
+            color: #a8c9a8;
+        }
+
+        .dark-mode .admin-locked {
+            color: white;
+        }
+
+        .dark-mode .admin-locked p {
+            color: white;
+        }
+
+        .dark-mode .admin-locked h3 {
+            color: white;
+        }
+
+        /* Resolution Details Styles */
+        .resolution-details-container {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .resolution-details-title {
+            color: #003d82;
+            font-weight: 600;
+        }
+
+        .resolution-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .resolution-detail-label {
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .resolution-detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Dark mode for Resolution Details */
+        .dark-mode .resolution-details-container {
+            background: #2d3e47;
+            border-left-color: #64b5f6;
+        }
+
+        .dark-mode .resolution-details-title {
+            color: #90caf9;
+        }
+
+        .dark-mode .resolution-detail-label {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .resolution-detail-value {
+            color: white;
+        }
+
+        /* Resolution Form Styles */
+        .resolution-form-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .resolution-form-title {
+            margin-bottom: 15px;
+            color: #5d7a5a;
+        }
+
+        .dark-mode .resolution-form-container {
+            background: #2d3532;
+        }
+
+        .dark-mode .resolution-form-title {
+            color: #a8c9a8;
+        }
+
+        .dark-mode .filter-section {
+            background: #242928;
+        }
+
+        .dark-mode .empty-state {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .modal-content {
+            background: #242928;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .user-management {
+            background: #242928;
+        }
+
+        .dark-mode .user-item {
+            background: #2d3532;
+        }
+
+        .dark-mode .user-name {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .user-username {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .dropdown-header {
+            background: #2d3532;
+            border-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .dropdown-header:hover,
+        .dark-mode .dropdown-header.active {
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .dropdown-header-text {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .dropdown-header-text.placeholder {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .dropdown-list {
+            background: #2d3532;
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .dropdown-item {
+            border-bottom-color: #3a4441;
+        }
+
+        .dark-mode .dropdown-item:hover {
+            background: #3a4441;
+        }
+
+        .dark-mode .dropdown-item.selected {
+            background: #3d5249;
+            color: #8fb88a;
+        }
+
+        .dark-mode .chart-card {
+            background: #242928;
+        }
+
+        .dark-mode .chart-title {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chart-legend {
+            border-top-color: #3a4441;
+        }
+
+        .dark-mode .dashboard-table-container {
+            background: #242928;
+        }
+
+        .dark-mode .dashboard-table {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .dashboard-table tbody tr {
+            border-bottom-color: #3a4441;
+        }
+
+        .dark-mode .dashboard-table tbody tr:hover {
+            background: #2d3532;
+        }
+
+        .dark-mode .setup-section {
+            background: #3a4441;
+        }
+
+        .dark-mode .setup-section h3 {
+            color: #c9a876;
+        }
+
+        .dark-mode .setup-section code {
+            background: #2d3532;
+            color: #8fb88a;
+        }
+
+        .dark-mode .success-message {
+            background: #2d3e36;
+            color: #8fb88a;
+            border-left-color: #7a9b76;
+        }
+
+        .dark-mode .error-message {
+            background: #3e2d2d;
+            color: #d89b9b;
+            border-left-color: #a86767;
+        }
+
+        .dark-mode .info-message {
+            background: #2d3537;
+            color: #8fa9b8;
+            border-left-color: #7a9b9f;
+        }
+
+        /* Dark Mode Toggle Button */
+        .dark-mode-toggle {
+            position: absolute;
+            top: 35px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .dark-mode-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .dark-mode-icon {
+            font-size: 24px;
+            transition: transform 0.5s;
+        }
+
+        .dark-mode .dark-mode-toggle {
+            background: rgba(184, 149, 106, 0.3);
+            border-color: rgba(184, 149, 106, 0.4);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode .dark-mode-toggle:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            background: rgba(184, 149, 106, 0.4);
+        }
+
+        .dark-mode .dark-mode-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Make header position relative for absolute positioning */
+        .header {
+            position: relative;
+        }
+
+        /* Smooth transitions for dark mode */
+        body,
+        .container,
+        .header,
+        .tabs,
+        .tab,
+        .tab-content,
+        label,
+        input,
+        select,
+        textarea,
+        .complaint-card,
+        .filter-section,
+        .modal-content,
+        .user-management,
+        .user-item,
+        .dropdown-header,
+        .dropdown-list,
+        .dropdown-item,
+        .chart-card,
+        .dashboard-table-container,
+        .setup-section {
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Mobile responsive for toggle button */
+        @media (max-width: 768px) {
+            .dark-mode-toggle {
+                top: 20px;
+                left: 15px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .dark-mode-icon {
+                font-size: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+                padding-left: 60px; /* Make room for toggle on left */
+            }
+        }
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7a9b76 0%, #6a8a68 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -29,10 +852,11 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5d7a5a 0%, #4d6a4d 100%);
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
@@ -47,8 +871,8 @@
 
         .tabs {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            background: #fcfdfc;
+            border-bottom: 2px solid #dfe3da;
         }
 
         .tab {
@@ -57,7 +881,7 @@
             text-align: center;
             cursor: pointer;
             font-weight: 600;
-            color: #6c757d;
+            color: #6d7869;
             transition: all 0.3s;
             border: none;
             background: none;
@@ -65,18 +889,19 @@
         }
 
         .tab:hover {
-            background: #e9ecef;
+            background: #f0f2ee;
         }
 
         .tab.active {
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: #5d7a5a;
+            border-bottom: 3px solid #7a9b76;
             background: white;
         }
 
         .tab-content {
             display: none;
             padding: 30px;
+            background: #f7f8f4;
             animation: fadeIn 0.3s;
         }
 
@@ -97,17 +922,18 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #3d4a3a;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #dfe3da;
             border-radius: 8px;
             font-size: 1em;
             transition: border-color 0.3s;
             font-family: inherit;
+            background: white;
         }
 
         input[type="date"] {
@@ -121,7 +947,8 @@
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7a9b76;
+            box-shadow: 0 0 0 3px rgba(122, 155, 118, 0.15);
         }
 
         textarea {
@@ -130,7 +957,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7a9b76 0%, #6a8a68 100%);
             color: white;
             padding: 14px 30px;
             border: none;
@@ -144,7 +971,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(122, 155, 118, 0.3);
         }
 
         .btn:active {
@@ -158,11 +985,11 @@
         }
 
         .complaint-card {
-            background: #f8f9fa;
+            background: #fcfdfc;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #b8956a;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -182,7 +1009,7 @@
 
         .complaint-id {
             font-weight: 700;
-            color: #667eea;
+            color: #5d7a5a;
             font-size: 1.1em;
         }
 
@@ -195,23 +1022,23 @@
         }
 
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: #fff4e6;
+            color: #e67e22;
         }
 
         .status-initiated {
-            background: #e7d4ff;
-            color: #5a1e8a;
+            background: #e3f2fd;
+            color: #1976d2;
         }
 
         .status-in-progress {
-            background: #cfe2ff;
-            color: #084298;
+            background: #fff9c4;
+            color: #f9a825;
         }
 
         .status-resolved {
-            background: #d1e7dd;
-            color: #0f5132;
+            background: #e8f5e9;
+            color: #388e3c;
         }
 
         .complaint-info {
@@ -228,13 +1055,13 @@
 
         .info-label {
             font-size: 0.85em;
-            color: #6c757d;
+            color: #6d7869;
             margin-bottom: 4px;
         }
 
         .info-value {
             font-weight: 600;
-            color: #333;
+            color: #3d4a3a;
         }
 
         .complaint-description {
@@ -246,7 +1073,7 @@
         }
 
         .filter-section {
-            background: #f8f9fa;
+            background: #fcfdfc;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 25px;
@@ -263,7 +1090,7 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #b8956a 0%, #a88560 100%);
             color: white;
             padding: 25px;
             border-radius: 10px;
@@ -292,22 +1119,22 @@
             padding: 8px 16px;
             font-size: 0.9em;
             background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
+            color: #7a9b76;
+            border: 2px solid #7a9b76;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .btn-small:hover {
-            background: #667eea;
+            background: #7a9b76;
             color: white;
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #6c757d;
+            color: #6d7869;
         }
 
         .empty-state svg {
@@ -356,7 +1183,7 @@
         }
 
         .modal-header h2 {
-            color: #667eea;
+            color: #7a9b76;
             margin-bottom: 10px;
         }
 
@@ -378,7 +1205,7 @@
         }
 
         .user-management {
-            background: #f8f9fa;
+            background: #fcfdfc;
             padding: 25px;
             border-radius: 10px;
             margin-bottom: 30px;
@@ -411,7 +1238,7 @@
 
         .user-username {
             font-size: 0.9em;
-            color: #6c757d;
+            color: #6d7869;
         }
 
         .logout-btn {
@@ -432,7 +1259,7 @@
         .admin-locked {
             text-align: center;
             padding: 60px 20px;
-            color: #6c757d;
+            color: #6d7869;
         }
 
         .admin-locked svg {
@@ -456,12 +1283,12 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #6c757d;
+            color: #6d7869;
             user-select: none;
         }
 
         .toggle-password:hover {
-            color: #333;
+            color: #3d4a3a;
         }
 
         .success-message, .error-message, .info-message {
@@ -485,9 +1312,9 @@
         }
 
         .info-message {
-            background: #cfe2ff;
-            color: #084298;
-            border-left-color: #084298;
+            background: #f0f4ed;
+            color: #5d7a5a;
+            border-left-color: #7a9b76;
         }
 
         .loading-spinner {
@@ -523,11 +1350,11 @@
         }
 
         .setup-section code {
-            background: #f8f9fa;
+            background: #fcfdfc;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
-            color: #d63384;
+            color: #7a9b76;
         }
 
         /* Custom Multi-Select Dropdown Styles */
@@ -539,7 +1366,7 @@
         .dropdown-header {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #dfe3da;
             border-radius: 8px;
             background: white;
             cursor: pointer;
@@ -553,16 +1380,16 @@
 
         .dropdown-header:hover,
         .dropdown-header.active {
-            border-color: #667eea;
+            border-color: #7a9b76;
         }
 
         .dropdown-header-text {
             flex: 1;
-            color: #333;
+            color: #3d4a3a;
         }
 
         .dropdown-header-text.placeholder {
-            color: #6c757d;
+            color: #6d7869;
         }
 
         .dropdown-arrow {
@@ -580,7 +1407,7 @@
             left: 0;
             right: 0;
             background: white;
-            border: 2px solid #667eea;
+            border: 2px solid #7a9b76;
             border-top: none;
             border-radius: 0 0 8px 8px;
             max-height: 300px;
@@ -608,19 +1435,19 @@
         }
 
         .dropdown-item:hover {
-            background: #f8f9fa;
+            background: #f0f2ee;
         }
 
         .dropdown-item.selected {
-            background: #e7f3ff;
+            background: #edf3ec;
             font-weight: 600;
-            color: #667eea;
+            color: #5d7a5a;
         }
 
         .dropdown-item-checkbox {
             width: 20px;
             height: 20px;
-            border: 2px solid #667eea;
+            border: 2px solid #b8956a;
             border-radius: 4px;
             margin-right: 10px;
             display: flex;
@@ -630,7 +1457,7 @@
         }
 
         .dropdown-item.selected .dropdown-item-checkbox {
-            background: #667eea;
+            background: #b8956a;
         }
 
         .dropdown-item.selected .dropdown-item-checkbox::after {
@@ -648,7 +1475,7 @@
         }
 
         .selected-tag {
-            background: #667eea;
+            background: #7a9b76;
             color: white;
             padding: 6px 12px;
             border-radius: 20px;
@@ -667,6 +1494,257 @@
 
         .selected-tag-remove:hover {
             color: #ffcccc;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .chart-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #3d4a3a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #7a9b76;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 15px;
+        }
+
+        .chart-canvas {
+            max-height: 300px;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dfe3da;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .dashboard-summary {
+            background: linear-gradient(135deg, #7a9b76 0%, #6a8a68 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(122, 155, 118, 0.25);
+        }
+
+        .dashboard-summary h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .summary-stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dashboard Table Styles */
+        .dashboard-table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        .dashboard-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #b8956a;
+        }
+
+        .dashboard-table-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #3d4a3a;
+        }
+
+        .dashboard-title {
+            color: #3d4a3a;
+        }
+
+        .reports-title {
+            color: #3d4a3a;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .export-btn.csv {
+            background: #28a745;
+            color: white;
+        }
+
+        .export-btn.csv:hover {
+            background: #218838;
+        }
+
+        .dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        .dashboard-table thead {
+            background: linear-gradient(135deg, #5d7a5a 0%, #4d6a4d 100%);
+            color: white;
+        }
+
+        .dashboard-table th {
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dashboard-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .dashboard-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .dashboard-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .table-status-pending {
+            background: #fff4e6;
+            color: #e67e22;
+        }
+
+        .table-status-initiated {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .table-status-in-progress {
+            background: #fff9c4;
+            color: #f9a825;
+        }
+
+        .table-status-resolved {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .table-priority-low {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .table-priority-medium {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        .table-priority-high {
+            color: #fd7e14;
+            font-weight: 600;
+        }
+
+        .table-priority-urgent {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .table-empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
         }
 
         @media (max-width: 768px) {
@@ -693,6 +1771,34 @@
             .stat-number {
                 font-size: 2em;
             }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .dashboard-table {
+                font-size: 0.8em;
+            }
+
+            .dashboard-table th,
+            .dashboard-table td {
+                padding: 8px 6px;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+            }
+
+            .dashboard-table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
         }
     </style>
 </head>
@@ -700,11 +1806,17 @@
     <div class="container">
         <div class="header">
             <h1>🏢 Thai Homes Residents Welfare Association</h1>
+            <!-- Dark Mode Toggle Button -->
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle Dark Mode">
+                <span class="dark-mode-icon">☀️</span>
+            </button>
         </div>
 
         <div class="tabs">
             <button class="tab active" onclick="switchTab('register', event)">📝 Register Complaint</button>
             <button class="tab" onclick="switchTab('view', event)">📋 View Complaints</button>
+            <button class="tab" onclick="switchTab('dashboard', event)">📊 Dashboard</button>
+            <button class="tab" onclick="switchTab('reports', event)">📑 Reports</button>
             <button class="tab" onclick="switchTab('admin', event)">⚙️ Admin Panel</button>
         </div>
 
@@ -1028,6 +2140,432 @@
             <div id="complaintsContainer"></div>
         </div>
 
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+            <h2 class="dashboard-title" style="margin-bottom: 20px;">📊 Complaints Dashboard</h2>
+
+            <!-- Dashboard Summary -->
+            <div class="dashboard-summary">
+                <h2>Overview</h2>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="dashTotalComplaints">0</div>
+                        <div class="summary-stat-label">Total Complaints</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="dashPendingComplaints">0</div>
+                        <div class="summary-stat-label">Pending</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="dashInitiatedComplaints">0</div>
+                        <div class="summary-stat-label">Initiated</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="dashInProgressComplaints">0</div>
+                        <div class="summary-stat-label">In Progress</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="dashResolvedComplaints">0</div>
+                        <div class="summary-stat-label">Resolved</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section" style="margin-bottom: 30px;">
+                <div class="form-group">
+                    <label for="dashFilterStatus">Filter by Status</label>
+                    <select id="dashFilterStatus" onchange="updateDashboard()">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Initiated">Initiated</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dashFilterCategory">Filter by Category</label>
+                    <div class="custom-dropdown" id="dashFilterCategoryDropdown">
+                        <div class="dropdown-header" onclick="toggleDashFilterCategoryDropdown()">
+                            <span class="dropdown-header-text" id="dashFilterCategoryHeaderText">All Categories</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="dashFilterCategoryList">
+                            <div class="dropdown-item" data-value="Access Card Reader" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Card Reader</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Access Door" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Door</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Builder" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Builder</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Camera" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Camera</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Monitor" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Monitor</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Cleaning" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Cleaning/Housekeeping</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Common Area" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Common Area</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Drainage" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Drainage</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Electrical" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Electrical</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Gates" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Gates</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Genset" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Genset</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Lift" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Lift/Elevator</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Noise" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Noise Complaint</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Overhead tank" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Overhead tank</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Paints" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Paints</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Parking" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Parking</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Plumbing" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Plumbing</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Seepages" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Seepages</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Security" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Security</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Solar Panels" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Solar Panels</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Structural" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Structural</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Sump" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Sump</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Water Supply" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Water Supply</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Other" onclick="selectDashFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="dashFilterCategoryTags" style="margin-top: 8px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dashFilterBlock">Filter by Block</label>
+                    <select id="dashFilterBlock" onchange="updateDashboard()">
+                        <option value="">All Blocks</option>
+                        <option value="Block A">Block A</option>
+                        <option value="Block B">Block B</option>
+                        <option value="THRWA">THRWA</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dashFilterFlat">Filter by Flat</label>
+                    <select id="dashFilterFlat" onchange="updateDashboard()">
+                        <option value="">All Flats</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="dashboard-grid">
+                <!-- Status Distribution Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">📊 Status Distribution</div>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Category Distribution Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">🏷️ Top Categories</div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Block Distribution Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">🏢 Complaints by Block</div>
+                    <div class="chart-container">
+                        <canvas id="blockChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Priority Distribution Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">⚡ Priority Levels</div>
+                    <div class="chart-container">
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Trend Chart -->
+                <div class="chart-card" style="grid-column: span 2;">
+                    <div class="chart-title">📈 Complaints Trend (Last 30 Days)</div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h2 class="reports-title" style="margin-bottom: 20px;">📑 Complaints Reports</h2>
+
+            <!-- Summary Statistics -->
+            <div class="dashboard-summary">
+                <h2>Report Summary</h2>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="reportsTotalComplaints">0</div>
+                        <div class="summary-stat-label">Total Complaints</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="reportsPendingComplaints">0</div>
+                        <div class="summary-stat-label">Pending</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="reportsInitiatedComplaints">0</div>
+                        <div class="summary-stat-label">Initiated</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="reportsInProgressComplaints">0</div>
+                        <div class="summary-stat-label">In Progress</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-number" id="reportsResolvedComplaints">0</div>
+                        <div class="summary-stat-label">Resolved</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section" style="margin-bottom: 30px;">
+                <div class="form-group">
+                    <label for="reportsFilterStatus">Filter by Status</label>
+                    <select id="reportsFilterStatus" onchange="updateReportsTable()">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Initiated">Initiated</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportsFilterCategory">Filter by Category</label>
+                    <div class="custom-dropdown" id="reportsFilterCategoryDropdown">
+                        <div class="dropdown-header" onclick="toggleReportsFilterCategoryDropdown()">
+                            <span class="dropdown-header-text" id="reportsFilterCategoryHeaderText">All Categories</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="reportsFilterCategoryList">
+                            <div class="dropdown-item" data-value="Access Card Reader" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Card Reader</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Access Door" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Access Door</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Builder" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Builder</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Camera" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Camera</span>
+                            </div>
+                            <div class="dropdown-item" data-value="CCTV Monitor" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>CCTV Monitor</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Cleaning" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Cleaning/Housekeeping</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Common Area" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Common Area</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Drainage" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Drainage</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Electrical" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Electrical</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Gates" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Gates</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Genset" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Genset</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Lift" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Lift/Elevator</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Noise" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Noise Complaint</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Overhead tank" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Overhead tank</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Paints" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Paints</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Parking" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Parking</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Plumbing" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Plumbing</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Seepages" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Seepages</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Security" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Security</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Solar Panels" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Solar Panels</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Structural" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Structural</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Sump" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Sump</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Water Supply" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Water Supply</span>
+                            </div>
+                            <div class="dropdown-item" data-value="Other" onclick="selectReportsFilterCategory(this)">
+                                <div class="dropdown-item-checkbox"></div>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="reportsFilterCategoryTags" style="margin-top: 8px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportsFilterBlock">Filter by Block</label>
+                    <select id="reportsFilterBlock" onchange="updateReportsTable()">
+                        <option value="">All Blocks</option>
+                        <option value="Block A">Block A</option>
+                        <option value="Block B">Block B</option>
+                        <option value="THRWA">THRWA</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportsFilterFlat">Filter by Flat</label>
+                    <select id="reportsFilterFlat" onchange="updateReportsTable()">
+                        <option value="">All Flats</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div class="dashboard-table-container">
+                <div class="dashboard-table-header">
+                    <div class="dashboard-table-title">📋 Detailed Complaints Table</div>
+                    <div class="export-buttons">
+                        <button class="export-btn csv" onclick="exportReportsTableToCSV()">📥 Export to CSV</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="dashboard-table" id="reportsTable">
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>Date Registered</th>
+                                <th>Block</th>
+                                <th>Flat Number</th>
+                                <th>Resident Name</th>
+                                <th>Contact Number</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Issue Resolved Date</th>
+                                <th>Resolved By</th>
+                                <th>Supervisor</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody">
+                            <tr>
+                                <td colspan="14" class="table-empty-state">No complaints to display</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Admin Panel Tab -->
         <div id="admin" class="tab-content">
             <!-- Login Modal -->
@@ -1062,10 +2600,10 @@
 
                 <!-- User Management Section -->
                 <div class="user-management">
-                    <h3 style="margin-bottom: 20px; color: #333;">👥 User Management</h3>
+                    <h3 class="admin-user-management-title" style="margin-bottom: 20px;">👥 User Management</h3>
                     
                     <form id="addUserForm" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 15px; color: #667eea;">Add New Executive Member</h4>
+                        <h4 class="admin-form-title" style="margin-bottom: 15px;">Add New Executive Member</h4>
                         <div class="form-group">
                             <label for="newUserName">Full Name *</label>
                             <input type="text" id="newUserName" placeholder="e.g., John Doe" required>
@@ -1082,7 +2620,7 @@
                         <button type="submit" class="btn">➕ Add User</button>
                     </form>
 
-                    <h4 style="margin-bottom: 15px; color: #333;">Current Executive Members</h4>
+                    <h4 class="admin-section-title" style="margin-bottom: 15px;">Current Executive Members</h4>
                     <div class="user-list" id="userList"></div>
                 </div>
 
@@ -1314,6 +2852,40 @@
                 if (typeof loadComplaints === 'function') {
                     loadComplaints();
                 }
+            } else if (tabName === 'dashboard') {
+                console.log('Loading dashboard...');
+                if (allComplaints && allComplaints.length > 0) {
+                    // Data already loaded, just initialize dashboard
+                    if (typeof initializeDashboard === 'function') {
+                        initializeDashboard();
+                    }
+                } else {
+                    // Need to load data first
+                    if (typeof loadComplaints === 'function') {
+                        loadComplaints().then(() => {
+                            if (typeof initializeDashboard === 'function') {
+                                initializeDashboard();
+                            }
+                        });
+                    }
+                }
+            } else if (tabName === 'reports') {
+                console.log('Loading reports...');
+                if (allComplaints && allComplaints.length > 0) {
+                    // Data already loaded, just initialize reports
+                    if (typeof initializeReportsTable === 'function') {
+                        initializeReportsTable();
+                    }
+                } else {
+                    // Need to load data first
+                    if (typeof loadComplaints === 'function') {
+                        loadComplaints().then(() => {
+                            if (typeof initializeReportsTable === 'function') {
+                                initializeReportsTable();
+                            }
+                        });
+                    }
+                }
             } else if (tabName === 'admin') {
                 console.log('Checking admin access...');
                 if (typeof checkAdminAccess === 'function') {
@@ -1512,7 +3084,7 @@
                         <button class="btn-small" onclick="deleteUser('${user.username}')" style="background: #dc3545; color: white; border-color: #dc3545;">
                             🗑️ Remove
                         </button>
-                    ` : '<span style="color: #667eea; font-weight: 600;">Default Admin</span>'}
+                    ` : '<span style="color: #2563eb; font-weight: 600;">Default Admin</span>'}
                 </div>
             `).join('');
         }
@@ -1760,6 +3332,28 @@
                     adminFilterList.classList.remove('active');
                 }
             }
+            
+            // Close dashboard filter category dropdown when clicking outside
+            const dashFilterDropdown = document.getElementById('dashFilterCategoryDropdown');
+            if (dashFilterDropdown && !dashFilterDropdown.contains(event.target)) {
+                const dashFilterHeader = dashFilterDropdown.querySelector('.dropdown-header');
+                const dashFilterList = dashFilterDropdown.querySelector('.dropdown-list');
+                if (dashFilterHeader && dashFilterList) {
+                    dashFilterHeader.classList.remove('active');
+                    dashFilterList.classList.remove('active');
+                }
+            }
+            
+            // Close reports filter category dropdown when clicking outside
+            const reportsFilterDropdown = document.getElementById('reportsFilterCategoryDropdown');
+            if (reportsFilterDropdown && !reportsFilterDropdown.contains(event.target)) {
+                const reportsFilterHeader = reportsFilterDropdown.querySelector('.dropdown-header');
+                const reportsFilterList = reportsFilterDropdown.querySelector('.dropdown-list');
+                if (reportsFilterHeader && reportsFilterList) {
+                    reportsFilterHeader.classList.remove('active');
+                    reportsFilterList.classList.remove('active');
+                }
+            }
         });
 
         // Filter Category Multi-Select Functions
@@ -1907,6 +3501,977 @@
         // Filter Admin Complaints
         function filterAdminComplaints() {
             displayAdminComplaints();
+        }
+
+        // ============================================
+        // DASHBOARD FUNCTIONS
+        // ============================================
+
+        let dashboardCharts = {
+            status: null,
+            category: null,
+            block: null,
+            priority: null,
+            trend: null
+        };
+
+        // Register datalabels plugin but disable by default
+        Chart.register(ChartDataLabels);
+        Chart.defaults.set('plugins.datalabels', {
+            display: false
+        });
+
+        let selectedDashFilterCategories = [];
+
+        // Dashboard Filter Category Multi-Select Functions
+        function toggleDashFilterCategoryDropdown() {
+            const header = document.querySelector('#dashFilterCategoryDropdown .dropdown-header');
+            const list = document.getElementById('dashFilterCategoryList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+        }
+
+        function selectDashFilterCategory(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedDashFilterCategories.includes(value)) {
+                selectedDashFilterCategories = selectedDashFilterCategories.filter(cat => cat !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedDashFilterCategories.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateDashFilterCategoryDisplay();
+            updateDashboard();
+        }
+
+        function updateDashFilterCategoryDisplay() {
+            const headerText = document.getElementById('dashFilterCategoryHeaderText');
+            const tagsContainer = document.getElementById('dashFilterCategoryTags');
+            
+            if (selectedDashFilterCategories.length === 0) {
+                headerText.textContent = 'All Categories';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedDashFilterCategories.length === 1 
+                    ? selectedDashFilterCategories[0] 
+                    : `${selectedDashFilterCategories.length} categories selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedDashFilterCategories.map(cat => `
+                    <div class="selected-tag">
+                        <span>${cat}</span>
+                        <span class="selected-tag-remove" onclick="removeDashFilterCategoryTag('${cat}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeDashFilterCategoryTag(value) {
+            selectedDashFilterCategories = selectedDashFilterCategories.filter(cat => cat !== value);
+            
+            const items = document.querySelectorAll('#dashFilterCategoryList .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateDashFilterCategoryDisplay();
+            updateDashboard();
+        }
+
+        // Get filtered complaints for dashboard
+        function getFilteredDashboardComplaints() {
+            let complaints = [...allComplaints];
+
+            const statusFilter = document.getElementById('dashFilterStatus').value;
+            const blockFilter = document.getElementById('dashFilterBlock').value;
+            const flatFilter = document.getElementById('dashFilterFlat').value;
+
+            if (statusFilter) {
+                complaints = complaints.filter(c => c.status === statusFilter);
+            }
+            
+            if (selectedDashFilterCategories.length > 0) {
+                complaints = complaints.filter(c => {
+                    const complaintCategories = c.category.split(',').map(cat => cat.trim());
+                    return selectedDashFilterCategories.some(filterCat => 
+                        complaintCategories.includes(filterCat)
+                    );
+                });
+            }
+            
+            if (blockFilter) {
+                complaints = complaints.filter(c => c.blockName === blockFilter);
+            }
+            if (flatFilter) {
+                complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+
+            return complaints;
+        }
+
+        // Initialize Dashboard
+        function initializeDashboard() {
+            if (!document.getElementById('statusChart')) {
+                return;
+            }
+            
+            // Populate dashboard flat filter
+            const dashFilterFlat = document.getElementById('dashFilterFlat');
+            if (dashFilterFlat && dashFilterFlat.options.length === 1) {
+                const commRepOption = document.createElement('option');
+                commRepOption.value = 'Community Representative';
+                commRepOption.textContent = 'Community Representative';
+                dashFilterFlat.appendChild(commRepOption);
+                
+                const floors = [1, 2, 3, 4, 5];
+                const units = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                
+                floors.forEach(floor => {
+                    units.forEach(unit => {
+                        const flatNumber = `${floor}${unit}`;
+                        const option = document.createElement('option');
+                        option.value = flatNumber;
+                        option.textContent = `Flat ${flatNumber}`;
+                        dashFilterFlat.appendChild(option);
+                    });
+                });
+            }
+            
+            updateDashboard();
+        }
+
+        // Update Dashboard
+        function updateDashboard() {
+            const complaints = getFilteredDashboardComplaints();
+            
+            // Update summary statistics
+            document.getElementById('dashTotalComplaints').textContent = complaints.length;
+            document.getElementById('dashPendingComplaints').textContent = complaints.filter(c => c.status === 'Pending').length;
+            document.getElementById('dashInitiatedComplaints').textContent = complaints.filter(c => c.status === 'Initiated').length;
+            document.getElementById('dashInProgressComplaints').textContent = complaints.filter(c => c.status === 'In Progress').length;
+            document.getElementById('dashResolvedComplaints').textContent = complaints.filter(c => c.status === 'Resolved').length;
+            
+            // Update all charts
+            updateStatusChart(complaints);
+            updateCategoryChart(complaints);
+            updateBlockChart(complaints);
+            updatePriorityChart(complaints);
+            updateTrendChart(complaints);
+        }
+
+        // Helper function to get chart text color based on dark mode
+        function getChartTextColor() {
+            return document.body.classList.contains('dark-mode') ? '#e8ebe9' : '#666';
+        }
+
+        function getChartGridColor() {
+            return document.body.classList.contains('dark-mode') ? '#3a4441' : '#e0e0e0';
+        }
+
+        // Status Distribution Chart
+        function updateStatusChart(complaints) {
+            const ctx = document.getElementById('statusChart');
+            if (!ctx) return;
+
+            const statusData = {
+                'Pending': complaints.filter(c => c.status === 'Pending').length,
+                'Initiated': complaints.filter(c => c.status === 'Initiated').length,
+                'In Progress': complaints.filter(c => c.status === 'In Progress').length,
+                'Resolved': complaints.filter(c => c.status === 'Resolved').length
+            };
+
+            if (dashboardCharts.status) {
+                dashboardCharts.status.destroy();
+            }
+
+            dashboardCharts.status = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusData),
+                    datasets: [{
+                        data: Object.values(statusData),
+                        backgroundColor: ['#ffc107', '#9c27b0', '#2196f3', '#4caf50'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 },
+                                color: getChartTextColor()
+                            }
+                        },
+                        datalabels: {
+                            display: true,
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: 13
+                            },
+                            textStrokeColor: '#333',
+                            textStrokeWidth: 3,
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value, ctx) => {
+                                if (value === 0) return '';
+                                const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return value + '\n' + percentage + '%';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Category Distribution Chart
+        function updateCategoryChart(complaints) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const categoryCount = {};
+            complaints.forEach(c => {
+                const categories = c.category.split(',').map(cat => cat.trim());
+                categories.forEach(cat => {
+                    categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+                });
+            });
+
+            // Get top 8 categories
+            const sortedCategories = Object.entries(categoryCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+
+            if (dashboardCharts.category) {
+                dashboardCharts.category.destroy();
+            }
+
+            dashboardCharts.category = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sortedCategories.map(([cat]) => cat),
+                    datasets: [{
+                        label: 'Number of Complaints',
+                        data: sortedCategories.map(([, count]) => count),
+                        backgroundColor: '#b8956a',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            display: true,
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value) => value
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                stepSize: 1,
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Block Distribution Chart
+        function updateBlockChart(complaints) {
+            const ctx = document.getElementById('blockChart');
+            if (!ctx) return;
+
+            const blockData = {
+                'Block A': complaints.filter(c => c.blockName === 'Block A').length,
+                'Block B': complaints.filter(c => c.blockName === 'Block B').length,
+                'THRWA': complaints.filter(c => c.blockName === 'THRWA').length
+            };
+
+            if (dashboardCharts.block) {
+                dashboardCharts.block.destroy();
+            }
+
+            dashboardCharts.block = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(blockData),
+                    datasets: [{
+                        data: Object.values(blockData),
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 },
+                                color: getChartTextColor()
+                            }
+                        },
+                        datalabels: {
+                            display: true,
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: 13
+                            },
+                            textStrokeColor: '#333',
+                            textStrokeWidth: 3,
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value, ctx) => {
+                                if (value === 0) return '';
+                                const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return value + '\n' + percentage + '%';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Priority Distribution Chart
+        function updatePriorityChart(complaints) {
+            const ctx = document.getElementById('priorityChart');
+            if (!ctx) return;
+
+            const priorityData = {
+                'Low': complaints.filter(c => c.priority === 'Low').length,
+                'Medium': complaints.filter(c => c.priority === 'Medium').length,
+                'High': complaints.filter(c => c.priority === 'High').length,
+                'Urgent': complaints.filter(c => c.priority === 'Urgent').length
+            };
+
+            if (dashboardCharts.priority) {
+                dashboardCharts.priority.destroy();
+            }
+
+            dashboardCharts.priority = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(priorityData),
+                    datasets: [{
+                        label: 'Number of Complaints',
+                        data: Object.values(priorityData),
+                        backgroundColor: ['#4caf50', '#ff9800', '#f44336', '#9c27b0'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            display: true,
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value) => value
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                stepSize: 1,
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Trend Chart (Last 30 Days)
+        function updateTrendChart(complaints) {
+            const ctx = document.getElementById('trendChart');
+            if (!ctx) return;
+
+            const last30Days = [];
+            const today = new Date();
+            
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                last30Days.push({
+                    date: date.toISOString().split('T')[0],
+                    label: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                });
+            }
+
+            const trendData = last30Days.map(day => {
+                return complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered).toISOString().split('T')[0];
+                    return complaintDate === day.date;
+                }).length;
+            });
+
+            if (dashboardCharts.trend) {
+                dashboardCharts.trend.destroy();
+            }
+
+            dashboardCharts.trend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last30Days.map(d => d.label),
+                    datasets: [{
+                        label: 'Complaints Registered',
+                        data: trendData,
+                        borderColor: '#7a9b76',
+                        backgroundColor: 'rgba(122, 155, 118, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#7a9b76'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                stepSize: 1,
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                color: getChartTextColor()
+                            },
+                            grid: {
+                                color: getChartGridColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update Dashboard Table
+        function updateDashboardTable(complaints) {
+            const tableBody = document.getElementById('dashboardTableBody');
+            if (!tableBody) return;
+
+            if (complaints.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="14" class="table-empty-state">No complaints to display</td></tr>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedComplaints = [...complaints].sort((a, b) => 
+                new Date(b.dateRegistered) - new Date(a.dateRegistered)
+            );
+
+            tableBody.innerHTML = sortedComplaints.map(complaint => {
+                const statusClass = complaint.status.toLowerCase().replace(' ', '-');
+                const priorityClass = complaint.priority.toLowerCase();
+                
+                // Format dates
+                const dateRegistered = complaint.dateRegistered 
+                    ? new Date(complaint.dateRegistered).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                const lastUpdated = complaint.lastUpdated 
+                    ? new Date(complaint.lastUpdated).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                const resolvedDate = complaint.issueResolvedDate 
+                    ? new Date(complaint.issueResolvedDate).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                // Format flat number display
+                const flatDisplay = complaint.flatNumber === 'Community Representative' 
+                    ? 'Community Representative' 
+                    : `Flat ${complaint.flatNumber}`;
+                
+                return `
+                    <tr>
+                        <td style="font-weight: 600; color: #5d7a5a;">${complaint.id}</td>
+                        <td>${dateRegistered}</td>
+                        <td>${complaint.blockName || '-'}</td>
+                        <td>${flatDisplay}</td>
+                        <td>${complaint.residentName || '-'}</td>
+                        <td>${complaint.contactNumber || '-'}</td>
+                        <td>${complaint.category || '-'}</td>
+                        <td><span class="table-priority-${priorityClass}">${complaint.priority}</span></td>
+                        <td><span class="table-status-badge table-status-${statusClass}">${complaint.status}</span></td>
+                        <td style="max-width: 300px; white-space: normal;">${complaint.description || '-'}</td>
+                        <td>${resolvedDate}</td>
+                        <td>${complaint.resolvedBy || '-'}</td>
+                        <td>${complaint.supervisor || '-'}</td>
+                        <td>${lastUpdated}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Export Table to CSV
+        function exportTableToCSV() {
+            const complaints = getFilteredDashboardComplaints();
+            
+            if (complaints.length === 0) {
+                alert('No data to export!');
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedComplaints = [...complaints].sort((a, b) => 
+                new Date(b.dateRegistered) - new Date(a.dateRegistered)
+            );
+
+            // Define CSV headers
+            const headers = [
+                'Complaint ID',
+                'Date Registered',
+                'Block',
+                'Flat Number',
+                'Resident Name',
+                'Contact Number',
+                'Category',
+                'Priority',
+                'Status',
+                'Description',
+                'Issue Resolved Date',
+                'Resolved By',
+                'Supervisor',
+                'Last Updated'
+            ];
+
+            // Build CSV content
+            let csvContent = headers.join(',') + '\n';
+
+            sortedComplaints.forEach(complaint => {
+                const dateRegistered = complaint.dateRegistered 
+                    ? new Date(complaint.dateRegistered).toLocaleDateString('en-US') 
+                    : '';
+                
+                const lastUpdated = complaint.lastUpdated 
+                    ? new Date(complaint.lastUpdated).toLocaleDateString('en-US') 
+                    : '';
+                
+                const resolvedDate = complaint.issueResolvedDate 
+                    ? new Date(complaint.issueResolvedDate).toLocaleDateString('en-US') 
+                    : '';
+                
+                const flatDisplay = complaint.flatNumber === 'Community Representative' 
+                    ? 'Community Representative' 
+                    : `Flat ${complaint.flatNumber}`;
+                
+                // Escape and format values for CSV
+                const escapeCSV = (value) => {
+                    if (!value) return '';
+                    value = String(value).replace(/"/g, '""'); // Escape quotes
+                    if (value.includes(',') || value.includes('\n') || value.includes('"')) {
+                        return `"${value}"`;
+                    }
+                    return value;
+                };
+
+                const row = [
+                    escapeCSV(complaint.id),
+                    escapeCSV(dateRegistered),
+                    escapeCSV(complaint.blockName),
+                    escapeCSV(flatDisplay),
+                    escapeCSV(complaint.residentName),
+                    escapeCSV(complaint.contactNumber),
+                    escapeCSV(complaint.category),
+                    escapeCSV(complaint.priority),
+                    escapeCSV(complaint.status),
+                    escapeCSV(complaint.description),
+                    escapeCSV(resolvedDate),
+                    escapeCSV(complaint.resolvedBy),
+                    escapeCSV(complaint.supervisor),
+                    escapeCSV(lastUpdated)
+                ];
+
+                csvContent += row.join(',') + '\n';
+            });
+
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            const timestamp = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', url);
+            link.setAttribute('download', `THRWA_Complaints_${timestamp}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ============================================
+        // REPORTS TABLE FUNCTIONS
+        // ============================================
+
+        let selectedReportsFilterCategories = [];
+
+        // Reports Filter Category Multi-Select Functions
+        function toggleReportsFilterCategoryDropdown() {
+            const header = document.querySelector('#reportsFilterCategoryDropdown .dropdown-header');
+            const list = document.getElementById('reportsFilterCategoryList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+        }
+
+        function selectReportsFilterCategory(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedReportsFilterCategories.includes(value)) {
+                selectedReportsFilterCategories = selectedReportsFilterCategories.filter(cat => cat !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedReportsFilterCategories.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateReportsFilterCategoryDisplay();
+            updateReportsTable();
+        }
+
+        function updateReportsFilterCategoryDisplay() {
+            const headerText = document.getElementById('reportsFilterCategoryHeaderText');
+            const tagsContainer = document.getElementById('reportsFilterCategoryTags');
+            
+            if (selectedReportsFilterCategories.length === 0) {
+                headerText.textContent = 'All Categories';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedReportsFilterCategories.length === 1 
+                    ? selectedReportsFilterCategories[0] 
+                    : `${selectedReportsFilterCategories.length} categories selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedReportsFilterCategories.map(cat => `
+                    <div class="selected-tag">
+                        <span>${cat}</span>
+                        <span class="selected-tag-remove" onclick="removeReportsFilterCategoryTag('${cat}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeReportsFilterCategoryTag(value) {
+            selectedReportsFilterCategories = selectedReportsFilterCategories.filter(cat => cat !== value);
+            
+            const items = document.querySelectorAll('#reportsFilterCategoryList .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateReportsFilterCategoryDisplay();
+            updateReportsTable();
+        }
+
+        // Get filtered complaints for reports
+        function getFilteredReportsComplaints() {
+            let complaints = [...allComplaints];
+
+            const statusFilter = document.getElementById('reportsFilterStatus').value;
+            const blockFilter = document.getElementById('reportsFilterBlock').value;
+            const flatFilter = document.getElementById('reportsFilterFlat').value;
+
+            if (statusFilter) {
+                complaints = complaints.filter(c => c.status === statusFilter);
+            }
+            
+            if (selectedReportsFilterCategories.length > 0) {
+                complaints = complaints.filter(c => {
+                    const complaintCategories = c.category.split(',').map(cat => cat.trim());
+                    return selectedReportsFilterCategories.some(filterCat => 
+                        complaintCategories.includes(filterCat)
+                    );
+                });
+            }
+            
+            if (blockFilter) {
+                complaints = complaints.filter(c => c.blockName === blockFilter);
+            }
+            if (flatFilter) {
+                complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+
+            return complaints;
+        }
+
+        // Initialize Reports Table
+        function initializeReportsTable() {
+            if (!document.getElementById('reportsTable')) {
+                return;
+            }
+            
+            // Populate reports flat filter
+            const reportsFilterFlat = document.getElementById('reportsFilterFlat');
+            if (reportsFilterFlat && reportsFilterFlat.options.length === 1) {
+                const commRepOption = document.createElement('option');
+                commRepOption.value = 'Community Representative';
+                commRepOption.textContent = 'Community Representative';
+                reportsFilterFlat.appendChild(commRepOption);
+                
+                const floors = [1, 2, 3, 4, 5];
+                const units = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                
+                floors.forEach(floor => {
+                    units.forEach(unit => {
+                        const flatNumber = `${floor}${unit}`;
+                        const option = document.createElement('option');
+                        option.value = flatNumber;
+                        option.textContent = `Flat ${flatNumber}`;
+                        reportsFilterFlat.appendChild(option);
+                    });
+                });
+            }
+            
+            updateReportsTable();
+        }
+
+        // Update Reports Table
+        function updateReportsTable() {
+            const complaints = getFilteredReportsComplaints();
+            
+            // Update summary statistics
+            document.getElementById('reportsTotalComplaints').textContent = complaints.length;
+            document.getElementById('reportsPendingComplaints').textContent = complaints.filter(c => c.status === 'Pending').length;
+            document.getElementById('reportsInitiatedComplaints').textContent = complaints.filter(c => c.status === 'Initiated').length;
+            document.getElementById('reportsInProgressComplaints').textContent = complaints.filter(c => c.status === 'In Progress').length;
+            document.getElementById('reportsResolvedComplaints').textContent = complaints.filter(c => c.status === 'Resolved').length;
+            
+            // Update table
+            const tableBody = document.getElementById('reportsTableBody');
+            if (!tableBody) return;
+
+            if (complaints.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="14" class="table-empty-state">No complaints to display</td></tr>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedComplaints = [...complaints].sort((a, b) => 
+                new Date(b.dateRegistered) - new Date(a.dateRegistered)
+            );
+
+            tableBody.innerHTML = sortedComplaints.map(complaint => {
+                const statusClass = complaint.status.toLowerCase().replace(' ', '-');
+                const priorityClass = complaint.priority.toLowerCase();
+                
+                const dateRegistered = complaint.dateRegistered 
+                    ? new Date(complaint.dateRegistered).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                const lastUpdated = complaint.lastUpdated 
+                    ? new Date(complaint.lastUpdated).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                const resolvedDate = complaint.issueResolvedDate 
+                    ? new Date(complaint.issueResolvedDate).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) 
+                    : '-';
+                
+                const flatDisplay = complaint.flatNumber === 'Community Representative' 
+                    ? 'Community Representative' 
+                    : `Flat ${complaint.flatNumber}`;
+                
+                return `
+                    <tr>
+                        <td style="font-weight: 600; color: #5d7a5a;">${complaint.id}</td>
+                        <td>${dateRegistered}</td>
+                        <td>${complaint.blockName || '-'}</td>
+                        <td>${flatDisplay}</td>
+                        <td>${complaint.residentName || '-'}</td>
+                        <td>${complaint.contactNumber || '-'}</td>
+                        <td>${complaint.category || '-'}</td>
+                        <td><span class="table-priority-${priorityClass}">${complaint.priority}</span></td>
+                        <td><span class="table-status-badge table-status-${statusClass}">${complaint.status}</span></td>
+                        <td style="max-width: 300px; white-space: normal;">${complaint.description || '-'}</td>
+                        <td>${resolvedDate}</td>
+                        <td>${complaint.resolvedBy || '-'}</td>
+                        <td>${complaint.supervisor || '-'}</td>
+                        <td>${lastUpdated}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Export Reports Table to CSV
+        function exportReportsTableToCSV() {
+            const complaints = getFilteredReportsComplaints();
+            
+            if (complaints.length === 0) {
+                alert('No data to export!');
+                return;
+            }
+
+            const sortedComplaints = [...complaints].sort((a, b) => 
+                new Date(b.dateRegistered) - new Date(a.dateRegistered)
+            );
+
+            const headers = [
+                'Complaint ID',
+                'Date Registered',
+                'Block',
+                'Flat Number',
+                'Resident Name',
+                'Contact Number',
+                'Category',
+                'Priority',
+                'Status',
+                'Description',
+                'Issue Resolved Date',
+                'Resolved By',
+                'Supervisor',
+                'Last Updated'
+            ];
+
+            let csvContent = headers.join(',') + '\n';
+
+            sortedComplaints.forEach(complaint => {
+                const dateRegistered = complaint.dateRegistered 
+                    ? new Date(complaint.dateRegistered).toLocaleDateString('en-US') 
+                    : '';
+                
+                const lastUpdated = complaint.lastUpdated 
+                    ? new Date(complaint.lastUpdated).toLocaleDateString('en-US') 
+                    : '';
+                
+                const resolvedDate = complaint.issueResolvedDate 
+                    ? new Date(complaint.issueResolvedDate).toLocaleDateString('en-US') 
+                    : '';
+                
+                const flatDisplay = complaint.flatNumber === 'Community Representative' 
+                    ? 'Community Representative' 
+                    : `Flat ${complaint.flatNumber}`;
+                
+                const escapeCSV = (value) => {
+                    if (!value) return '';
+                    value = String(value).replace(/"/g, '""');
+                    if (value.includes(',') || value.includes('\n') || value.includes('"')) {
+                        return `"${value}"`;
+                    }
+                    return value;
+                };
+
+                const row = [
+                    escapeCSV(complaint.id),
+                    escapeCSV(dateRegistered),
+                    escapeCSV(complaint.blockName),
+                    escapeCSV(flatDisplay),
+                    escapeCSV(complaint.residentName),
+                    escapeCSV(complaint.contactNumber),
+                    escapeCSV(complaint.category),
+                    escapeCSV(complaint.priority),
+                    escapeCSV(complaint.status),
+                    escapeCSV(complaint.description),
+                    escapeCSV(resolvedDate),
+                    escapeCSV(complaint.resolvedBy),
+                    escapeCSV(complaint.supervisor),
+                    escapeCSV(lastUpdated)
+                ];
+
+                csvContent += row.join(',') + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            const timestamp = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', url);
+            link.setAttribute('download', `THRWA_Reports_${timestamp}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Generate unique complaint ID
@@ -2124,25 +4689,25 @@
                     </div>
                     
                     ${hasResolutionData ? `
-                        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #0066cc;">
-                            <strong style="color: #003d82;">📋 Resolution Details:</strong>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                        <div class="resolution-details-container">
+                            <strong class="resolution-details-title">📋 Resolution Details:</strong>
+                            <div class="resolution-details-grid">
                                 ${complaint.issueResolvedDate ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved Date:</span><br>
-                                        <strong>${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</strong>
+                                        <span class="resolution-detail-label">Resolved Date:</span><br>
+                                        <span class="resolution-detail-value">${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</span>
                                     </div>
                                 ` : ''}
                                 ${complaint.resolvedBy ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved By:</span><br>
-                                        <strong>${complaint.resolvedBy}</strong>
+                                        <span class="resolution-detail-label">Resolved By:</span><br>
+                                        <span class="resolution-detail-value">${complaint.resolvedBy}</span>
                                     </div>
                                 ` : ''}
                                 ${complaint.supervisor ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Supervisor:</span><br>
-                                        <strong>${complaint.supervisor}</strong>
+                                        <span class="resolution-detail-label">Supervisor:</span><br>
+                                        <span class="resolution-detail-value">${complaint.supervisor}</span>
                                     </div>
                                 ` : ''}
                             </div>
@@ -2250,25 +4815,25 @@
                     </div>
                     
                     ${hasResolutionData ? `
-                        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #0066cc;">
-                            <strong style="color: #003d82;">📋 Resolution Details:</strong>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                        <div class="resolution-details-container">
+                            <strong class="resolution-details-title">📋 Resolution Details:</strong>
+                            <div class="resolution-details-grid">
                                 ${complaint.issueResolvedDate ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved Date:</span><br>
-                                        <strong>${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</strong>
+                                        <span class="resolution-detail-label">Resolved Date:</span><br>
+                                        <span class="resolution-detail-value">${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}</span>
                                     </div>
                                 ` : ''}
                                 ${complaint.resolvedBy ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Resolved By:</span><br>
-                                        <strong>${complaint.resolvedBy}</strong>
+                                        <span class="resolution-detail-label">Resolved By:</span><br>
+                                        <span class="resolution-detail-value">${complaint.resolvedBy}</span>
                                     </div>
                                 ` : ''}
                                 ${complaint.supervisor ? `
                                     <div>
-                                        <span style="font-size: 0.85em; color: #6c757d;">Supervisor:</span><br>
-                                        <strong>${complaint.supervisor}</strong>
+                                        <span class="resolution-detail-label">Supervisor:</span><br>
+                                        <span class="resolution-detail-value">${complaint.supervisor}</span>
                                     </div>
                                 ` : ''}
                             </div>
@@ -2288,8 +4853,8 @@
                     </div>
 
                     <!-- Resolution Form (Hidden by default) -->
-                    <div id="resolutionForm_${complaint.id}" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                        <h4 style="margin-bottom: 15px; color: #667eea;">Resolution Details</h4>
+                    <div id="resolutionForm_${complaint.id}" class="resolution-form-container" style="display: none;">
+                        <h4 class="resolution-form-title">Resolution Details</h4>
                         <form onsubmit="submitResolution(event, '${complaint.id}')">
                             <div class="form-group">
                                 <label for="resolvedDate_${complaint.id}">Issue Resolved Date *</label>
@@ -2459,6 +5024,47 @@
                 showMessage('viewInfoMessage', '⚠️ System not configured yet. Please configure the Google Script URL in the HTML file.', 0);
             }
         });
+
+        // Dark Mode Toggle Functionality
+        function initDarkMode() {
+            // Check if dark mode preference exists in localStorage
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Update icon
+            updateDarkModeIcon();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save preference to localStorage
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            // Update icon with animation
+            updateDarkModeIcon();
+            
+            // Refresh charts if dashboard is active to update colors
+            const dashboardTab = document.getElementById('dashboardTab');
+            if (dashboardTab && dashboardTab.classList.contains('active')) {
+                updateDashboard();
+            }
+        }
+
+        function updateDarkModeIcon() {
+            const icon = document.querySelector('.dark-mode-icon');
+            if (icon) {
+                // Sun icon for light mode, Moon icon for dark mode
+                icon.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            }
+        }
+
+        // Initialize dark mode on page load
+        initDarkMode();
     </script>
 </body>
 </html>
