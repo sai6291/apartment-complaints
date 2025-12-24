@@ -6,6 +6,9 @@
     <title>Thai Homes Residents Welfare Association</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <!-- Flatpickr for date range picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         /* ========================================
            COLOR SCHEME: Nature-Inspired Earthy Tones
@@ -101,6 +104,17 @@
             background: #2d3532;
             border-color: #3a4441;
             color: #e8ebe9;
+        }
+
+        .dark-mode input[readonly] {
+            background: #2d3532;
+            border-color: #3a4441;
+            color: #e8ebe9;
+            cursor: pointer;
+        }
+
+        .dark-mode input::placeholder {
+            color: #6d7869;
         }
 
         .dark-mode input:focus,
@@ -219,6 +233,84 @@
         .dark-mode select option {
             background: #2d3532;
             color: #e8ebe9;
+        }
+
+        /* Dark mode for Flatpickr date picker */
+        .dark-mode .flatpickr-calendar {
+            background: #242928;
+            border-color: #3a4441;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode .flatpickr-months {
+            background: #2d3532;
+            border-bottom: 1px solid #3a4441;
+        }
+
+        .dark-mode .flatpickr-current-month {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .flatpickr-month {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .flatpickr-weekday {
+            color: #b8bfbb;
+        }
+
+        .dark-mode .flatpickr-day {
+            color: #e8ebe9;
+        }
+
+        .dark-mode .flatpickr-day:hover {
+            background: #3a4441;
+            border-color: #3a4441;
+        }
+
+        .dark-mode .flatpickr-day.selected,
+        .dark-mode .flatpickr-day.startRange,
+        .dark-mode .flatpickr-day.endRange {
+            background: #7a9b76;
+            border-color: #7a9b76;
+            color: white;
+        }
+
+        .dark-mode .flatpickr-day.inRange {
+            background: rgba(122, 155, 118, 0.3);
+            border-color: rgba(122, 155, 118, 0.3);
+        }
+
+        .dark-mode .flatpickr-day.today {
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .flatpickr-monthDropdown-months {
+            background: #2d3532;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .numInputWrapper:hover {
+            background: #3a4441;
+        }
+
+        .dark-mode .numInput {
+            color: #e8ebe9;
+        }
+
+        /* Dark mode for search input inside dropdown */
+        .dark-mode #adminComplaintIdSearch {
+            background: #1a1f1d;
+            border-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode #adminComplaintIdSearch:focus {
+            border-color: #7a9b76;
+        }
+
+        .dark-mode #adminComplaintIdSearch::placeholder {
+            color: #6d7869;
         }
 
         .dark-mode .dashboard-table td {
@@ -665,6 +757,11 @@
 
         .dark-mode .dropdown-item {
             border-bottom-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .dropdown-item span {
+            color: #e8ebe9;
         }
 
         .dark-mode .dropdown-item:hover {
@@ -2131,6 +2228,47 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="filterPriority">Filter by Priority</label>
+                    <select id="filterPriority" onchange="filterComplaints()">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Filter by Complaint ID</label>
+                    <div class="custom-dropdown" id="filterComplaintIdDropdown">
+                        <div class="dropdown-header" onclick="toggleFilterComplaintIdDropdown()">
+                            <span class="dropdown-header-text" id="filterComplaintIdHeaderText">All Complaint IDs</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="filterComplaintIdList">
+                            <div style="padding: 8px; border-bottom: 1px solid #dfe3da;">
+                                <input type="text" id="filterComplaintIdSearch" placeholder="Search Complaint ID..." style="width: 100%; padding: 8px; border: 1px solid #dfe3da; border-radius: 4px; font-size: 14px;" oninput="searchFilterComplaintIds()">
+                            </div>
+                            <div id="filterComplaintIdListItems" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Complaint IDs will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="filterComplaintIdTags" style="margin-top: 8px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="filterDateRange">Filter by Date</label>
+                    <input type="text" id="filterDateRange" placeholder="Select date range..." readonly style="padding: 12px; border: 2px solid #dfe3da; border-radius: 8px; font-size: 1em; cursor: pointer;">
+                    <input type="hidden" id="filterDateFrom">
+                    <input type="hidden" id="filterDateTo">
+                </div>
+
+                <div class="form-group">
+                    <label style="opacity: 0; pointer-events: none;">Actions</label>
+                    <button class="btn-small" onclick="clearViewFilters()" style="width: 100%; padding: 12px; height: auto; min-height: 48px;">🗑️ Clear All Filters</button>
+                </div>
+
+                <div class="form-group">
                     <button class="btn" onclick="loadComplaints()" style="margin-top: 25px;">
                         🔄 Refresh Complaints
                     </button>
@@ -2308,6 +2446,47 @@
                     <select id="dashFilterFlat" onchange="updateDashboard()">
                         <option value="">All Flats</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dashFilterPriority">Filter by Priority</label>
+                    <select id="dashFilterPriority" onchange="updateDashboard()">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Filter by Complaint ID</label>
+                    <div class="custom-dropdown" id="dashFilterComplaintIdDropdown">
+                        <div class="dropdown-header" onclick="toggleDashFilterComplaintIdDropdown()">
+                            <span class="dropdown-header-text" id="dashFilterComplaintIdHeaderText">All Complaint IDs</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="dashFilterComplaintIdList">
+                            <div style="padding: 8px; border-bottom: 1px solid #dfe3da;">
+                                <input type="text" id="dashComplaintIdSearch" placeholder="Search Complaint ID..." style="width: 100%; padding: 8px; border: 1px solid #dfe3da; border-radius: 4px; font-size: 14px;" oninput="searchDashComplaintIds()">
+                            </div>
+                            <div id="dashComplaintIdListItems" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Complaint IDs will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="dashFilterComplaintIdTags" style="margin-top: 8px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dashFilterDateRange">Filter by Date</label>
+                    <input type="text" id="dashFilterDateRange" placeholder="Select date range..." readonly style="padding: 12px; border: 2px solid #dfe3da; border-radius: 8px; font-size: 1em; cursor: pointer;">
+                    <input type="hidden" id="dashFilterDateFrom">
+                    <input type="hidden" id="dashFilterDateTo">
+                </div>
+
+                <div class="form-group">
+                    <label style="opacity: 0; pointer-events: none;">Actions</label>
+                    <button class="btn-small" onclick="clearDashFilters()" style="width: 100%; padding: 12px; height: auto; min-height: 48px;">🗑️ Clear All Filters</button>
                 </div>
             </div>
 
@@ -2525,6 +2704,47 @@
                     <select id="reportsFilterFlat" onchange="updateReportsTable()">
                         <option value="">All Flats</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportsFilterPriority">Filter by Priority</label>
+                    <select id="reportsFilterPriority" onchange="updateReportsTable()">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Filter by Complaint ID</label>
+                    <div class="custom-dropdown" id="reportsFilterComplaintIdDropdown">
+                        <div class="dropdown-header" onclick="toggleReportsFilterComplaintIdDropdown()">
+                            <span class="dropdown-header-text" id="reportsFilterComplaintIdHeaderText">All Complaint IDs</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="dropdown-list" id="reportsFilterComplaintIdList">
+                            <div style="padding: 8px; border-bottom: 1px solid #dfe3da;">
+                                <input type="text" id="reportsComplaintIdSearch" placeholder="Search Complaint ID..." style="width: 100%; padding: 8px; border: 1px solid #dfe3da; border-radius: 4px; font-size: 14px;" oninput="searchReportsComplaintIds()">
+                            </div>
+                            <div id="reportsComplaintIdListItems" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Complaint IDs will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags" id="reportsFilterComplaintIdTags" style="margin-top: 8px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportsFilterDateRange">Filter by Date</label>
+                    <input type="text" id="reportsFilterDateRange" placeholder="Select date range..." readonly style="padding: 12px; border: 2px solid #dfe3da; border-radius: 8px; font-size: 1em; cursor: pointer;">
+                    <input type="hidden" id="reportsFilterDateFrom">
+                    <input type="hidden" id="reportsFilterDateTo">
+                </div>
+
+                <div class="form-group">
+                    <label style="opacity: 0; pointer-events: none;">Actions</label>
+                    <button class="btn-small" onclick="clearReportsFilters()" style="width: 100%; padding: 12px; height: auto; min-height: 48px;">🗑️ Clear All Filters</button>
                 </div>
             </div>
 
@@ -2789,6 +3009,47 @@
                         <select id="adminFilterFlat" onchange="filterAdminComplaints()">
                             <option value="">All Flats</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminFilterPriority">Filter by Priority</label>
+                        <select id="adminFilterPriority" onchange="filterAdminComplaints()">
+                            <option value="">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Filter by Complaint ID</label>
+                        <div class="custom-dropdown" id="adminFilterComplaintIdDropdown">
+                            <div class="dropdown-header" onclick="toggleAdminFilterComplaintIdDropdown()">
+                                <span class="dropdown-header-text" id="adminFilterComplaintIdHeaderText">All Complaint IDs</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-list" id="adminFilterComplaintIdList">
+                                <div style="padding: 8px; border-bottom: 1px solid #dfe3da;">
+                                    <input type="text" id="adminComplaintIdSearch" placeholder="Search Complaint ID..." style="width: 100%; padding: 8px; border: 1px solid #dfe3da; border-radius: 4px; font-size: 14px;" oninput="searchAdminComplaintIds()">
+                                </div>
+                                <div id="adminComplaintIdListItems" style="max-height: 250px; overflow-y: auto;">
+                                    <!-- Complaint IDs will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selected-tags" id="adminFilterComplaintIdTags" style="margin-top: 8px;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminFilterDateRange">Filter by Date</label>
+                        <input type="text" id="adminFilterDateRange" placeholder="Select date range..." readonly style="padding: 12px; border: 2px solid #dfe3da; border-radius: 8px; font-size: 1em; cursor: pointer;">
+                        <input type="hidden" id="adminFilterDateFrom">
+                        <input type="hidden" id="adminFilterDateTo">
+                    </div>
+
+                    <div class="form-group">
+                        <label style="opacity: 0; pointer-events: none;">Actions</label>
+                        <button class="btn-small" onclick="clearAdminFilters()" style="width: 100%; padding: 12px; height: auto; min-height: 48px;">🗑️ Clear All Filters</button>
                     </div>
                 </div>
 
@@ -3358,6 +3619,8 @@
 
         // Filter Category Multi-Select Functions
         let selectedFilterCategories = [];
+        let selectedFilterComplaintIds = [];
+        let filterDateRangePicker = null;
 
         function toggleFilterCategoryDropdown() {
             const header = document.querySelector('#filterCategoryDropdown .dropdown-header');
@@ -3427,8 +3690,151 @@
             filterComplaints();
         }
 
+        // View Complaints Filter Complaint ID Multi-Select Functions
+        function toggleFilterComplaintIdDropdown() {
+            const header = document.querySelector('#filterComplaintIdDropdown .dropdown-header');
+            const list = document.getElementById('filterComplaintIdList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+            
+            if (list.classList.contains('active')) {
+                populateFilterComplaintIdList();
+            }
+        }
+
+        function populateFilterComplaintIdList() {
+            const listContainer = document.getElementById('filterComplaintIdListItems');
+            const searchTerm = document.getElementById('filterComplaintIdSearch').value.toLowerCase();
+            
+            const complaintIds = [...new Set(allComplaints.map(c => c.id))].sort();
+            const filteredIds = complaintIds.filter(id => id.toLowerCase().includes(searchTerm));
+            
+            if (filteredIds.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 12px; color: #6d7869; text-align: center;">No matching IDs found</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = filteredIds.map(id => `
+                <div class="dropdown-item ${selectedFilterComplaintIds.includes(id) ? 'selected' : ''}" 
+                     data-value="${id}" 
+                     onclick="selectFilterComplaintId(this)">
+                    <div class="dropdown-item-checkbox"></div>
+                    <span>${id}</span>
+                </div>
+            `).join('');
+        }
+
+        function searchFilterComplaintIds() {
+            populateFilterComplaintIdList();
+        }
+
+        function selectFilterComplaintId(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedFilterComplaintIds.includes(value)) {
+                selectedFilterComplaintIds = selectedFilterComplaintIds.filter(id => id !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedFilterComplaintIds.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateFilterComplaintIdDisplay();
+            filterComplaints();
+        }
+
+        function updateFilterComplaintIdDisplay() {
+            const headerText = document.getElementById('filterComplaintIdHeaderText');
+            const tagsContainer = document.getElementById('filterComplaintIdTags');
+            
+            if (selectedFilterComplaintIds.length === 0) {
+                headerText.textContent = 'All Complaint IDs';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedFilterComplaintIds.length === 1 
+                    ? selectedFilterComplaintIds[0] 
+                    : `${selectedFilterComplaintIds.length} IDs selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedFilterComplaintIds.map(id => `
+                    <div class="selected-tag">
+                        <span>${id}</span>
+                        <span class="selected-tag-remove" onclick="removeFilterComplaintIdTag('${id}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeFilterComplaintIdTag(value) {
+            selectedFilterComplaintIds = selectedFilterComplaintIds.filter(id => id !== value);
+            
+            const items = document.querySelectorAll('#filterComplaintIdListItems .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateFilterComplaintIdDisplay();
+            filterComplaints();
+        }
+
+        // View Complaints Date Range Picker
+        function initFilterDateRangePicker() {
+            filterDateRangePicker = flatpickr("#filterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('filterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('filterDateTo').value = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    } else if (selectedDates.length === 1) {
+                        document.getElementById('filterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('filterDateTo').value = '';
+                    } else {
+                        document.getElementById('filterDateFrom').value = '';
+                        document.getElementById('filterDateTo').value = '';
+                    }
+                    filterComplaints();
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    filterComplaints();
+                }
+            });
+        }
+
+        // Clear View Complaints Filters
+        function clearViewFilters() {
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterBlock').value = '';
+            document.getElementById('filterFlat').value = '';
+            document.getElementById('filterPriority').value = '';
+            document.getElementById('filterDateFrom').value = '';
+            document.getElementById('filterDateTo').value = '';
+            
+            selectedFilterCategories = [];
+            const categoryItems = document.querySelectorAll('#filterCategoryList .dropdown-item');
+            categoryItems.forEach(item => item.classList.remove('selected'));
+            updateFilterCategoryDisplay();
+            
+            selectedFilterComplaintIds = [];
+            const complaintIdItems = document.querySelectorAll('#filterComplaintIdListItems .dropdown-item');
+            complaintIdItems.forEach(item => item.classList.remove('selected'));
+            updateFilterComplaintIdDisplay();
+            
+            if (filterDateRangePicker) {
+                filterDateRangePicker.clear();
+            }
+            
+            filterComplaints();
+        }
+
         // Admin Filter Category Multi-Select Functions
         let selectedAdminFilterCategories = [];
+        let selectedAdminFilterComplaintIds = [];
+        let adminDateRangePicker = null;
 
         function toggleAdminFilterCategoryDropdown() {
             const header = document.querySelector('#adminFilterCategoryDropdown .dropdown-header');
@@ -3498,8 +3904,160 @@
             filterAdminComplaints();
         }
 
+        // Admin Filter Complaint ID Multi-Select Functions
+        function toggleAdminFilterComplaintIdDropdown() {
+            const header = document.querySelector('#adminFilterComplaintIdDropdown .dropdown-header');
+            const list = document.getElementById('adminFilterComplaintIdList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+            
+            // Populate complaint IDs when opening
+            if (list.classList.contains('active')) {
+                populateAdminComplaintIdList();
+            }
+        }
+
+        function populateAdminComplaintIdList() {
+            const listContainer = document.getElementById('adminComplaintIdListItems');
+            const searchTerm = document.getElementById('adminComplaintIdSearch').value.toLowerCase();
+            
+            // Get unique complaint IDs from all complaints
+            const complaintIds = [...new Set(allComplaints.map(c => c.id))].sort();
+            
+            // Filter by search term
+            const filteredIds = complaintIds.filter(id => id.toLowerCase().includes(searchTerm));
+            
+            if (filteredIds.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 12px; color: #6d7869; text-align: center;">No matching IDs found</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = filteredIds.map(id => `
+                <div class="dropdown-item ${selectedAdminFilterComplaintIds.includes(id) ? 'selected' : ''}" 
+                     data-value="${id}" 
+                     onclick="selectAdminFilterComplaintId(this)">
+                    <div class="dropdown-item-checkbox"></div>
+                    <span>${id}</span>
+                </div>
+            `).join('');
+        }
+
+        function searchAdminComplaintIds() {
+            populateAdminComplaintIdList();
+        }
+
+        function selectAdminFilterComplaintId(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedAdminFilterComplaintIds.includes(value)) {
+                selectedAdminFilterComplaintIds = selectedAdminFilterComplaintIds.filter(id => id !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedAdminFilterComplaintIds.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateAdminFilterComplaintIdDisplay();
+            filterAdminComplaints();
+        }
+
+        function updateAdminFilterComplaintIdDisplay() {
+            const headerText = document.getElementById('adminFilterComplaintIdHeaderText');
+            const tagsContainer = document.getElementById('adminFilterComplaintIdTags');
+            
+            if (selectedAdminFilterComplaintIds.length === 0) {
+                headerText.textContent = 'All Complaint IDs';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedAdminFilterComplaintIds.length === 1 
+                    ? selectedAdminFilterComplaintIds[0] 
+                    : `${selectedAdminFilterComplaintIds.length} IDs selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedAdminFilterComplaintIds.map(id => `
+                    <div class="selected-tag">
+                        <span>${id}</span>
+                        <span class="selected-tag-remove" onclick="removeAdminFilterComplaintIdTag('${id}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeAdminFilterComplaintIdTag(value) {
+            selectedAdminFilterComplaintIds = selectedAdminFilterComplaintIds.filter(id => id !== value);
+            
+            // Update the dropdown item
+            const items = document.querySelectorAll('#adminComplaintIdListItems .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateAdminFilterComplaintIdDisplay();
+            filterAdminComplaints();
+        }
+
+        // Initialize Date Range Picker
+        function initAdminDateRangePicker() {
+            adminDateRangePicker = flatpickr("#adminFilterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('adminFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('adminFilterDateTo').value = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    } else if (selectedDates.length === 1) {
+                        document.getElementById('adminFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('adminFilterDateTo').value = '';
+                    } else {
+                        document.getElementById('adminFilterDateFrom').value = '';
+                        document.getElementById('adminFilterDateTo').value = '';
+                    }
+                    filterAdminComplaints();
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    // Ensure filtering happens when calendar closes
+                    filterAdminComplaints();
+                }
+            });
+        }
+
         // Filter Admin Complaints
         function filterAdminComplaints() {
+            displayAdminComplaints();
+        }
+
+        // Clear all admin filters
+        function clearAdminFilters() {
+            // Clear all filter values
+            document.getElementById('adminFilterStatus').value = '';
+            document.getElementById('adminFilterBlock').value = '';
+            document.getElementById('adminFilterFlat').value = '';
+            document.getElementById('adminFilterPriority').value = '';
+            document.getElementById('adminFilterDateFrom').value = '';
+            document.getElementById('adminFilterDateTo').value = '';
+            
+            // Clear category multi-select
+            selectedAdminFilterCategories = [];
+            const categoryItems = document.querySelectorAll('#adminFilterCategoryList .dropdown-item');
+            categoryItems.forEach(item => item.classList.remove('selected'));
+            updateAdminFilterCategoryDisplay();
+            
+            // Clear complaint ID multi-select
+            selectedAdminFilterComplaintIds = [];
+            const complaintIdItems = document.querySelectorAll('#adminComplaintIdListItems .dropdown-item');
+            complaintIdItems.forEach(item => item.classList.remove('selected'));
+            updateAdminFilterComplaintIdDisplay();
+            
+            // Clear date range picker
+            if (adminDateRangePicker) {
+                adminDateRangePicker.clear();
+            }
+            
+            // Refresh the display
             displayAdminComplaints();
         }
 
@@ -3522,6 +4080,8 @@
         });
 
         let selectedDashFilterCategories = [];
+        let selectedDashFilterComplaintIds = [];
+        let dashDateRangePicker = null;
 
         // Dashboard Filter Category Multi-Select Functions
         function toggleDashFilterCategoryDropdown() {
@@ -3584,6 +4144,147 @@
             updateDashboard();
         }
 
+        // Dashboard Filter Complaint ID Multi-Select Functions
+        function toggleDashFilterComplaintIdDropdown() {
+            const header = document.querySelector('#dashFilterComplaintIdDropdown .dropdown-header');
+            const list = document.getElementById('dashFilterComplaintIdList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+            
+            if (list.classList.contains('active')) {
+                populateDashComplaintIdList();
+            }
+        }
+
+        function populateDashComplaintIdList() {
+            const listContainer = document.getElementById('dashComplaintIdListItems');
+            const searchTerm = document.getElementById('dashComplaintIdSearch').value.toLowerCase();
+            
+            const complaintIds = [...new Set(allComplaints.map(c => c.id))].sort();
+            const filteredIds = complaintIds.filter(id => id.toLowerCase().includes(searchTerm));
+            
+            if (filteredIds.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 12px; color: #6d7869; text-align: center;">No matching IDs found</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = filteredIds.map(id => `
+                <div class="dropdown-item ${selectedDashFilterComplaintIds.includes(id) ? 'selected' : ''}" 
+                     data-value="${id}" 
+                     onclick="selectDashFilterComplaintId(this)">
+                    <div class="dropdown-item-checkbox"></div>
+                    <span>${id}</span>
+                </div>
+            `).join('');
+        }
+
+        function searchDashComplaintIds() {
+            populateDashComplaintIdList();
+        }
+
+        function selectDashFilterComplaintId(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedDashFilterComplaintIds.includes(value)) {
+                selectedDashFilterComplaintIds = selectedDashFilterComplaintIds.filter(id => id !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedDashFilterComplaintIds.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateDashFilterComplaintIdDisplay();
+            updateDashboard();
+        }
+
+        function updateDashFilterComplaintIdDisplay() {
+            const headerText = document.getElementById('dashFilterComplaintIdHeaderText');
+            const tagsContainer = document.getElementById('dashFilterComplaintIdTags');
+            
+            if (selectedDashFilterComplaintIds.length === 0) {
+                headerText.textContent = 'All Complaint IDs';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedDashFilterComplaintIds.length === 1 
+                    ? selectedDashFilterComplaintIds[0] 
+                    : `${selectedDashFilterComplaintIds.length} IDs selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedDashFilterComplaintIds.map(id => `
+                    <div class="selected-tag">
+                        <span>${id}</span>
+                        <span class="selected-tag-remove" onclick="removeDashFilterComplaintIdTag('${id}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeDashFilterComplaintIdTag(value) {
+            selectedDashFilterComplaintIds = selectedDashFilterComplaintIds.filter(id => id !== value);
+            
+            const items = document.querySelectorAll('#dashComplaintIdListItems .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateDashFilterComplaintIdDisplay();
+            updateDashboard();
+        }
+
+        // Dashboard Date Range Picker
+        function initDashDateRangePicker() {
+            dashDateRangePicker = flatpickr("#dashFilterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('dashFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('dashFilterDateTo').value = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    } else if (selectedDates.length === 1) {
+                        document.getElementById('dashFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('dashFilterDateTo').value = '';
+                    } else {
+                        document.getElementById('dashFilterDateFrom').value = '';
+                        document.getElementById('dashFilterDateTo').value = '';
+                    }
+                    updateDashboard();
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    updateDashboard();
+                }
+            });
+        }
+
+        // Clear Dashboard Filters
+        function clearDashFilters() {
+            document.getElementById('dashFilterStatus').value = '';
+            document.getElementById('dashFilterBlock').value = '';
+            document.getElementById('dashFilterFlat').value = '';
+            document.getElementById('dashFilterPriority').value = '';
+            document.getElementById('dashFilterDateFrom').value = '';
+            document.getElementById('dashFilterDateTo').value = '';
+            
+            selectedDashFilterCategories = [];
+            const categoryItems = document.querySelectorAll('#dashFilterCategoryList .dropdown-item');
+            categoryItems.forEach(item => item.classList.remove('selected'));
+            updateDashFilterCategoryDisplay();
+            
+            selectedDashFilterComplaintIds = [];
+            const complaintIdItems = document.querySelectorAll('#dashComplaintIdListItems .dropdown-item');
+            complaintIdItems.forEach(item => item.classList.remove('selected'));
+            updateDashFilterComplaintIdDisplay();
+            
+            if (dashDateRangePicker) {
+                dashDateRangePicker.clear();
+            }
+            
+            updateDashboard();
+        }
+
         // Get filtered complaints for dashboard
         function getFilteredDashboardComplaints() {
             let complaints = [...allComplaints];
@@ -3591,6 +4292,9 @@
             const statusFilter = document.getElementById('dashFilterStatus').value;
             const blockFilter = document.getElementById('dashFilterBlock').value;
             const flatFilter = document.getElementById('dashFilterFlat').value;
+            const priorityFilter = document.getElementById('dashFilterPriority').value;
+            const dateFromFilter = document.getElementById('dashFilterDateFrom').value;
+            const dateToFilter = document.getElementById('dashFilterDateTo').value;
 
             if (statusFilter) {
                 complaints = complaints.filter(c => c.status === statusFilter);
@@ -3610,6 +4314,33 @@
             }
             if (flatFilter) {
                 complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+            
+            if (priorityFilter) {
+                complaints = complaints.filter(c => c.priority === priorityFilter);
+            }
+            
+            if (selectedDashFilterComplaintIds.length > 0) {
+                complaints = complaints.filter(c => selectedDashFilterComplaintIds.includes(c.id));
+            }
+            
+            if (dateFromFilter) {
+                const fromDate = new Date(dateFromFilter);
+                fromDate.setHours(0, 0, 0, 0);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    complaintDate.setHours(0, 0, 0, 0);
+                    return complaintDate >= fromDate;
+                });
+            }
+            
+            if (dateToFilter) {
+                const toDate = new Date(dateToFilter);
+                toDate.setHours(23, 59, 59, 999);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    return complaintDate <= toDate;
+                });
             }
 
             return complaints;
@@ -4186,6 +4917,8 @@
         // ============================================
 
         let selectedReportsFilterCategories = [];
+        let selectedReportsFilterComplaintIds = [];
+        let reportsDateRangePicker = null;
 
         // Reports Filter Category Multi-Select Functions
         function toggleReportsFilterCategoryDropdown() {
@@ -4248,6 +4981,147 @@
             updateReportsTable();
         }
 
+        // Reports Filter Complaint ID Multi-Select Functions
+        function toggleReportsFilterComplaintIdDropdown() {
+            const header = document.querySelector('#reportsFilterComplaintIdDropdown .dropdown-header');
+            const list = document.getElementById('reportsFilterComplaintIdList');
+            
+            header.classList.toggle('active');
+            list.classList.toggle('active');
+            
+            if (list.classList.contains('active')) {
+                populateReportsComplaintIdList();
+            }
+        }
+
+        function populateReportsComplaintIdList() {
+            const listContainer = document.getElementById('reportsComplaintIdListItems');
+            const searchTerm = document.getElementById('reportsComplaintIdSearch').value.toLowerCase();
+            
+            const complaintIds = [...new Set(allComplaints.map(c => c.id))].sort();
+            const filteredIds = complaintIds.filter(id => id.toLowerCase().includes(searchTerm));
+            
+            if (filteredIds.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 12px; color: #6d7869; text-align: center;">No matching IDs found</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = filteredIds.map(id => `
+                <div class="dropdown-item ${selectedReportsFilterComplaintIds.includes(id) ? 'selected' : ''}" 
+                     data-value="${id}" 
+                     onclick="selectReportsFilterComplaintId(this)">
+                    <div class="dropdown-item-checkbox"></div>
+                    <span>${id}</span>
+                </div>
+            `).join('');
+        }
+
+        function searchReportsComplaintIds() {
+            populateReportsComplaintIdList();
+        }
+
+        function selectReportsFilterComplaintId(element) {
+            const value = element.getAttribute('data-value');
+            
+            if (selectedReportsFilterComplaintIds.includes(value)) {
+                selectedReportsFilterComplaintIds = selectedReportsFilterComplaintIds.filter(id => id !== value);
+                element.classList.remove('selected');
+            } else {
+                selectedReportsFilterComplaintIds.push(value);
+                element.classList.add('selected');
+            }
+            
+            updateReportsFilterComplaintIdDisplay();
+            updateReportsTable();
+        }
+
+        function updateReportsFilterComplaintIdDisplay() {
+            const headerText = document.getElementById('reportsFilterComplaintIdHeaderText');
+            const tagsContainer = document.getElementById('reportsFilterComplaintIdTags');
+            
+            if (selectedReportsFilterComplaintIds.length === 0) {
+                headerText.textContent = 'All Complaint IDs';
+                headerText.classList.remove('placeholder');
+                tagsContainer.innerHTML = '';
+            } else {
+                headerText.textContent = selectedReportsFilterComplaintIds.length === 1 
+                    ? selectedReportsFilterComplaintIds[0] 
+                    : `${selectedReportsFilterComplaintIds.length} IDs selected`;
+                headerText.classList.remove('placeholder');
+                
+                tagsContainer.innerHTML = selectedReportsFilterComplaintIds.map(id => `
+                    <div class="selected-tag">
+                        <span>${id}</span>
+                        <span class="selected-tag-remove" onclick="removeReportsFilterComplaintIdTag('${id}')">×</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeReportsFilterComplaintIdTag(value) {
+            selectedReportsFilterComplaintIds = selectedReportsFilterComplaintIds.filter(id => id !== value);
+            
+            const items = document.querySelectorAll('#reportsComplaintIdListItems .dropdown-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-value') === value) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            updateReportsFilterComplaintIdDisplay();
+            updateReportsTable();
+        }
+
+        // Reports Date Range Picker
+        function initReportsDateRangePicker() {
+            reportsDateRangePicker = flatpickr("#reportsFilterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('reportsFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('reportsFilterDateTo').value = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    } else if (selectedDates.length === 1) {
+                        document.getElementById('reportsFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('reportsFilterDateTo').value = '';
+                    } else {
+                        document.getElementById('reportsFilterDateFrom').value = '';
+                        document.getElementById('reportsFilterDateTo').value = '';
+                    }
+                    updateReportsTable();
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    updateReportsTable();
+                }
+            });
+        }
+
+        // Clear Reports Filters
+        function clearReportsFilters() {
+            document.getElementById('reportsFilterStatus').value = '';
+            document.getElementById('reportsFilterBlock').value = '';
+            document.getElementById('reportsFilterFlat').value = '';
+            document.getElementById('reportsFilterPriority').value = '';
+            document.getElementById('reportsFilterDateFrom').value = '';
+            document.getElementById('reportsFilterDateTo').value = '';
+            
+            selectedReportsFilterCategories = [];
+            const categoryItems = document.querySelectorAll('#reportsFilterCategoryList .dropdown-item');
+            categoryItems.forEach(item => item.classList.remove('selected'));
+            updateReportsFilterCategoryDisplay();
+            
+            selectedReportsFilterComplaintIds = [];
+            const complaintIdItems = document.querySelectorAll('#reportsComplaintIdListItems .dropdown-item');
+            complaintIdItems.forEach(item => item.classList.remove('selected'));
+            updateReportsFilterComplaintIdDisplay();
+            
+            if (reportsDateRangePicker) {
+                reportsDateRangePicker.clear();
+            }
+            
+            updateReportsTable();
+        }
+
         // Get filtered complaints for reports
         function getFilteredReportsComplaints() {
             let complaints = [...allComplaints];
@@ -4255,6 +5129,9 @@
             const statusFilter = document.getElementById('reportsFilterStatus').value;
             const blockFilter = document.getElementById('reportsFilterBlock').value;
             const flatFilter = document.getElementById('reportsFilterFlat').value;
+            const priorityFilter = document.getElementById('reportsFilterPriority').value;
+            const dateFromFilter = document.getElementById('reportsFilterDateFrom').value;
+            const dateToFilter = document.getElementById('reportsFilterDateTo').value;
 
             if (statusFilter) {
                 complaints = complaints.filter(c => c.status === statusFilter);
@@ -4274,6 +5151,33 @@
             }
             if (flatFilter) {
                 complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+            
+            if (priorityFilter) {
+                complaints = complaints.filter(c => c.priority === priorityFilter);
+            }
+            
+            if (selectedReportsFilterComplaintIds.length > 0) {
+                complaints = complaints.filter(c => selectedReportsFilterComplaintIds.includes(c.id));
+            }
+            
+            if (dateFromFilter) {
+                const fromDate = new Date(dateFromFilter);
+                fromDate.setHours(0, 0, 0, 0);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    complaintDate.setHours(0, 0, 0, 0);
+                    return complaintDate >= fromDate;
+                });
+            }
+            
+            if (dateToFilter) {
+                const toDate = new Date(dateToFilter);
+                toDate.setHours(23, 59, 59, 999);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    return complaintDate <= toDate;
+                });
             }
 
             return complaints;
@@ -4604,6 +5508,9 @@
             const statusFilter = document.getElementById('filterStatus').value;
             const blockFilter = document.getElementById('filterBlock').value;
             const flatFilter = document.getElementById('filterFlat').value;
+            const priorityFilter = document.getElementById('filterPriority').value;
+            const dateFromFilter = document.getElementById('filterDateFrom').value;
+            const dateToFilter = document.getElementById('filterDateTo').value;
 
             if (statusFilter) {
                 complaints = complaints.filter(c => c.status === statusFilter);
@@ -4626,6 +5533,33 @@
             }
             if (flatFilter) {
                 complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+            
+            if (priorityFilter) {
+                complaints = complaints.filter(c => c.priority === priorityFilter);
+            }
+            
+            if (selectedFilterComplaintIds.length > 0) {
+                complaints = complaints.filter(c => selectedFilterComplaintIds.includes(c.id));
+            }
+            
+            if (dateFromFilter) {
+                const fromDate = new Date(dateFromFilter);
+                fromDate.setHours(0, 0, 0, 0);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    complaintDate.setHours(0, 0, 0, 0);
+                    return complaintDate >= fromDate;
+                });
+            }
+            
+            if (dateToFilter) {
+                const toDate = new Date(dateToFilter);
+                toDate.setHours(23, 59, 59, 999);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    return complaintDate <= toDate;
+                });
             }
 
             if (complaints.length === 0) {
@@ -4729,6 +5663,9 @@
             const statusFilter = document.getElementById('adminFilterStatus').value;
             const blockFilter = document.getElementById('adminFilterBlock').value;
             const flatFilter = document.getElementById('adminFilterFlat').value;
+            const priorityFilter = document.getElementById('adminFilterPriority').value;
+            const dateFromFilter = document.getElementById('adminFilterDateFrom').value;
+            const dateToFilter = document.getElementById('adminFilterDateTo').value;
 
             if (statusFilter) {
                 complaints = complaints.filter(c => c.status === statusFilter);
@@ -4751,6 +5688,36 @@
             }
             if (flatFilter) {
                 complaints = complaints.filter(c => c.flatNumber === flatFilter);
+            }
+            
+            // Priority filter
+            if (priorityFilter) {
+                complaints = complaints.filter(c => c.priority === priorityFilter);
+            }
+            
+            // Multi-select Complaint ID filter
+            if (selectedAdminFilterComplaintIds.length > 0) {
+                complaints = complaints.filter(c => selectedAdminFilterComplaintIds.includes(c.id));
+            }
+            
+            // Date range filter
+            if (dateFromFilter) {
+                const fromDate = new Date(dateFromFilter);
+                fromDate.setHours(0, 0, 0, 0);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    complaintDate.setHours(0, 0, 0, 0);
+                    return complaintDate >= fromDate;
+                });
+            }
+            
+            if (dateToFilter) {
+                const toDate = new Date(dateToFilter);
+                toDate.setHours(23, 59, 59, 999);
+                complaints = complaints.filter(c => {
+                    const complaintDate = new Date(c.dateRegistered);
+                    return complaintDate <= toDate;
+                });
             }
 
             if (complaints.length === 0) {
@@ -5018,6 +5985,10 @@
         // Initialize on page load
         window.addEventListener('load', function() {
             initializeFlatNumbers();
+            initFilterDateRangePicker();
+            initDashDateRangePicker();
+            initReportsDateRangePicker();
+            initAdminDateRangePicker();
             
             // Check if configured
             if (!isConfigured()) {
