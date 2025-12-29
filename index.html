@@ -3633,6 +3633,28 @@
             <!-- Maintenance Status Section -->
             <div style="margin-top: 40px;">
                 <h3 style="color: #5d7a5a; margin-bottom: 20px;">📋 Maintenance Payment Status</h3>
+                
+                <!-- Filter Section for Maintenance -->
+                <div class="filter-section" style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label for="maintenanceFilterDateRange">Filter by Date</label>
+                        <input type="text" id="maintenanceFilterDateRange" placeholder="Select date range..." readonly style="padding: 12px; border: 2px solid #dfe3da; border-radius: 8px; font-size: 1em; cursor: pointer;">
+                        <input type="hidden" id="maintenanceFilterDateFrom">
+                        <input type="hidden" id="maintenanceFilterDateTo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="maintenanceFilterUnpaid" onchange="filterMaintenanceTable()" style="margin-right: 8px; width: auto; transform: scale(1.2);">
+                            Show Only Unpaid
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn-small" onclick="clearMaintenanceFilters()" style="width: 100%; padding: 12px; height: auto; min-height: 48px;">🗑️ Clear All Filters</button>
+                    </div>
+                </div>
+
                 <div id="recentPaymentsContainer">
                     <p style="color: #6d7869; text-align: center; padding: 20px;">Loading maintenance status...</p>
                 </div>
@@ -6565,6 +6587,7 @@
             initDashDateRangePicker();
             initReportsDateRangePicker();
             initAdminDateRangePicker();
+            initMaintenanceFilterDateRangePicker();
             
             // Check if configured
             if (!isConfigured()) {
@@ -7562,6 +7585,293 @@
                 console.error('Error loading maintenance status:', error);
                 container.innerHTML = '<p class="error-message">Unable to load maintenance status. Please try again later.</p>';
             }
+        }
+
+        // Store maintenance data globally for filtering
+        let allMaintenanceData = null;
+        let maintenanceFilterDateRangePicker = null;
+
+        // Enhanced loadMaintenanceStatus with filter support
+        async function loadMaintenanceStatus() {
+            const container = document.getElementById('recentPaymentsContainer');
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getMaintenanceStatus`);
+                const data = await response.json();
+
+                if (data && data.payments && data.payments.length > 0) {
+                    // Store data globally for filtering
+                    allMaintenanceData = data;
+                    
+                    // Apply current filters
+                    filterMaintenanceTable();
+                } else {
+                    container.innerHTML = '<p class="no-records">No maintenance records found.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading maintenance status:', error);
+                container.innerHTML = '<p class="error-message">Unable to load maintenance status. Please try again later.</p>';
+            }
+        }
+
+        // Filter maintenance table based on date range and unpaid status
+        function filterMaintenanceTable() {
+            if (!allMaintenanceData) return;
+
+            const container = document.getElementById('recentPaymentsContainer');
+            const dateFrom = document.getElementById('maintenanceFilterDateFrom').value;
+            const dateTo = document.getElementById('maintenanceFilterDateTo').value;
+            const showOnlyUnpaid = document.getElementById('maintenanceFilterUnpaid').checked;
+
+            let monthColumns = allMaintenanceData.monthColumns;
+            let filteredPayments = allMaintenanceData.payments;
+
+            console.log('Filtering maintenance data:', {
+                dateFrom,
+                dateTo,
+                showOnlyUnpaid,
+                totalFlats: filteredPayments.length,
+                monthColumns
+            });
+
+            // CONDITION 1: Date range set, unpaid NOT checked
+            // Filter rows with PAID dates in the range
+            if ((dateFrom || dateTo) && !showOnlyUnpaid) {
+                const fromDate = dateFrom ? new Date(dateFrom) : null;
+                const toDate = dateTo ? new Date(dateTo) : null;
+                
+                if (fromDate) fromDate.setHours(0, 0, 0, 0);
+                if (toDate) toDate.setHours(23, 59, 59, 999);
+
+                console.log('CONDITION 1: Date range set, unpaid NOT checked - showing PAID in date range');
+
+                filteredPayments = filteredPayments.filter(payment => {
+                    return monthColumns.some(col => {
+                        const status = payment[col];
+                        if (!status || status === '') return false;
+                        
+                        const paymentDate = parsePaymentDate(status);
+                        if (!paymentDate) return false;
+
+                        let inRange = false;
+                        if (fromDate && toDate) {
+                            inRange = paymentDate >= fromDate && paymentDate <= toDate;
+                        } else if (fromDate) {
+                            inRange = paymentDate >= fromDate;
+                        } else if (toDate) {
+                            inRange = paymentDate <= toDate;
+                        }
+
+                        return inRange;
+                    });
+                });
+
+                console.log('After filtering (PAID in date range):', filteredPayments.length, 'flats');
+            }
+            
+            // CONDITION 2: Date range NOT set, unpaid IS checked
+            // Filter rows with UNPAID months (any month)
+            else if (!dateFrom && !dateTo && showOnlyUnpaid) {
+                console.log('CONDITION 2: Date range NOT set, unpaid IS checked - showing UNPAID');
+
+                filteredPayments = filteredPayments.filter(payment => {
+                    return monthColumns.some(col => {
+                        const status = payment[col];
+                        return !status || status === '';
+                    });
+                });
+
+                console.log('After filtering (UNPAID):', filteredPayments.length, 'flats');
+            }
+            
+            // CONDITION 3: Date range set, unpaid IS checked
+            // Filter rows with UNPAID months (ignore date range for unpaid)
+            else if ((dateFrom || dateTo) && showOnlyUnpaid) {
+                console.log('CONDITION 3: Date range set, unpaid IS checked - showing UNPAID (ignoring date range)');
+
+                filteredPayments = filteredPayments.filter(payment => {
+                    return monthColumns.some(col => {
+                        const status = payment[col];
+                        return !status || status === '';
+                    });
+                });
+
+                console.log('After filtering (UNPAID):', filteredPayments.length, 'flats');
+            }
+
+            // Render filtered table
+            if (filteredPayments.length > 0 && monthColumns.length > 0) {
+                container.innerHTML = `
+                    <div class="maintenance-table-wrapper">
+                        <table class="maintenance-table">
+                            <thead>
+                                <tr>
+                                    <th class="sticky-col-1">Flat Number</th>
+                                    <th class="sticky-col-2">Block Name</th>
+                                    ${monthColumns.map(col => `<th class="month-col">${col}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filteredPayments.map((payment, index) => `
+                                    <tr class="${index % 2 === 0 ? 'even-row' : 'odd-row'}">
+                                        <td class="sticky-col-1 flat-cell">${payment.flat}</td>
+                                        <td class="sticky-col-2 block-cell">${payment.block}</td>
+                                        ${monthColumns.map(col => {
+                                            const status = payment[col];
+                                            if (status && status !== '') {
+                                                return `<td class="status-cell">
+                                                    <span class="paid-badge">
+                                                        ✓ ${status}
+                                                    </span>
+                                                </td>`;
+                                            } else {
+                                                return `<td class="status-cell unpaid">—</td>`;
+                                            }
+                                        }).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="maintenance-summary">
+                        <strong>Showing:</strong> ${filteredPayments.length} of ${allMaintenanceData.payments.length} flats | 
+                        <strong>Months:</strong> ${monthColumns.length}
+                        ${(dateFrom || dateTo) && !showOnlyUnpaid ? ' (paid in date range)' : ''}
+                        ${showOnlyUnpaid ? ' (unpaid only)' : ''}
+                    </p>
+                `;
+            } else if (filteredPayments.length === 0) {
+                const message = showOnlyUnpaid 
+                    ? 'No flats with unpaid months found.' 
+                    : 'No flats have payment dates within the selected date range.';
+                container.innerHTML = `<p class="no-records">${message}</p>`;
+            } else {
+                container.innerHTML = '<p class="no-records">No records found matching the filters.</p>';
+            }
+        }
+
+        // Helper function to parse payment date from status string
+        function parsePaymentDate(dateStr) {
+            // Handle formats like "28-Dec-2024", "28/12/2024", "29/12/2025", "2024-12-28"
+            if (!dateStr || dateStr === '') return null;
+
+            const months = {
+                'Jan': 0, 'January': 0,
+                'Feb': 1, 'February': 1,
+                'Mar': 2, 'March': 2,
+                'Apr': 3, 'April': 3,
+                'May': 4,
+                'Jun': 5, 'June': 5,
+                'Jul': 6, 'July': 6,
+                'Aug': 7, 'August': 7,
+                'Sep': 8, 'September': 8, 'Sept': 8,
+                'Oct': 9, 'October': 9,
+                'Nov': 10, 'November': 10,
+                'Dec': 11, 'December': 11
+            };
+
+            dateStr = dateStr.trim();
+
+            // Try "28/12/2024" or "29/12/2025" format (DD/MM/YYYY)
+            if (dateStr.includes('/')) {
+                const slashParts = dateStr.split('/');
+                if (slashParts.length === 3) {
+                    const day = parseInt(slashParts[0]);
+                    const month = parseInt(slashParts[1]);
+                    const year = parseInt(slashParts[2]);
+
+                    // Check if it's DD/MM/YYYY format (month should be 1-12)
+                    if (!isNaN(day) && !isNaN(month) && !isNaN(year) && month >= 1 && month <= 12) {
+                        return new Date(year, month - 1, day);
+                    }
+
+                    // Check if it's MM/DD/YYYY format
+                    if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                        return new Date(year, day - 1, month);
+                    }
+
+                    // Try with month name: "28/Dec/2024"
+                    const monthKey = Object.keys(months).find(key => 
+                        key.toLowerCase() === slashParts[1].toLowerCase()
+                    );
+                    if (!isNaN(day) && monthKey !== undefined && !isNaN(year)) {
+                        return new Date(year, months[monthKey], day);
+                    }
+                }
+            }
+
+            // Try "28-Dec-2024" format
+            if (dateStr.includes('-')) {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0]);
+                    const monthKey = Object.keys(months).find(key => 
+                        key.toLowerCase() === parts[1].toLowerCase()
+                    );
+                    const year = parseInt(parts[2]);
+
+                    if (!isNaN(day) && monthKey !== undefined && !isNaN(year)) {
+                        return new Date(year, months[monthKey], day);
+                    }
+
+                    // Try "2024-12-28" format (ISO format YYYY-MM-DD)
+                    const isoYear = parseInt(parts[0]);
+                    const isoMonth = parseInt(parts[1]);
+                    const isoDay = parseInt(parts[2]);
+                    if (!isNaN(isoYear) && !isNaN(isoMonth) && !isNaN(isoDay) && isoMonth >= 1 && isoMonth <= 12) {
+                        return new Date(isoYear, isoMonth - 1, isoDay);
+                    }
+
+                    // Try DD-MM-YYYY format
+                    const ddmmyyyy_day = parseInt(parts[0]);
+                    const ddmmyyyy_month = parseInt(parts[1]);
+                    const ddmmyyyy_year = parseInt(parts[2]);
+                    if (!isNaN(ddmmyyyy_day) && !isNaN(ddmmyyyy_month) && !isNaN(ddmmyyyy_year) && 
+                        ddmmyyyy_month >= 1 && ddmmyyyy_month <= 12 && ddmmyyyy_day >= 1 && ddmmyyyy_day <= 31) {
+                        return new Date(ddmmyyyy_year, ddmmyyyy_month - 1, ddmmyyyy_day);
+                    }
+                }
+            }
+
+            console.warn('Unable to parse payment date:', dateStr);
+            return null;
+        }
+
+        // Initialize maintenance date range picker
+        function initMaintenanceFilterDateRangePicker() {
+            maintenanceFilterDateRangePicker = flatpickr("#maintenanceFilterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('maintenanceFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('maintenanceFilterDateTo').value = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    } else if (selectedDates.length === 1) {
+                        document.getElementById('maintenanceFilterDateFrom').value = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('maintenanceFilterDateTo').value = '';
+                    } else {
+                        document.getElementById('maintenanceFilterDateFrom').value = '';
+                        document.getElementById('maintenanceFilterDateTo').value = '';
+                    }
+                    filterMaintenanceTable();
+                },
+                onClose: function(selectedDates, dateStr, instance) {
+                    filterMaintenanceTable();
+                }
+            });
+        }
+
+        // Clear maintenance filters
+        function clearMaintenanceFilters() {
+            document.getElementById('maintenanceFilterDateFrom').value = '';
+            document.getElementById('maintenanceFilterDateTo').value = '';
+            document.getElementById('maintenanceFilterUnpaid').checked = false;
+            
+            if (maintenanceFilterDateRangePicker) {
+                maintenanceFilterDateRangePicker.clear();
+            }
+            
+            filterMaintenanceTable();
         }
 
         // Maintenance table styles - Light and Dark Mode adaptive
