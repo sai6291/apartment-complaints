@@ -882,6 +882,535 @@
             transform: rotate(180deg);
         }
 
+        /* ========================================
+           CHATBOT STYLES
+           ======================================== */
+        
+        /* Chatbot Button */
+        .chatbot-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .chatbot-button svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .chatbot-button .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .chatbot-button .notification-badge.show {
+            display: flex;
+        }
+
+        /* Chatbot Container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-container.open {
+            display: flex;
+        }
+
+        /* Chatbot Header */
+        .chatbot-header {
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .chatbot-header-text h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chatbot-header-text p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .chatbot-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Chatbot Messages Area */
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f7f8f4;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chatbot-message {
+            display: flex;
+            gap: 8px;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chatbot-message.bot {
+            align-self: flex-start;
+        }
+
+        .chatbot-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chatbot-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #7a9b76;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .chatbot-message.user .chatbot-message-avatar {
+            background: #b8956a;
+        }
+
+        .chatbot-message-content {
+            max-width: 70%;
+        }
+
+        .chatbot-message-bubble {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .chatbot-message.user .chatbot-message-bubble {
+            background: #7a9b76;
+            color: white;
+        }
+
+        .chatbot-message-time {
+            font-size: 10px;
+            color: #9ba594;
+            margin-top: 4px;
+            padding: 0 8px;
+        }
+
+        /* Typing Indicator */
+        .chatbot-typing {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .chatbot-typing span {
+            width: 8px;
+            height: 8px;
+            background: #9ba594;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .chatbot-typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .chatbot-typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Chatbot Input Area */
+        .chatbot-input-area {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #eff2f0;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            border: 2px solid #dfe3da;
+            border-radius: 24px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chatbot-input:focus {
+            border-color: #7a9b76;
+        }
+
+        .chatbot-send-btn {
+            width: 44px;
+            height: 44px;
+            background: #7a9b76;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .chatbot-send-btn:hover {
+            background: #5d7a5a;
+            transform: scale(1.05);
+        }
+
+        .chatbot-send-btn:disabled {
+            background: #c4ccc7;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .chatbot-send-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Chatbot Suggestion Buttons */
+        .chatbot-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #eff2f0;
+        }
+
+        .chatbot-suggestion-btn {
+            background: linear-gradient(135deg, #f7f8f4 0%, #eff2f0 100%);
+            border: 2px solid #dfe3da;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: #4a5546;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .chatbot-suggestion-btn:hover {
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            color: white;
+            border-color: #7a9b76;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(122, 155, 118, 0.3);
+        }
+
+        .chatbot-suggestion-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Dark Mode Suggestion Buttons */
+        .dark-mode .chatbot-suggestions {
+            background: #1a1f1d;
+            border-top-color: #3a4441;
+        }
+
+        .dark-mode .chatbot-suggestion-btn {
+            background: #2d3532;
+            border-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chatbot-suggestion-btn:hover {
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            color: white;
+            border-color: #7a9b76;
+        }
+
+        /* Chatbot Dropdown Wrapper */
+        .chatbot-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chatbot-dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chatbot-dropdown-btn .dropdown-arrow {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        .chatbot-dropdown-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .chatbot-dropdown-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 8px;
+            background: white;
+            border: 2px solid #dfe3da;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .chatbot-dropdown-menu.active {
+            display: block;
+        }
+
+        .chatbot-dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            color: #4a5546;
+            border-bottom: 1px solid #f0f2ee;
+            background: white;
+        }
+
+        .chatbot-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .chatbot-dropdown-item:hover {
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            color: white;
+        }
+
+        .chatbot-dropdown-item:first-child {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .chatbot-dropdown-item:last-child {
+            border-radius: 0 0 10px 10px;
+        }
+        
+        /* Ensure scrollbar is visible */
+        .chatbot-dropdown-menu::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chatbot-dropdown-menu::-webkit-scrollbar-track {
+            background: #f0f2ee;
+            border-radius: 10px;
+        }
+        
+        .chatbot-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #7a9b76;
+            border-radius: 10px;
+        }
+        
+        .chatbot-dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #5d7a5a;
+        }
+
+        /* Dark Mode Dropdown */
+        .dark-mode .chatbot-dropdown-menu {
+            background: #2d3532;
+            border-color: #3a4441;
+        }
+
+        .dark-mode .chatbot-dropdown-item {
+            color: #e8ebe9;
+            border-bottom-color: #3a4441;
+            background: #2d3532;
+        }
+
+        .dark-mode .chatbot-dropdown-item:hover {
+            background: linear-gradient(135deg, #7a9b76 0%, #5d7a5a 100%);
+            color: white;
+        }
+        
+        /* Dark mode scrollbar */
+        .dark-mode .chatbot-dropdown-menu::-webkit-scrollbar-track {
+            background: #3a4441;
+        }
+        
+        .dark-mode .chatbot-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #7a9b76;
+        }
+
+        /* Make header position relative for absolute positioning */
+        .dark-mode .chatbot-container {
+            background: #1a1f1d;
+        }
+
+        .dark-mode .chatbot-messages {
+            background: #1f2521;
+        }
+
+        .dark-mode .chatbot-message-bubble {
+            background: #242928;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chatbot-message.user .chatbot-message-bubble {
+            background: #7a9b76;
+            color: white;
+        }
+
+        .dark-mode .chatbot-typing {
+            background: #242928;
+        }
+
+        .dark-mode .chatbot-input-area {
+            background: #1a1f1d;
+            border-top-color: #3a4441;
+        }
+
+        .dark-mode .chatbot-input {
+            background: #2d3532;
+            border-color: #3a4441;
+            color: #e8ebe9;
+        }
+
+        .dark-mode .chatbot-input:focus {
+            border-color: #7a9b76;
+        }
+
+        .dark-mode .chatbot-message-time {
+            color: #6d7869;
+        }
+
+        /* Responsive Chatbot */
+        @media (max-width: 768px) {
+            .chatbot-container {
+                width: calc(100vw - 40px);
+                right: 20px;
+                left: 20px;
+                bottom: 90px;
+                height: 500px;
+            }
+
+            .chatbot-button {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
         /* Make header position relative for absolute positioning */
         .header {
             position: relative;
@@ -1914,6 +2443,7 @@
             <button class="tab" onclick="switchTab('view', event)">📋 View Complaints</button>
             <button class="tab" onclick="switchTab('dashboard', event)">📊 Dashboard</button>
             <button class="tab" onclick="switchTab('reports', event)">📑 Reports</button>
+            <button class="tab" onclick="switchTab('maintenance', event)">💰 Maintenance</button>
             <button class="tab" onclick="switchTab('admin', event)">⚙️ Admin Panel</button>
         </div>
 
@@ -3068,6 +3598,47 @@
             </div>
         </div>
 
+        <!-- Maintenance Tab -->
+        <div id="maintenance" class="tab-content">
+            <h2 style="color: #5d7a5a; margin-bottom: 30px;">💰 Maintenance Payment</h2>
+            
+            <form id="maintenanceForm" class="complaint-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maintenanceFlat">Flat Number *</label>
+                        <select id="maintenanceFlat" required onchange="updateMaintenanceBlock()">
+                            <option value="">Select your flat number</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maintenanceBlock">Block *</label>
+                        <select id="maintenanceBlock" required disabled>
+                            <option value="">Auto-selected based on flat</option>
+                            <option value="Block A">Block A</option>
+                            <option value="Block B">Block B</option>
+                            <option value="THRWA">THRWA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">✅ Paid</button>
+            </form>
+
+            <div id="maintenanceSuccess" class="success-message" style="display: none;">
+                <p>✅ Maintenance payment recorded successfully!</p>
+                <p><strong>Payment ID:</strong> <span id="maintenancePaymentId"></span></p>
+            </div>
+
+            <!-- Maintenance Status Section -->
+            <div style="margin-top: 40px;">
+                <h3 style="color: #5d7a5a; margin-bottom: 20px;">📋 Maintenance Payment Status</h3>
+                <div id="recentPaymentsContainer">
+                    <p style="color: #6d7869; text-align: center; padding: 20px;">Loading maintenance status...</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -3151,6 +3722,11 @@
                 console.log('Checking admin access...');
                 if (typeof checkAdminAccess === 'function') {
                     checkAdminAccess();
+                }
+            } else if (tabName === 'maintenance') {
+                console.log('Loading maintenance status...');
+                if (typeof loadMaintenanceStatus === 'function') {
+                    loadMaintenanceStatus();
                 }
             }
         }
@@ -6036,6 +6612,1292 @@
 
         // Initialize dark mode on page load
         initDarkMode();
+
+        // ============================================
+        // CHATBOT FUNCTIONALITY
+        // ============================================
+
+        let chatMessages = [];
+        let isChatbotTyping = false;
+
+        // Chatbot responses database
+        const chatbotResponses = {
+            greetings: [
+                "Hello! 👋 I'm here to help you with Thai Homes queries. How can I assist you today?",
+                "Hi there! Welcome to Thai Homes Assistant. What can I help you with?",
+                "Greetings! I'm your Thai Homes virtual assistant. Feel free to ask me anything!"
+            ],
+            thanks: [
+                "You're welcome! Happy to help! 😊",
+                "My pleasure! Let me know if you need anything else.",
+                "Glad I could help! Is there anything else you'd like to know?"
+            ],
+            goodbye: [
+                "Goodbye! Have a great day! 👋",
+                "See you later! Feel free to come back anytime.",
+                "Take care! Don't hesitate to reach out if you need help."
+            ],
+            complaints: [
+                "I can help you with complaints! You can:\n• Register a new complaint in the 'Register Complaint' tab\n• View existing complaints in the 'View Complaints' tab\n• Check complaint status and updates\n\nWhat would you like to do?",
+                "For complaint-related queries, you can use:\n• Register Complaint tab to submit new issues\n• View Complaints tab to track your submissions\n• Dashboard for visual analytics\n\nNeed help with a specific complaint?"
+            ],
+            help: [
+                "I can assist you with:\n\n📝 Register Complaints\n👁️ View Complaint Status\n📊 Access Dashboard & Reports\n⚙️ Admin Functions (for committee members)\n\nSpecial Commands:\n• 'refresh data' - Reload complaints\n• 'is data loaded' - Check data status\n\nWhat would you like help with?",
+                "Here's what I can help you with:\n\n• How to register a complaint\n• Checking complaint status (give me an ID!)\n• Understanding the dashboard\n• Navigating the system\n• Admin panel features\n• Statistics and counts\n\nNeed to refresh data? Just type 'refresh data'!\n\nJust ask!"
+            ],
+            default: [
+                "I'm here to help with Thai Homes management. Could you please rephrase your question?",
+                "I'm not sure I understand. Can you provide more details about what you need help with?",
+                "Hmm, I didn't quite get that. Could you ask in a different way?",
+                "I'm still learning! Could you please be more specific about your query?"
+            ]
+        };
+
+        // Toggle chatbot
+        function toggleChatbot() {
+            const container = document.getElementById('chatbotContainer');
+            const button = document.getElementById('chatbotButton');
+            
+            if (container.classList.contains('open')) {
+                container.classList.remove('open');
+            } else {
+                container.classList.add('open');
+                // Clear notification badge
+                const badge = button.querySelector('.notification-badge');
+                if (badge) {
+                    badge.classList.remove('show');
+                }
+                // Focus input
+                setTimeout(() => {
+                    document.getElementById('chatbotInput').focus();
+                }, 300);
+            }
+        }
+
+        // Get response based on user input
+        function getChatbotResponse(userMessage) {
+            const message = userMessage.toLowerCase().trim();
+            
+            console.log('=== CHATBOT DEBUG ===');
+            console.log('Original message:', userMessage);
+            console.log('Lowercase message:', message);
+            console.log('Data available:', isDataAvailable());
+            if (isDataAvailable()) {
+                console.log('Total complaints in database:', allComplaints.length);
+            }
+            
+            // Check for Complaint ID pattern (e.g., TH001, CMP1234567890123)
+            const complaintIdMatch = message.match(/\b(TH\d+|CMP\d+)\b/i);
+            if (complaintIdMatch) {
+                const complaintId = complaintIdMatch[0].toUpperCase();
+                return getComplaintStatus(complaintId);
+            }
+            
+            // Check for status queries
+            if (message.match(/\b(status|check|where is|what is the status|track)\b/i) && message.match(/\b(my|complaints?|issues?)\b/i)) {
+                return "I can help you check your complaint status! Please provide your Complaint ID (e.g., TH001 or CMP1234567890123) and I'll look it up for you.";
+            }
+            
+            // Check for pending/resolved counts
+            if (message.match(/\b(how many|total|count|number of)\b/i)) {
+                if (message.match(/\b(pending)\b/i)) {
+                    return getComplaintCount('Pending');
+                } else if (message.match(/\b(resolved|completed|done)\b/i)) {
+                    return getComplaintCount('Resolved');
+                } else if (message.match(/\b(in progress|ongoing|processing)\b/i)) {
+                    return getComplaintCount('In Progress');
+                } else if (message.match(/\b(initiated)\b/i)) {
+                    return getComplaintCount('Initiated');
+                } else if (message.match(/\b(complaints?|issues?|total)\b/i)) {
+                    return getAllComplaintsCount();
+                }
+            }
+            
+            // Check for recent complaints
+            if (message.match(/\b(recent|latest|new|today|this week)\b/i) && message.match(/\b(complaints?|issues?)\b/i)) {
+                return getRecentComplaints();
+            }
+            
+            // Check for block specific queries (Block A, Block B, THRWA)
+            console.log('Checking block pattern...');
+            const blockPattern = /\b(block [ab]|thrwa)\b/i;
+            const complaintPattern = /\b(complaints?|issues?)\b/i;  // Added ? to match singular and plural
+            console.log('Block pattern match:', message.match(blockPattern));
+            console.log('Complaint pattern match:', message.match(complaintPattern));
+            
+            if (message.match(blockPattern) && message.match(complaintPattern)) {
+                const blockMatch = message.match(blockPattern);
+                console.log('Block matched! Raw match:', blockMatch[0]);
+                if (blockMatch) {
+                    // Extract and properly format block name
+                    let blockName = blockMatch[0];
+                    console.log('Before formatting:', blockName);
+                    if (blockName.toLowerCase() === 'block a') blockName = 'Block A';
+                    else if (blockName.toLowerCase() === 'block b') blockName = 'Block B';
+                    else if (blockName.toLowerCase() === 'thrwa') blockName = 'THRWA';
+                    
+                    console.log('After formatting:', blockName);
+                    console.log('Calling getBlockComplaints with:', blockName);
+                    return getBlockComplaints(blockName);
+                }
+            }
+            
+            // Check for category-specific queries
+            const categories = [
+                'Access Card Reader', 'Access Door', 'Builder', 'CCTV Camera', 'CCTV Monitor',
+                'Cleaning', 'Common Area', 'Drainage', 'Electrical', 'Gates', 'Genset',
+                'Lift', 'Noise', 'Overhead tank', 'Paints', 'Parking', 'Plumbing',
+                'Seepages', 'Security', 'Solar Panels', 'Structural', 'Sump', 'Water Supply', 'Other'
+            ];
+            
+            for (let category of categories) {
+                if (message.toLowerCase().includes(category.toLowerCase()) && message.match(/\b(complaints?|issues?)\b/i)) {
+                    console.log('Category match found:', category);
+                    return getCategoryComplaints(category);
+                }
+            }
+            
+            // Check for priority-based complaints
+            if (message.match(/\b(urgent|high|medium|low)\b/i) && message.match(/\b(priority)\b/i) && message.match(/\b(complaints?|issues?)\b/i)) {
+                const priorityMatch = message.match(/\b(urgent|high|medium|low)\b/i);
+                if (priorityMatch) {
+                    const priority = priorityMatch[0].charAt(0).toUpperCase() + priorityMatch[0].slice(1).toLowerCase();
+                    console.log('Priority match found:', priority);
+                    return getPriorityComplaints(priority);
+                }
+            }
+            
+            // Legacy support for "urgent/critical/emergency" keyword (maps to Urgent)
+            if (message.match(/\b(critical|emergency)\b/i) && message.match(/\b(complaints?|issues?)\b/i)) {
+                return getPriorityComplaints('Urgent');
+            }
+            
+            // Check for refresh/reload data
+            if (message.match(/\b(refresh|reload|update|load)\b/i) && message.match(/\b(data|complaints|database)\b/i)) {
+                loadComplaints();
+                return "🔄 Refreshing complaints data...\n\nThis will take a few seconds. I'll let you know when it's done!\n\nPlease wait about 10 seconds and then try your query again.";
+            }
+            
+            // Check for data status
+            if (message.match(/\b(data loaded|is data|data available|have data)\b/i)) {
+                if (isDataAvailable()) {
+                    return `✅ Yes! I have access to ${allComplaints.length} complaints in the database.\n\nFeel free to ask me anything!`;
+                } else {
+                    return "❌ Data is not loaded yet. I'm working on it!\n\nYou can type 'refresh data' to try loading again.";
+                }
+            }
+            
+            // Check for "how to register" questions - MUST be before general help
+            if (message.match(/\b(how to|how do|how can)\b/i) && message.match(/\b(register|create|submit|file|new|complaint)\b/i)) {
+                return "To register a new complaint:\n\n1️⃣ Go to 'Register Complaint' tab\n2️⃣ Fill in your details (Block, Flat, Name)\n3️⃣ Select category and priority\n4️⃣ Describe the issue\n5️⃣ Click 'Submit Complaint'\n\nYou'll receive a complaint ID for tracking!";
+            }
+            
+            // Check for greetings
+            if (message.match(/\b(hi|hello|hey|good morning|good afternoon|good evening|greetings|hii|helo)\b/i)) {
+                return getRandomResponse(chatbotResponses.greetings);
+            }
+            
+            // Check for thanks
+            if (message.match(/\b(thank|thanks|thx|appreciate|ty)\b/i)) {
+                return getRandomResponse(chatbotResponses.thanks);
+            }
+            
+            // Check for goodbye
+            if (message.match(/\b(bye|goodbye|see you|later|exit|quit|farewell)\b/i)) {
+                return getRandomResponse(chatbotResponses.goodbye);
+            }
+            
+            // Check for help - but NOT if it matches "how to register"
+            if (message.match(/\b(help|assist|support|guide)\b/i)) {
+                return getRandomResponse(chatbotResponses.help);
+            }
+            
+            // Check for general "how to" questions (non-registration)
+            if (message.match(/\b(how to|how do|how can)\b/i)) {
+                return getRandomResponse(chatbotResponses.help);
+            }
+            
+            // Check for complaints (but not if already handled by "how to register")
+            if (message.match(/\b(complaints?|issues?|problems?|track|status)\b/i) && !message.match(/\b(how to|how do|how can)\b/i)) {
+                return getRandomResponse(chatbotResponses.complaints);
+            }
+            
+            // Check for system features
+            if (message.match(/\b(dashboard|report|analytics|stats|data|chart|graph)\b/i)) {
+                return "You can access detailed insights through:\n• 📊 Dashboard tab - Visual charts and analytics\n• 📑 Reports tab - Detailed complaint tables\n\nBoth have powerful filtering options!";
+            }
+            
+            // Check for admin
+            if (message.match(/\b(admin|panel|manage|user|committee|login)\b/i)) {
+                return "The Admin Panel is for Executive Committee members only. You can:\n• Manage all complaints\n• Add/remove committee members\n• Update complaint status\n• Access advanced filters\n\nYou'll need to login to access these features.";
+            }
+            
+            // Check for filters
+            if (message.match(/\b(filter|search|find|sort)\b/i)) {
+                return "All tabs have powerful filtering options! You can filter by:\n• Status (Pending, Initiated, In Progress, Resolved)\n• Category (multi-select)\n• Block & Flat\n• Priority\n• Complaint ID\n• Date Range\n\nJust use the filter dropdowns at the top of each tab!";
+            }
+            
+            // Default response
+            return getRandomResponse(chatbotResponses.default);
+        }
+
+        // DATABASE QUERY FUNCTIONS
+
+        // Check if data is available
+        function isDataAvailable() {
+            return allComplaints && allComplaints.length > 0;
+        }
+
+        // Get complaint status by ID
+        function getComplaintStatus(complaintId) {
+            if (!isDataAvailable()) {
+                return "⏳ I'm still loading the complaints data.\n\nPlease wait 5-10 seconds and try again, or type 'refresh data' to reload!";
+            }
+            
+            const complaint = allComplaints.find(c => c.id.toUpperCase() === complaintId);
+            
+            if (!complaint) {
+                return `❌ Sorry, I couldn't find any complaint with ID: ${complaintId}\n\nPlease check the ID and try again, or view all complaints in the 'View Complaints' tab.`;
+            }
+            
+            const statusEmoji = {
+                'Pending': '🔴',
+                'Initiated': '🟡',
+                'In Progress': '🔵',
+                'Resolved': '✅'
+            };
+            
+            let response = `📋 Complaint Details for ${complaint.id}\n\n`;
+            response += `Status: ${statusEmoji[complaint.status] || ''} ${complaint.status}\n`;
+            response += `Category: ${complaint.category}\n`;
+            response += `Priority: ${complaint.priority}\n`;
+            response += `Block: ${complaint.blockName}\n`;
+            response += `Flat: ${complaint.flatNumber === 'Community Representative' ? 'Community Representative' : 'Flat ' + complaint.flatNumber}\n`;
+            response += `Registered: ${new Date(complaint.dateRegistered).toLocaleDateString('en-IN')}\n`;
+            
+            if (complaint.status === 'Resolved' && complaint.issueResolvedDate) {
+                response += `\n✅ Resolved on: ${new Date(complaint.issueResolvedDate).toLocaleDateString('en-IN')}\n`;
+                if (complaint.resolvedBy) {
+                    response += `Resolved by: ${complaint.resolvedBy}\n`;
+                }
+            }
+            
+            response += `\nDescription: ${complaint.description}`;
+            
+            return response;
+        }
+
+        // Get count of complaints by status
+        function getComplaintCount(status) {
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Please wait 5-10 seconds.\n\nType 'refresh data' if needed!";
+            }
+            
+            const count = allComplaints.filter(c => c.status === status).length;
+            const total = allComplaints.length;
+            const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+            
+            const emoji = {
+                'Pending': '🔴',
+                'Initiated': '🟡',
+                'In Progress': '🔵',
+                'Resolved': '✅'
+            };
+            
+            return `${emoji[status]} ${status} Complaints: ${count}\n\nThis represents ${percentage}% of all complaints (${total} total).`;
+        }
+
+        // Get all complaints count
+        function getAllComplaintsCount() {
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Please wait 5-10 seconds and try again.\n\nOr type 'refresh data' to reload!";
+            }
+            
+            const total = allComplaints.length;
+            const pending = allComplaints.filter(c => c.status === 'Pending').length;
+            const initiated = allComplaints.filter(c => c.status === 'Initiated').length;
+            const inProgress = allComplaints.filter(c => c.status === 'In Progress').length;
+            const resolved = allComplaints.filter(c => c.status === 'Resolved').length;
+            
+            return `📊 Complaints Overview:\n\n` +
+                   `Total: ${total} complaints\n\n` +
+                   `🆕 Initiated: ${initiated}\n` +
+                   `🔴 Pending: ${pending}\n` +
+                   `🔄 In Progress: ${inProgress}\n` +
+                   `✅ Resolved: ${resolved}`;
+        }
+
+        // Get recent complaints
+        function getRecentComplaints() {
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Wait 5-10 seconds or type 'refresh data'!";
+            }
+            
+            // Get complaints from last 7 days
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            
+            const recentComplaints = allComplaints
+                .filter(c => new Date(c.dateRegistered) >= sevenDaysAgo)
+                .sort((a, b) => new Date(b.dateRegistered) - new Date(a.dateRegistered))
+                .slice(0, 5);
+            
+            if (recentComplaints.length === 0) {
+                return "No complaints registered in the last 7 days.";
+            }
+            
+            let response = `📅 Recent Complaints (Last 7 days):\n\n`;
+            recentComplaints.forEach((c, index) => {
+                const statusEmoji = {
+                    'Pending': '🔴',
+                    'Initiated': '🟡',
+                    'In Progress': '🔵',
+                    'Resolved': '✅'
+                };
+                response += `${index + 1}. ${c.id} - ${c.category}\n`;
+                response += `   ${statusEmoji[c.status]} ${c.status} | ${c.priority} Priority\n`;
+                response += `   ${new Date(c.dateRegistered).toLocaleDateString('en-IN')}\n\n`;
+            });
+            
+            return response.trim();
+        }
+
+        // Get complaints by category
+        function getCategoryComplaints(category) {
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Wait 5-10 seconds or type 'refresh data'!";
+            }
+            
+            const categoryComplaints = allComplaints.filter(c => 
+                c.category.toLowerCase().includes(category.toLowerCase())
+            );
+            
+            if (categoryComplaints.length === 0) {
+                return `No ${category} complaints found in the system.`;
+            }
+            
+            const initiated = categoryComplaints.filter(c => c.status === 'Initiated').length;
+            const pending = categoryComplaints.filter(c => c.status === 'Pending').length;
+            const inProgress = categoryComplaints.filter(c => c.status === 'In Progress').length;
+            const resolved = categoryComplaints.filter(c => c.status === 'Resolved').length;
+            
+            return `📋 ${category} Complaints Summary:\n\n` +
+                   `Total: ${categoryComplaints.length} complaints\n\n` +
+                   `🆕 Initiated: ${initiated}\n` +
+                   `🔴 Pending: ${pending}\n` +
+                   `🔄 In Progress: ${inProgress}\n` +
+                   `✅ Resolved: ${resolved}\n\n` +
+                   `You can view detailed ${category} complaints in the 'View Complaints' or 'Dashboard' tab by filtering the category.`;
+        }
+
+        // Get complaints by block
+        function getBlockComplaints(blockName) {
+            console.log('=== getBlockComplaints called ===');
+            console.log('Searching for block:', blockName);
+            console.log('Data available:', isDataAvailable());
+            
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Wait 5-10 seconds or type 'refresh data'!";
+            }
+            
+            console.log('Total complaints:', allComplaints.length);
+            
+            // Filter complaints by exact block name match
+            const blockComplaints = allComplaints.filter(c => {
+                console.log('Checking complaint:', c.id, 'Block:', c.blockName, 'Match:', c.blockName === blockName);
+                return c.blockName && c.blockName === blockName;
+            });
+            
+            console.log('Filtered complaints found:', blockComplaints.length);
+            
+            if (blockComplaints.length === 0) {
+                return `No complaints found for ${blockName}.`;
+            }
+            
+            const initiated = blockComplaints.filter(c => c.status === 'Initiated').length;
+            const pending = blockComplaints.filter(c => c.status === 'Pending').length;
+            const inProgress = blockComplaints.filter(c => c.status === 'In Progress').length;
+            const resolved = blockComplaints.filter(c => c.status === 'Resolved').length;
+            
+            return `🏢 ${blockName} Complaints:\n\n` +
+                   `Total: ${blockComplaints.length} complaints\n\n` +
+                   `🆕 Initiated: ${initiated}\n` +
+                   `🔴 Pending: ${pending}\n` +
+                   `🔄 In Progress: ${inProgress}\n` +
+                   `✅ Resolved: ${resolved}\n\n` +
+                   `Filter by '${blockName}' in the View Complaints or Dashboard tab for details.`;
+        }
+
+        // Get complaints by priority (Urgent, High, Medium, Low)
+        function getPriorityComplaints(priority) {
+            if (!isDataAvailable()) {
+                return "⏳ Data still loading... Wait 5-10 seconds or type 'refresh data'!";
+            }
+            
+            // Get all complaints with this priority (including resolved)
+            const allPriorityComplaints = allComplaints.filter(c => c.priority === priority);
+            
+            // Count by status
+            const initiated = allPriorityComplaints.filter(c => c.status === 'Initiated').length;
+            const pending = allPriorityComplaints.filter(c => c.status === 'Pending').length;
+            const inProgress = allPriorityComplaints.filter(c => c.status === 'In Progress').length;
+            const resolved = allPriorityComplaints.filter(c => c.status === 'Resolved').length;
+            
+            const priorityEmojis = {
+                'Urgent': '🔴',
+                'High': '🚨',
+                'Medium': '⚠️',
+                'Low': 'ℹ️'
+            };
+            
+            let response = `${priorityEmojis[priority]} ${priority} Priority Complaints:\n\n`;
+            response += `Total: ${allPriorityComplaints.length} complaints\n\n`;
+            response += `🆕 Initiated: ${initiated}\n`;
+            response += `🔴 Pending: ${pending}\n`;
+            response += `🔄 In Progress: ${inProgress}\n`;
+            response += `✅ Resolved: ${resolved}\n\n`;
+            
+            // Show unresolved complaints details
+            const unresolvedComplaints = allPriorityComplaints.filter(c => c.status !== 'Resolved');
+            
+            if (unresolvedComplaints.length === 0) {
+                response += `✅ Great news! All ${priority.toLowerCase()} priority complaints are resolved.`;
+                return response.trim();
+            }
+            
+            response += `📋 Unresolved Complaints (showing up to 5):\n\n`;
+            
+            unresolvedComplaints.slice(0, 5).forEach((c, index) => {
+                const statusEmoji = {
+                    'Pending': '🔴',
+                    'Initiated': '🆕',
+                    'In Progress': '🔄'
+                };
+                response += `${index + 1}. ${c.id} - ${c.category}\n`;
+                response += `   ${statusEmoji[c.status]} ${c.status}\n`;
+                response += `   ${c.blockName} - Flat ${c.flatNumber}\n\n`;
+            });
+            
+            if (unresolvedComplaints.length > 5) {
+                response += `...and ${unresolvedComplaints.length - 5} more unresolved.`;
+            }
+            
+            return response.trim();
+        }
+
+        // Get high priority complaints (legacy function - now calls getPriorityComplaints)
+        function getHighPriorityComplaints() {
+            return getPriorityComplaints('High');
+        }
+
+        // Get random response from array
+        function getRandomResponse(responses) {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Format time
+        function formatChatTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Add message to chat
+        function addChatMessage(message, isUser = false) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${isUser ? 'user' : 'bot'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'chatbot-message-avatar';
+            avatar.textContent = isUser ? '👤' : '🤖';
+            
+            const content = document.createElement('div');
+            content.className = 'chatbot-message-content';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'chatbot-message-bubble';
+            bubble.textContent = message;
+            
+            const time = document.createElement('div');
+            time.className = 'chatbot-message-time';
+            time.textContent = formatChatTime();
+            
+            content.appendChild(bubble);
+            content.appendChild(time);
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Store message
+            chatMessages.push({ message, isUser, time: formatChatTime() });
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chatbot-message bot';
+            typingDiv.id = 'typingIndicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'chatbot-message-avatar';
+            avatar.textContent = '🤖';
+            
+            const typing = document.createElement('div');
+            typing.className = 'chatbot-typing';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(typing);
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // Send message
+        function sendChatMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            
+            console.log('Send message called:', message);
+            
+            if (!message || isChatbotTyping) {
+                console.log('Message empty or bot typing');
+                return;
+            }
+            
+            // Add user message
+            addChatMessage(message, true);
+            input.value = '';
+            
+            // Show typing indicator
+            isChatbotTyping = true;
+            showTypingIndicator();
+            
+            // Simulate typing delay (1-2 seconds)
+            const delay = 1000 + Math.random() * 1000;
+            
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = getChatbotResponse(message);
+                console.log('Bot response:', response);
+                addChatMessage(response, false);
+                isChatbotTyping = false;
+            }, delay);
+        }
+
+        // Send suggestion (from button click)
+        function sendSuggestion(suggestionText) {
+            const input = document.getElementById('chatbotInput');
+            input.value = suggestionText;
+            sendChatMessage();
+        }
+
+        // Toggle chatbot dropdown
+        function toggleChatDropdown(dropdownId, event) {
+            console.log('=== toggleChatDropdown called ===');
+            console.log('Dropdown ID:', dropdownId);
+            console.log('Event:', event);
+            
+            // Prevent event from bubbling to document click listener
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            const dropdown = document.getElementById(dropdownId);
+            console.log('Dropdown element found:', dropdown);
+            
+            if (!dropdown) {
+                console.error('ERROR: Dropdown element not found for ID:', dropdownId);
+                return;
+            }
+            
+            const allDropdowns = document.querySelectorAll('.chatbot-dropdown-menu');
+            const allButtons = document.querySelectorAll('.chatbot-dropdown-btn');
+            
+            console.log('Total dropdowns found:', allDropdowns.length);
+            console.log('Total buttons found:', allButtons.length);
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(dd => {
+                if (dd.id !== dropdownId) {
+                    dd.classList.remove('active');
+                }
+            });
+            
+            // Remove active class from all buttons
+            allButtons.forEach(btn => {
+                if (btn.getAttribute('onclick') && !btn.getAttribute('onclick').includes(dropdownId)) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Toggle current dropdown
+            console.log('Before toggle - has active class:', dropdown.classList.contains('active'));
+            dropdown.classList.toggle('active');
+            console.log('After toggle - has active class:', dropdown.classList.contains('active'));
+            
+            // Toggle button active state
+            if (event) {
+                const button = event.target.closest('.chatbot-dropdown-btn');
+                if (button) {
+                    button.classList.toggle('active');
+                    console.log('Button toggled');
+                }
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.chatbot-dropdown-wrapper')) {
+                const allDropdowns = document.querySelectorAll('.chatbot-dropdown-menu');
+                const allButtons = document.querySelectorAll('.chatbot-dropdown-btn');
+                allDropdowns.forEach(dd => dd.classList.remove('active'));
+                allButtons.forEach(btn => btn.classList.remove('active'));
+            }
+        });
+
+        // Update suggestion buttons based on data availability
+        function updateSuggestions(dataLoaded = false) {
+            const suggestionsContainer = document.getElementById('chatbotSuggestions');
+            
+            // Always show the same structure with dropdowns
+            suggestionsContainer.innerHTML = `
+                <button class="chatbot-suggestion-btn" onclick="sendSuggestion('Help')">💡 Help</button>
+                <button class="chatbot-suggestion-btn" onclick="sendSuggestion('How do I register a complaint?')">❓ How to Register</button>
+                <button class="chatbot-suggestion-btn" onclick="sendSuggestion('How many total complaints?')">📊 Total Complaints</button>
+                
+                <div class="chatbot-dropdown-wrapper">
+                    <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotBlockDropdown', event)">
+                        🏢 Block <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="chatbot-dropdown-menu" id="chatbotBlockDropdown">
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Block A complaints')">Block A</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Block B complaints')">Block B</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('THRWA complaints')">THRWA</div>
+                    </div>
+                </div>
+                
+                <div class="chatbot-dropdown-wrapper">
+                    <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotCategoryDropdown', event)">
+                        📋 Category <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="chatbot-dropdown-menu" id="chatbotCategoryDropdown">
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Access Card Reader complaints')">Access Card Reader</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Access Door complaints')">Access Door</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Builder complaints')">Builder</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('CCTV Camera complaints')">CCTV Camera</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('CCTV Monitor complaints')">CCTV Monitor</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Cleaning complaints')">Cleaning</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Common Area complaints')">Common Area</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Drainage complaints')">Drainage</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Electrical complaints')">Electrical</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Gates complaints')">Gates</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Genset complaints')">Genset</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Lift complaints')">Lift/Elevator</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Noise complaints')">Noise Complaint</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Overhead tank complaints')">Overhead tank</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Paints complaints')">Paints</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Parking complaints')">Parking</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Plumbing complaints')">Plumbing</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Seepages complaints')">Seepages</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Security complaints')">Security</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Solar Panels complaints')">Solar Panels</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Structural complaints')">Structural</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Sump complaints')">Sump</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Water Supply complaints')">Water Supply</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Other complaints')">Other</div>
+                    </div>
+                </div>
+                
+                <div class="chatbot-dropdown-wrapper">
+                    <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotPriorityDropdown', event)">
+                        ⚡ Priority <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="chatbot-dropdown-menu" id="chatbotPriorityDropdown">
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Urgent priority complaints')">Urgent</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('High priority complaints')">High</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Medium priority complaints')">Medium</div>
+                        <div class="chatbot-dropdown-item" onclick="sendSuggestion('Low priority complaints')">Low</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle Enter key
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+
+        // Initialize chatbot with welcome message
+        function initializeChatbot() {
+            // Set initial suggestions (data not loaded)
+            updateSuggestions(false);
+            
+            // Add initial welcome message
+            setTimeout(() => {
+                addChatMessage(`Hello! 👋 Welcome to Thai Homes Assistant.\n\nI'm here to help you with:\n• Complaint status lookup (just give me a Complaint ID!)\n• Statistics and counts\n• Recent complaints\n• Category-specific queries\n• And much more!\n\nHow can I assist you today?`, false);
+            }, 500);
+            
+            // Automatically load complaints if not already loaded
+            if (!allComplaints || allComplaints.length === 0) {
+                console.log('Chatbot: Loading complaints data automatically...');
+                
+                setTimeout(() => {
+                    addChatMessage(`⏳ Loading complaints data from the database...\n\nThis may take 5-10 seconds depending on your connection.`, false);
+                }, 1500);
+                
+                // Trigger data load
+                loadComplaints();
+                
+                // Check data loading status every 2 seconds
+                let checkCount = 0;
+                const checkInterval = setInterval(() => {
+                    checkCount++;
+                    
+                    if (allComplaints && allComplaints.length > 0) {
+                        clearInterval(checkInterval);
+                        addChatMessage(`✅ Data loaded successfully! I now have access to ${allComplaints.length} complaints.\n\nYou can now ask me:\n• "How many total complaints?"\n• "Show recent complaints"\n• "TH001" (any complaint ID)\n• And much more!`, false);
+                        
+                        // Update suggestions to show data-related buttons
+                        updateSuggestions(true);
+                    } else if (checkCount >= 10) {
+                        // After 20 seconds, stop checking
+                        clearInterval(checkInterval);
+                        addChatMessage(`⚠️ Data is taking longer than expected to load.\n\nYou can:\n1. Wait a bit longer and try asking your question\n2. Click '🔄 Refresh Data' button below\n3. Check your internet connection\n\nI'll keep trying in the background!`, false);
+                    }
+                }, 2000);
+            } else {
+                // Data already loaded
+                setTimeout(() => {
+                    addChatMessage(`✅ I have access to ${allComplaints.length} complaints in the system!\n\nFeel free to ask me anything!`, false);
+                    // Update suggestions to show data-related buttons
+                    updateSuggestions(true);
+                }, 2000);
+            }
+        }
+
+        // Initialize chatbot on page load
+        setTimeout(initializeChatbot, 1000);
+
+        // ============================================
+        // MAINTENANCE TAB FUNCTIONS
+        // ============================================
+        
+        // Initialize maintenance flat numbers
+        function initializeMaintenanceFlats() {
+            const flatSelect = document.getElementById('maintenanceFlat');
+            if (!flatSelect) return;
+            
+            // Add Community Representative option first
+            const commRepOption = document.createElement('option');
+            commRepOption.value = 'Community Representative';
+            commRepOption.textContent = 'Community Representative';
+            flatSelect.appendChild(commRepOption);
+            
+            const floors = [1, 2, 3, 4, 5];
+            const units = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            
+            floors.forEach(floor => {
+                units.forEach(unit => {
+                    const flatNumber = `${floor}${unit}`;
+                    const option = document.createElement('option');
+                    option.value = flatNumber;
+                    option.textContent = `Flat ${flatNumber}`;
+                    flatSelect.appendChild(option);
+                });
+            });
+        }
+
+        // Update block based on flat selection (same logic as Register Complaint)
+        function updateMaintenanceBlock() {
+            const flatNumber = document.getElementById('maintenanceFlat').value;
+            const blockSelect = document.getElementById('maintenanceBlock');
+            
+            if (!flatNumber) {
+                blockSelect.value = '';
+                return;
+            }
+            
+            // Handle Community Representative - Auto-select THRWA
+            if (flatNumber === 'Community Representative') {
+                blockSelect.value = 'THRWA';
+                return;
+            }
+            
+            const unit = flatNumber.slice(-1);
+            
+            if (['A', 'B', 'C', 'D', 'E', 'F'].includes(unit)) {
+                blockSelect.value = 'Block A';
+            } else {
+                blockSelect.value = 'Block B';
+            }
+        }
+
+        // Handle maintenance form submission
+        document.getElementById('maintenanceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const flat = document.getElementById('maintenanceFlat').value;
+            const block = document.getElementById('maintenanceBlock').value;
+
+            // Get current month and year for column name (e.g., "Jan'25")
+            const now = new Date();
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const currentMonthCol = monthNames[now.getMonth()] + "'" + now.getFullYear().toString().slice(-2);
+
+            // Create payment object
+            const paymentData = {
+                flat: flat,
+                block: block,
+                monthColumn: currentMonthCol,
+                paidDate: now.toISOString().split('T')[0] // YYYY-MM-DD format
+            };
+
+            try {
+                // Send to Google Sheets
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'recordMaintenancePayment',
+                        data: paymentData
+                    })
+                });
+
+                // Show success message
+                document.getElementById('maintenancePaymentId').textContent = `${flat} - ${currentMonthCol}`;
+                document.getElementById('maintenanceSuccess').style.display = 'block';
+                
+                // Reset form
+                document.getElementById('maintenanceForm').reset();
+                document.getElementById('maintenanceBlock').value = '';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('maintenanceSuccess').style.display = 'none';
+                }, 5000);
+
+                // Refresh recent payments
+                loadMaintenanceStatus();
+
+            } catch (error) {
+                console.error('Error recording payment:', error);
+                alert('Error recording payment. Please try again.');
+            }
+        });
+
+        // Load maintenance payment status
+        async function loadMaintenanceStatus() {
+            const container = document.getElementById('recentPaymentsContainer');
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getMaintenanceStatus`);
+                const data = await response.json();
+
+                if (data && data.payments && data.payments.length > 0) {
+                    // Show ALL month columns (not just last 3)
+                    const monthColumns = data.monthColumns;
+                    
+                    container.innerHTML = `
+                        <div class="maintenance-table-wrapper">
+                            <table class="maintenance-table">
+                                <thead>
+                                    <tr>
+                                        <th class="sticky-col-1">Flat Number</th>
+                                        <th class="sticky-col-2">Block Name</th>
+                                        ${monthColumns.map(col => `<th class="month-col">${col}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.payments.map((payment, index) => `
+                                        <tr class="${index % 2 === 0 ? 'even-row' : 'odd-row'}">
+                                            <td class="sticky-col-1 flat-cell">${payment.flat}</td>
+                                            <td class="sticky-col-2 block-cell">${payment.block}</td>
+                                            ${monthColumns.map(col => {
+                                                const status = payment[col];
+                                                if (status && status !== '') {
+                                                    return `<td class="status-cell">
+                                                        <span class="paid-badge">
+                                                            ✓ ${status}
+                                                        </span>
+                                                    </td>`;
+                                                } else {
+                                                    return `<td class="status-cell unpaid">—</td>`;
+                                                }
+                                            }).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="maintenance-summary">
+                            <strong>Total Flats:</strong> ${data.payments.length} | 
+                            <strong>Months Tracked:</strong> ${monthColumns.length}
+                        </p>
+                    `;
+                } else {
+                    container.innerHTML = '<p class="no-records">No maintenance records found.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading maintenance status:', error);
+                container.innerHTML = '<p class="error-message">Unable to load maintenance status. Please try again later.</p>';
+            }
+        }
+
+        // Maintenance table styles - Light and Dark Mode adaptive
+        const style = document.createElement('style');
+        style.textContent = `
+            /* ========================================
+               MAINTENANCE TABLE - LIGHT MODE STYLES
+               ======================================== */
+            
+            .maintenance-table-wrapper {
+                overflow-x: auto;
+                border: 1px solid #dfe3da;
+                border-radius: 8px;
+            }
+            
+            .maintenance-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.9em;
+            }
+            
+            .maintenance-table thead tr {
+                background: #7a9b76;
+                border-bottom: 2px solid #5d7a5a;
+            }
+            
+            .maintenance-table th {
+                padding: 14px;
+                text-align: left;
+                color: #ffffff;
+                font-weight: 600;
+            }
+            
+            .maintenance-table .sticky-col-1 {
+                position: sticky;
+                left: 0;
+                z-index: 2;
+                background: #7a9b76;
+            }
+            
+            .maintenance-table .sticky-col-2 {
+                position: sticky;
+                left: 150px;
+                z-index: 2;
+                background: #7a9b76;
+            }
+            
+            .maintenance-table .month-col {
+                text-align: center;
+                min-width: 120px;
+            }
+            
+            .maintenance-table tbody tr {
+                border-bottom: 1px solid #eff2f0;
+            }
+            
+            .maintenance-table tbody tr.even-row {
+                background: #fcfdfc;
+            }
+            
+            .maintenance-table tbody tr.odd-row {
+                background: #ffffff;
+            }
+            
+            .maintenance-table tbody tr:hover {
+                background: #f7f8f4 !important;
+            }
+            
+            .maintenance-table td {
+                padding: 12px;
+            }
+            
+            .maintenance-table .flat-cell {
+                color: #3d4a3a;
+                font-weight: 600;
+                border-right: 1px solid #eff2f0;
+            }
+            
+            .maintenance-table .block-cell {
+                color: #6d7869;
+                font-weight: 500;
+                border-right: 1px solid #eff2f0;
+            }
+            
+            .maintenance-table .even-row .sticky-col-1,
+            .maintenance-table .even-row .sticky-col-2 {
+                background: #fcfdfc;
+            }
+            
+            .maintenance-table .odd-row .sticky-col-1,
+            .maintenance-table .odd-row .sticky-col-2 {
+                background: #ffffff;
+            }
+            
+            .maintenance-table .status-cell {
+                text-align: center;
+            }
+            
+            .maintenance-table .status-cell.unpaid {
+                color: #9ba594;
+                font-size: 1.2em;
+            }
+            
+            .maintenance-table .paid-badge {
+                display: inline-block;
+                padding: 4px 12px;
+                background: #edf3ec;
+                color: #5d7a5a;
+                border-radius: 12px;
+                font-size: 0.85em;
+                font-weight: 600;
+            }
+            
+            .maintenance-summary {
+                margin-top: 15px;
+                color: #6d7869;
+                font-size: 0.85em;
+                text-align: center;
+            }
+            
+            .no-records {
+                color: #6d7869;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .error-message {
+                color: #9d7864;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            /* ========================================
+               MAINTENANCE TABLE - DARK MODE STYLES
+               ======================================== */
+            
+            .dark-mode .maintenance-table-wrapper {
+                border-color: #3a4441;
+            }
+            
+            .dark-mode .maintenance-table thead tr {
+                background: #3d5249;
+                border-bottom-color: #5d7a5a;
+            }
+            
+            .dark-mode .maintenance-table th {
+                color: #e8ebe9;
+            }
+            
+            .dark-mode .maintenance-table .sticky-col-1,
+            .dark-mode .maintenance-table .sticky-col-2 {
+                background: #3d5249;
+            }
+            
+            .dark-mode .maintenance-table tbody tr {
+                border-bottom-color: #3a4441;
+            }
+            
+            .dark-mode .maintenance-table tbody tr.even-row {
+                background: #242928;
+            }
+            
+            .dark-mode .maintenance-table tbody tr.odd-row {
+                background: #1f2521;
+            }
+            
+            .dark-mode .maintenance-table tbody tr:hover {
+                background: #2d3532 !important;
+            }
+            
+            .dark-mode .maintenance-table .even-row .sticky-col-1,
+            .dark-mode .maintenance-table .even-row .sticky-col-2 {
+                background: #242928;
+            }
+            
+            .dark-mode .maintenance-table .odd-row .sticky-col-1,
+            .dark-mode .maintenance-table .odd-row .sticky-col-2 {
+                background: #1f2521;
+            }
+            
+            .dark-mode .maintenance-table tbody tr:hover .sticky-col-1,
+            .dark-mode .maintenance-table tbody tr:hover .sticky-col-2 {
+                background: #2d3532 !important;
+            }
+            
+            .dark-mode .maintenance-table .flat-cell {
+                color: #e8ebe9;
+                border-right-color: #3a4441;
+            }
+            
+            .dark-mode .maintenance-table .block-cell {
+                color: #b8bfbb;
+                border-right-color: #3a4441;
+            }
+            
+            .dark-mode .maintenance-table .status-cell.unpaid {
+                color: #6d7869;
+            }
+            
+            .dark-mode .maintenance-table .paid-badge {
+                background: #3d5249;
+                color: #8fb88a;
+            }
+            
+            .dark-mode .maintenance-summary {
+                color: #b8bfbb;
+            }
+            
+            .dark-mode .no-records {
+                color: #b8bfbb;
+            }
+            
+            .dark-mode .error-message {
+                color: #c49277;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Load recent payments and initialize flat numbers when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize maintenance flat numbers
+            initializeMaintenanceFlats();
+        });
     </script>
+
+    <!-- Chatbot Button -->
+    <div class="chatbot-button" id="chatbotButton" onclick="toggleChatbot()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+        <div class="notification-badge">1</div>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">🤖</div>
+                <div class="chatbot-header-text">
+                    <h3>Thai Homes Assistant</h3>
+                    <p>Online • Ready to help</p>
+                </div>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Messages will be added here dynamically -->
+        </div>
+
+        <!-- Suggestion Buttons -->
+        <div class="chatbot-suggestions" id="chatbotSuggestions">
+            <button class="chatbot-suggestion-btn" onclick="sendSuggestion('Help')">💡 Help</button>
+            <button class="chatbot-suggestion-btn" onclick="sendSuggestion('How do I register a complaint?')">❓ How to Register</button>
+            <button class="chatbot-suggestion-btn" onclick="sendSuggestion('How many total complaints?')">📊 Total Complaints</button>
+            
+            <!-- Block Dropdown -->
+            <div class="chatbot-dropdown-wrapper">
+                <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotBlockDropdown', event)">
+                    🏢 Block <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="chatbot-dropdown-menu" id="chatbotBlockDropdown">
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Block A complaints')">Block A</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Block B complaints')">Block B</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('THRWA complaints')">THRWA</div>
+                </div>
+            </div>
+            
+            <!-- Category Dropdown -->
+            <div class="chatbot-dropdown-wrapper">
+                <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotCategoryDropdown', event)">
+                    📋 Category <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="chatbot-dropdown-menu" id="chatbotCategoryDropdown">
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Access Card Reader complaints')">Access Card Reader</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Access Door complaints')">Access Door</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Builder complaints')">Builder</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('CCTV Camera complaints')">CCTV Camera</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('CCTV Monitor complaints')">CCTV Monitor</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Cleaning complaints')">Cleaning</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Common Area complaints')">Common Area</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Drainage complaints')">Drainage</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Electrical complaints')">Electrical</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Gates complaints')">Gates</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Genset complaints')">Genset</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Lift complaints')">Lift/Elevator</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Noise complaints')">Noise Complaint</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Overhead tank complaints')">Overhead tank</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Paints complaints')">Paints</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Parking complaints')">Parking</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Plumbing complaints')">Plumbing</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Seepages complaints')">Seepages</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Security complaints')">Security</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Solar Panels complaints')">Solar Panels</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Structural complaints')">Structural</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Sump complaints')">Sump</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Water Supply complaints')">Water Supply</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Other complaints')">Other</div>
+                </div>
+            </div>
+            
+            <!-- Priority Dropdown -->
+            <div class="chatbot-dropdown-wrapper">
+                <button class="chatbot-suggestion-btn chatbot-dropdown-btn" onclick="toggleChatDropdown('chatbotPriorityDropdown', event)">
+                    ⚡ Priority <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="chatbot-dropdown-menu" id="chatbotPriorityDropdown">
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Urgent priority complaints')">Urgent</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('High priority complaints')">High</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Medium priority complaints')">Medium</div>
+                    <div class="chatbot-dropdown-item" onclick="sendSuggestion('Low priority complaints')">Low</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chatbot-input-area">
+            <input 
+                type="text" 
+                class="chatbot-input" 
+                id="chatbotInput" 
+                placeholder="Type your message..." 
+                onkeypress="handleChatKeyPress(event)"
+            >
+            <button class="chatbot-send-btn" onclick="sendChatMessage()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
 </body>
 </html>
